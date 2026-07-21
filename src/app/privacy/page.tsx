@@ -1,0 +1,26 @@
+import type { Metadata } from "next";
+import { FooterCta } from "@/components/FooterCta";
+import { Nav } from "@/components/Nav";
+
+export const metadata: Metadata = { title: "Privacy Policy — Sari Sari Design" };
+
+// ⚠️ Placeholder — no privacy policy exists on the live site; legal copy needed before launch.
+export default function Privacy() {
+  return (
+    <>
+      <Nav />
+      <main className="mx-auto min-h-[50vh] max-w-[760px] px-6 py-24">
+        <h1 className="mb-8 font-brand text-h1 text-neutral-900">Privacy Policy</h1>
+        <p className="text-body-m text-neutral-700">
+          Sari Sari llc collects only what the site needs to function. Full policy copy pending —
+          contact{" "}
+          <a className="text-primary-400 underline" href="mailto:hello@sarisari.design">
+            hello@sarisari.design
+          </a>{" "}
+          with any questions.
+        </p>
+      </main>
+      <FooterCta />
+    </>
+  );
+}
