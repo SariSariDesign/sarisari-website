@@ -1,40 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 
 type Item = { label: string; body: string };
 
 type Props = {
   items: Item[];
-  /** "light" for neutral sections, "blue" for primary-400 sections */
-  tone?: "light" | "blue";
-  defaultOpen?: number | null;
+  /** Index open on first render (single-open accordion). -1 for all closed. */
+  defaultOpen?: number;
 };
 
-/** DS accordion (Figma component `status=open/closed`): Supply label pull + body drawer. */
-export function Accordion({ items, tone = "light", defaultOpen = null }: Props) {
-  const [open, setOpen] = useState<number | null>(defaultOpen);
-  const border = tone === "blue" ? "border-primary-300/50" : "border-neutral-400";
-  const label = tone === "blue" ? "text-primary-200" : "text-neutral-800";
-  const body = tone === "blue" ? "text-primary-200" : "text-neutral-700";
+/** FAQ accordion (new comp): sentence-case sans question + +/− toggle, single-open. */
+export function Accordion({ items, defaultOpen = 0 }: Props) {
+  const [open, setOpen] = useState(defaultOpen);
+  const uid = useId();
 
   return (
-    <div className={`w-full border-t ${border}`}>
+    <div className="w-full border-t border-neutral-300">
       {items.map((item, i) => {
         const isOpen = open === i;
         return (
-          <div key={item.label} className={`border-b ${border}`}>
+          <div key={item.label} className="border-b border-neutral-300">
             <button
               type="button"
-              onClick={() => setOpen(isOpen ? null : i)}
+              onClick={() => setOpen(isOpen ? -1 : i)}
               aria-expanded={isOpen}
-              className={`ds-label flex w-full items-center justify-between gap-6 p-6 text-left text-label-l ${label}`}
+              aria-controls={isOpen ? `${uid}-${i}` : undefined}
+              className="flex w-full items-center justify-between gap-6 py-6 text-left"
             >
-              {item.label}
-              <span aria-hidden className="text-xl leading-none">{isOpen ? "−" : "+"}</span>
+              <span className="text-title-m font-medium text-neutral-1000">{item.label}</span>
+              <span aria-hidden className="text-2xl leading-none text-neutral-600">
+                {isOpen ? "−" : "+"}
+              </span>
             </button>
             {isOpen && (
-              <p className={`whitespace-pre-line px-6 pb-6 pt-2 text-body-m ${body}`}>
+              <p
+                id={`${uid}-${i}`}
+                className="max-w-[68ch] whitespace-pre-line pb-6 text-body-m text-neutral-700"
+              >
                 {item.body}
               </p>
             )}

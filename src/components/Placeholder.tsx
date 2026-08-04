@@ -1,21 +1,44 @@
 type Props = {
   className?: string;
-  /** token-colored fill, defaults to the comp's neutral-600 placeholder grey */
-  tone?: "neutral" | "blue" | "green";
   label?: string;
+  /** Default `hatch` = the comp's diagonal-hatch image stand-in; solid tones for legacy use. */
+  tone?: "hatch" | "neutral" | "blue" | "green";
+  rounded?: boolean;
 };
 
-/** Image placeholder matching the comp's grey blocks; swapped for real assets later. */
-export function Placeholder({ className = "", tone = "neutral", label }: Props) {
-  const bg = {
+/** Image placeholder — diagonal-hatch stand-in with a centered label, swapped for real assets later. */
+export function Placeholder({ className = "", label, tone = "hatch", rounded = true }: Props) {
+  const solid = {
     neutral: "bg-neutral-600",
     blue: "bg-primary-500",
     green: "bg-success-500",
-  }[tone];
+  };
+  const isHatch = tone === "hatch";
   return (
-    <div className={`relative ${bg} ${className}`} role="img" aria-label={label ?? "Image coming soon"}>
+    <div
+      className={`relative flex items-center justify-center overflow-hidden ${
+        rounded ? "rounded-2xl" : ""
+      } ${isHatch ? "" : solid[tone]} ${className}`}
+      role="img"
+      aria-label={label ?? "Image coming soon"}
+      style={
+        isHatch
+          ? {
+              // DS greys (grey-200 / grey-300) as the diagonal-hatch stand-in stripes.
+              backgroundImage:
+                "repeating-linear-gradient(-45deg, var(--color-grey-200), var(--color-grey-200) 12px, var(--color-grey-300) 12px, var(--color-grey-300) 13px)",
+            }
+          : undefined
+      }
+    >
       {label && (
-        <span className="ds-label absolute bottom-2 left-2 text-label-s text-neutral-100/60">{label}</span>
+        <span
+          className={`ds-label px-4 text-center text-label-s ${
+            isHatch ? "text-neutral-600" : "text-neutral-100/60"
+          }`}
+        >
+          {label}
+        </span>
       )}
     </div>
   );

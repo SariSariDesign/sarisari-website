@@ -1,0 +1,381 @@
+---
+name: Sari Sari Design
+description: Warm editorial serif meets Swiss utility, softened with rounded surfaces, an orange accent, and quiet reveal motion for a senior product studio
+colors:
+  ink: "#403e3c"
+  ink-strong: "#1f1d1c"
+  paper: "#faf9f7"
+  warm-grey: "#efeeed"
+  peach: "#fff2e5"
+  muted: "#575452"
+  placeholder: "#999693"
+  primary: "#1f5fa6"
+  primary-deep: "#054285"
+  navy: "#002752"
+  primary-mid: "#4987cc"
+  primary-tint: "#c4dbf5"
+  primary-pale: "#ebf4ff"
+  accent: "#d68f49"
+  accent-soft: "#ebae71"
+  accent-deep: "#b86e25"
+  amber-bg: "#f7e7c6"
+  amber-text: "#8a5e06"
+  success: "#1d8f65"
+  success-deep: "#086643"
+  success-pale: "#edfcf7"
+typography:
+  display:
+    fontFamily: "PP Editorial Old, Instrument Serif, Playfair Display, Georgia, serif"
+    fontSize: "120px"
+    fontWeight: 400
+    lineHeight: "120px"
+    letterSpacing: "-2px"
+  headline:
+    fontFamily: "PP Editorial Old, Instrument Serif, Playfair Display, Georgia, serif"
+    fontSize: "56px"
+    fontWeight: 400
+    lineHeight: "56px"
+    letterSpacing: "0px"
+  title:
+    fontFamily: "Neue Montreal, Instrument Sans, Inter, system-ui, sans-serif"
+    fontSize: "24px"
+    fontWeight: 500
+    lineHeight: "32px"
+  body:
+    fontFamily: "Neue Montreal, Instrument Sans, Inter, system-ui, sans-serif"
+    fontSize: "22px"
+    fontWeight: 400
+    lineHeight: "32px"
+    letterSpacing: "0.25px"
+  label:
+    fontFamily: "Supply, Space Grotesk, Space Mono, ui-monospace, monospace"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: "20px"
+    letterSpacing: "2px"
+rounded:
+  tag: "4px"
+  card: "8px"
+  image: "16px"
+  pill: "999px"
+spacing:
+  gutter: "24px"
+  section-y: "96px"
+  section-y-lg: "144px"
+  container: "1200px"
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.paper}"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "16px 32px"
+  button-primary-hover:
+    backgroundColor: "{colors.primary-deep}"
+  button-primary-active:
+    backgroundColor: "{colors.navy}"
+  button-secondary:
+    backgroundColor: "{colors.primary-pale}"
+    textColor: "{colors.primary}"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "16px 32px"
+  button-white:
+    backgroundColor: "#ffffff"
+    textColor: "{colors.navy}"
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "16px 32px"
+  button-ghost:
+    textColor: "{colors.primary}"
+    typography: "{typography.label}"
+    padding: "0px"
+---
+
+# Design System: Sari Sari Design
+
+## Overview
+
+**Creative North Star: "The Conversion Editorial, warmed up."**
+
+Sari Sari's world still reads like a design-forward business broadsheet: an oversized
+italic serif carries the emotion, a precise neo-grotesque carries the argument, and
+an uppercase mono/grotesque stamps every label like a spec sheet. It is confident and
+plainspoken — a studio that treats its own site as proof of craft.
+
+What the redesign changes is the *temperature*. The old system was clinical: strict
+square corners, film grain, exposed gridlines, numbered section rails, and saturated
+full-bleed blue/green bands. The new comp keeps the editorial rigor but softens the
+delivery. Corners round (pills, 8px cards, 16px images). A warm **orange accent**
+appears functionally — the eyebrow dash, process numerals, the highlighted case
+metric — as a third voice alongside blue. Surfaces breathe across a warm neutral
+rhythm (paper → warm grey → peach) with a deep navy closing band. Structure is now
+signalled by a quiet **eyebrow-dash header device** rather than numbered rails, and
+the page comes alive with subtle **scroll-reveal** motion and a **logo marquee**.
+Grain and gridlines are dropped from the homepage.
+
+The anti-reference is still the generic SaaS landing page — gradient blobs, glow
+accents, heavy multi-layer drop-shadows, glassy 3D. Rounded corners and motion are
+now welcome; decoration for its own sake is not.
+
+**Key Characteristics:**
+- Warm neutral canvas with a section rhythm of paper / warm-grey / peach, closing on a deep navy CTA band and a near-black footer
+- Oversized editorial-serif italic display against a Swiss sans body
+- Uppercase mono/grotesque labels as a persistent "spec sheet" device
+- Rounded surfaces: pill buttons, 8px cards, 16px images, 4px tags
+- Orange as a functional third accent (eyebrow dash, process numerals, case metric, amber sector tags)
+- Eyebrow-dash section headers (orange dash + uppercase label + serif headline)
+- Quiet motion: scroll-reveal fades and a logo marquee, both off under reduced-motion
+- Largely flat still — separation comes from color, hairline borders, and radius, not heavy shadow
+
+## Colors
+
+The palette is **unchanged** — every color below already exists in the DS ramps in
+`globals.css` (grey / blue / green / orange / yellow / red). What the redesign
+changes is *application*: which ramp steps become surfaces, and the new functional
+role for orange.
+
+### Primary
+- **Editorial Blue** (#1f5fa6, `primary-400`): primary buttons, links, tab-active
+  fill, and hover accent on nav links. Deepens to **#054285** (`primary-500`) on
+  hover and **#002752** (`primary-600`) on active/press.
+- **Navy** (#002752, `primary-600`): now an *active surface* — the full-bleed
+  closing CTA band. Light text and the `primary-200/300` steps carry copy on top of it.
+- **Sky Mid / Tint / Pale** (#4987cc / #c4dbf5 / #ebf4ff): text and fills on blue
+  surfaces, plus the pale-blue "secondary" button skin.
+
+### Accent (new functional role)
+- **Orange** is the third accent, used functionally, never decoratively:
+  - **#d68f49** (`orange-400`) — the eyebrow accent dash on every section header.
+  - **#ebae71** (`orange-300`) — the large process step numerals.
+  - **#b86e25** (`orange-500`) — the highlighted case-study metric (e.g. "37%").
+  - **#fff2e5** (`orange-100`) — the peach **About** band background, and the
+    Diagnostic "Try us first" tag.
+- **Amber sector tags** use `yellow-200` (#f7e7c6) bg + `yellow-600` (#8a5e06) text
+  on the work case rows.
+
+### Neutral (the surface rhythm)
+- **Paper** (#faf9f7, `neutral-100`): the base canvas and alternating section bg.
+- **Warm Grey** (#efeeed, `neutral-200`): the alternate section bg (Services,
+  Process, FAQ) and the retainer pricing panel.
+- **Peach** (#fff2e5, `orange-100`): the About band.
+- **Ink / Ink Strong** (#403e3c / #1f1d1c): body text and highest-contrast headings.
+  `neutral-1000` (#1f1d1c) is also the footer surface.
+- **Muted** (#575452, `neutral-700`) / **Placeholder** (#999693, `neutral-600`):
+  secondary text, labels, and placeholder captions.
+
+### Secondary
+- **Evergreen** (`success` ramp): retained in the tokens for success/positive states
+  and legacy `Placeholder` tones, but no longer a homepage band. The green Team band
+  is gone — Team/About now lives on the peach band.
+
+### Named Rules
+**The Warm-White Rule (kept).** The canvas is Paper (#faf9f7), never #ffffff. Pure
+white is used only for raised cards (service cards, the diagnostic panel) to lift
+them a half-step off the warm-grey/paper ground.
+
+**The Surface-Rhythm Rule (new, replaces the Two-Band Rule).** Sections alternate
+paper → warm-grey → paper, with peach reserved for About and navy reserved for the
+closing CTA. The old strict "blue default / evergreen once, never a third saturated
+color" rule is **retired** — orange is now a sanctioned functional accent, and
+saturated full-bleed bands are limited to the single navy CTA.
+
+## Typography
+
+**Display Font:** PP Editorial Old — licensed paid webfont, the primary face.
+**Body Font:** Neue Montreal — licensed paid webfont, the primary face.
+**Label/Mono Font:** Supply — licensed paid webfont, the primary face.
+
+**Google-fallback note (new).** The three paid faces are not yet hosted in
+`/public/fonts`. The comp's free Google analogs are now wired as the **live
+fallback** and render today: **Instrument Serif** (display), **Instrument Sans**
+(body), and **Space Grotesk** (labels), loaded via `next/font` in `layout.tsx` and
+exposed through CSS-var stacks in `globals.css`
+(`--font-brand` / `--font-body` / `--font-code`). `font-display: swap` keeps the
+fallback visible until the paid `.woff2` files land, at which point the paid faces
+take over with no code change. The three type *roles* are unchanged.
+
+**Character:** An emotive high-contrast serif for feeling, a rational Swiss grotesque
+for reading, and a mechanical mono/grotesque for structure — three voices with
+clearly divided jobs. The italic serif is the signature (the hero headline is set in
+the editorial *italic*).
+
+### Hierarchy
+- **Display** (400, 72–120px `display-m`/`display-l`, tight line-height, −1/−2px
+  tracking): hero headline (rendered `italic`, `clamp(44px,8vw,120px)`), the navy CTA
+  headline, and the About pull-quote; serif only.
+- **Headline** (400, 56px `display-s` / 48px `h1` / 40px `h2`): section headlines and
+  case-study client names; serif.
+- **Title** (500, 24px `title-l` / 18px `title-m`): card titles, sub-heads, FAQ
+  questions; sans.
+- **Body** (400, 22px `body-l` / 18px `body-m` / 14px `body-s`): running copy; sans.
+- **Label** (400, 16px `label-l` / 14px `label-m` / 10px `label-s`, wide tracking,
+  UPPERCASE): eyebrows, nav, button text, tags, indices, card metadata;
+  mono/grotesque only (`.ds-label`).
+
+### Named Rules
+**The Spec-Label Rule (kept).** Every label, eyebrow, nav item, button, tag, and
+index number is `.ds-label` (Supply/Space-Grotesk, uppercase, wide-tracked). Labels
+are never set in the serif or the sans.
+
+**The Italic-Serif Rule.** The editorial italic is the display signature: the hero
+headline, the About pull-quote, the case metric, and the navy CTA headline all render
+in italic serif.
+
+## Layout
+
+A single centered column, `max-width: 1200px`, with a 24px horizontal gutter (`px-6`,
+opening to `px-8` at `md`). Vertical rhythm is `py-24` (96px) per section; the hero
+and navy CTA band carry extra top/bottom padding. Sections are full-bleed for
+background color but content is constrained to the 1200px measure (`Section`
+component).
+
+**Eyebrow-dash headers replace numbered rails.** Every section opens with the shared
+`SectionHeader`: an `Eyebrow` (orange dash + uppercase label), a serif `display-s`
+headline, and an optional body-l intro — all wrapped in a `Reveal`. The old
+absolutely-positioned numbered index rail ("01"…"08") and the 7-column gridline
+overlay are **not used on the homepage** (the `.gridlines` / `.noise` helpers survive
+in CSS for legacy/other pages only).
+
+**Section background rhythm:** Hero (paper) → Services (warm-grey) → Work (paper) →
+Process (warm-grey) → Why (paper) → About (peach) → Pricing (paper) → FAQ (warm-grey)
+→ CTA (navy) → Footer (near-black). Multi-column grids collapse to a single stack
+below `sm`/`md`; work case rows alternate image side (`flip`) at `lg`.
+
+## Elevation & Depth
+
+Still largely flat, but the depth cues changed. **Grain and gridlines are gone** from
+the homepage. Separation now comes from:
+- **Rounded surfaces + hairline borders:** service cards and the diagnostic panel are
+  white/`rounded-lg` (8px) with a 1px `neutral-300` border; pricing panels are
+  `rounded-2xl` (16px). Feature rows and process steps use hairline `neutral-400`
+  dividers.
+- **Color surfaces:** the warm neutral rhythm and the peach/navy bands do the heavy
+  separation work.
+- **Subtle reveal motion** (see Motion) instead of texture.
+- The only true "lift" is the sticky nav, which is transparent over the hero and
+  gains a `neutral-100/90` `backdrop-blur` background + hairline on scroll.
+
+### Named Rules
+**The Quiet-Elevation Rule (replaces No-Shadow).** Surfaces stay flat — no heavy or
+glowing drop-shadows. To separate an element, change the background, add a hairline
+border, or lean on radius. A single soft shadow on a raised card is acceptable if
+ever needed, but color + border + radius is the default.
+
+## Shapes
+
+**Radius returns.** The strict No-Radius rule is **retired**. The comp uses four
+radius steps, each with a job:
+- **Pill (999px, `rounded-full`):** all buttons, the pricing tab toggles, the
+  Diagnostic "Try us first" tag, and the numbered feature-row badges.
+- **Card (8px, `rounded-lg`):** service cards.
+- **Image (16px, `rounded-2xl`):** image placeholders (case assets, team photos) and
+  the pricing panels.
+- **Tag (4px, `rounded`):** the amber sector tags on work case rows.
+
+Borders stay hairline (1px) and low-contrast — `neutral-300` around cards,
+`neutral-400` for dividers, `neutral-300` for accordion rules. Form language is now
+soft-rectilinear: architectural proportions, rounded corners.
+
+## Components
+
+### Button (`Button.tsx`)
+- **Shape:** pill (`rounded-full`), `.ds-label` uppercase text + a trailing
+  arrow-right SVG (`gap-2`), `focus-visible` 2px offset outline in `primary-300`.
+  `large` = `px-8 py-4`, `medium` = `px-6 py-3`.
+- **Variants:**
+  - `primary` — Editorial Blue bg, paper text; hover `primary-500`, active `primary-600`.
+  - `secondary` — pale-blue (`primary-100`) bg, blue text; hover `primary-200` (hero "See our work").
+  - `white` — white bg, navy text; hover `primary-100`. Used on the navy CTA band.
+  - `ghost` — text-only blue, no padding, no pill; hover `primary-500`. Inline CTAs ("View case study", "See the diagnostic").
+
+### Eyebrow (`Eyebrow.tsx`, new signature)
+- The section-header device: a `h-0.5 w-6` **orange-400 dash** + `.ds-label`
+  uppercase `neutral-600` label. Present on every section.
+
+### Cards / Containers
+- **Service cards:** white, `rounded-lg`, `neutral-300` border, index label + sans
+  title + body-s.
+- **Case rows:** two-column at `lg` (16px-rounded image placeholder + text column),
+  alternating sides; amber sector tag, serif client name, problem/approach copy, an
+  italic orange metric, a 3-up stat grid, an optional bordered blockquote, and a
+  ghost CTA.
+- **Pricing panels:** `rounded-2xl`; retainer on warm-grey, diagnostic white with a
+  `neutral-300` border.
+
+### Accordion (`Accordion.tsx`, FAQ)
+- Single-open list divided by hairline `neutral-300` top/bottom borders. Row header is
+  a **sentence-case sans question** (`title-m`, not uppercase) with a `+ / −` glyph
+  toggle; body drawer is `body-m`, `whitespace-pre-line`. Opens index 0 by default;
+  clicking the open row closes all. (Note: this differs from the old uppercase-label
+  Services/pricing accordion — the FAQ is the only accordion on the homepage now.)
+
+### PricingTabs (`PricingTabs.tsx`, new)
+- A `role="tablist"` of two pill toggles ("Ongoing partnership" / "Want a taste
+  first?") switching between the Retainer and Diagnostic panels. Active pill =
+  `primary-400` fill; inactive = `neutral-200`. Retainer is the default tab.
+
+### Reveal (`Reveal.tsx`, new)
+- Client wrapper that adds `.in` when the element scrolls into view via
+  `IntersectionObserver` (threshold 0.1, revealed once). Falls back to instant reveal
+  when IO is unavailable; CSS disables the transition under reduced-motion.
+
+### Marquee (`Marquee.tsx`, new)
+- Duplicated logo strip animated with the CSS `marquee` keyframe (`translateX(-50%)`),
+  seamless loop, `--mqdur` speed (40s default), pauses on hover, edge-faded with a
+  horizontal mask, `aria-hidden`. Disabled under reduced-motion.
+
+### Navigation (`Nav.tsx`)
+- Sticky, **transparent over the hero**, gaining a `neutral-100/90` `backdrop-blur`
+  background + hairline `neutral-300` border once scrolled past 24px. Left: lowercase
+  italic-serif "sarisari" wordmark. Right: `.ds-label` uppercase links
+  (`neutral-800`, hover `primary-400`) + a `medium` pill CTA. Below `md` the links
+  collapse behind a "Menu"/"Close" toggle into a paper drawer.
+
+### Image Placeholder (`Placeholder.tsx`)
+- Default `hatch` tone: a **diagonal-hatch** stand-in (repeating `-45deg` stripes in
+  `grey-200`/`grey-300`), `rounded-2xl`, with a centered `.ds-label` caption. Legacy
+  solid `neutral`/`blue`/`green` tones remain for other pages. Keeps `role="img"` +
+  `aria-label`.
+
+### Wordmark (`Wordmark.tsx`)
+- Lowercase italic serif "sarisari", set tight. Used at `title-l` in the nav and
+  footer (text stand-in until the SVG vectors are exported).
+
+## Motion (new)
+
+Motion is quiet, purposeful, and always disabled under `prefers-reduced-motion:
+reduce`:
+- **Scroll-reveal:** `[data-reveal]` elements start at `opacity: 0` /
+  `translateY(8px)` and transition to visible (600ms ease) when the `Reveal` wrapper
+  adds `.in`. One-time, on enter.
+- **Logo marquee:** a continuously scrolling, hover-pausing, edge-faded strip.
+- **Smooth scroll:** `scroll-behavior: smooth` on `html`, also gated behind
+  `no-preference`.
+- **Micro-transitions:** 150ms color transitions on buttons, tabs, and nav.
+
+## Do's and Don'ts
+
+### Do:
+- **Do** keep the canvas warm Paper (#faf9f7) and use the paper / warm-grey / peach /
+  navy surface rhythm for section separation.
+- **Do** open every section with the Eyebrow device (orange dash + uppercase label +
+  serif headline).
+- **Do** use orange functionally — eyebrow dash, process numerals, the case metric,
+  amber sector tags — and keep it an accent, never a field.
+- **Do** set every label, eyebrow, nav item, button, tag, and index in `.ds-label`
+  uppercase.
+- **Do** use the radius steps consistently: pills for buttons/tabs/tags, 8px cards,
+  16px images/panels, 4px sector tags.
+- **Do** keep motion subtle and honor `prefers-reduced-motion`.
+
+### Don't:
+- **Don't** reintroduce homepage grain, gridlines, or numbered section rails — the
+  eyebrow-dash header replaced them.
+- **Don't** use pure white as a page canvas (raised cards only), gradients, glow, or
+  heavy multi-layer drop-shadows.
+- **Don't** turn orange into a full-bleed band or let it compete with blue as a
+  primary — it's the accent, blue is the primary, navy is the one saturated band.
+- **Don't** set body or label copy in the serif, or headlines in the mono/grotesque.
+- **Don't** set FAQ questions in uppercase — the homepage accordion is sentence-case
+  sans.

@@ -1,44 +1,45 @@
 import Link from "next/link";
-import { footer } from "@/content/site";
+import { footer, footerCta } from "@/content/site";
 import { Button } from "./Button";
 import { Wordmark } from "./Wordmark";
 
-/** Blue footer CTA band with link columns and the oversized wordmark, per comp. */
+/** Closing navy CTA band + the dark footer, per comp. Shared across all pages. */
 export function FooterCta() {
   return (
-    <footer className="noise relative overflow-hidden bg-primary-400 text-primary-100">
-      <div className="relative mx-auto max-w-[1200px] px-6 pb-0 pt-24 md:pt-32 lg:px-4">
-        <div className="flex flex-col gap-16 md:flex-row md:items-start md:justify-between">
-          <div className="flex max-w-[576px] flex-col gap-8">
-            <h2 className="font-brand text-display-s text-primary-100">{footer.headline}</h2>
-            <div>
-              <Button href={footer.cta.href} variant="light">
-                {footer.cta.label}
+    <>
+      <section aria-labelledby="cta-h" className="bg-primary-600 text-neutral-100">
+        <div className="mx-auto max-w-[1200px] px-6 py-28 md:px-8 md:py-36">
+          <div className="flex max-w-[68ch] flex-col gap-6">
+            <h2
+              id="cta-h"
+              className="text-balance font-brand text-display-m italic leading-[1.05] text-neutral-100"
+            >
+              {footerCta.headline}
+            </h2>
+            <p className="text-body-l text-primary-200">{footerCta.subhead}</p>
+            <div className="mt-2">
+              <Button href={footerCta.cta.href} variant="white" external>
+                {footerCta.cta.label}
               </Button>
             </div>
+            <span className="ds-label mt-4 text-label-m text-primary-300">{footerCta.slots}</span>
           </div>
-          <div className="ds-label flex gap-16 text-label-l">
-            {footer.columns.map((col, i) => (
-              <ul key={i} className="flex flex-col gap-4">
-                {col.map((link) => (
-                  <li key={link.label}>
-                    {link.href ? (
-                      <Link href={link.href} className="text-primary-300 hover:text-primary-200">
-                        {link.label}
-                      </Link>
-                    ) : (
-                      <span className="text-primary-300">{link.label}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
+        </div>
+      </section>
+
+      <footer className="bg-neutral-1000 text-neutral-500">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-6 px-6 py-10 md:flex-row md:items-center md:justify-between md:px-8">
+          <Wordmark className="text-title-l text-neutral-100" />
+          <div className="ds-label flex flex-wrap items-center gap-x-8 gap-y-2 text-label-m">
+            {footer.links.map((l) => (
+              <Link key={l.label} href={l.href} className="text-neutral-400 hover:text-neutral-100">
+                {l.label}
+              </Link>
             ))}
+            <span className="text-neutral-600">{footer.copyright}</span>
           </div>
         </div>
-        <div className="mt-20 overflow-hidden" aria-hidden>
-          <Wordmark className="block translate-y-[18%] text-[clamp(80px,16vw,250px)] text-primary-300/80" />
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }

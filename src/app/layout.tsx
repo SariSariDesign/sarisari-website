@@ -1,9 +1,32 @@
 import type { Metadata } from "next";
+import { Instrument_Serif, Instrument_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const title = "Sari Sari Design — Design to help SaaS apps work just right";
+// The comp's typefaces — the free analogs of the studio's paid faces. These render as
+// the live fallback (via CSS-var font stacks in globals.css) until PP Editorial Old /
+// Neue Montreal / Supply are licensed into /public/fonts.
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-instrument-serif",
+  display: "swap",
+});
+const instrumentSans = Instrument_Sans({
+  subsets: ["latin"],
+  variable: "--font-instrument-sans",
+  display: "swap",
+});
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const title =
+  "Sari Sari — Senior product design & development for growth-stage software companies";
 const description =
-  "A digital product design studio that gets you. Product, UX, and UI design for seed → Series A SaaS teams.";
+  "Your fractional product team: senior product design and development in one team, aimed at the numbers that decide your next round — activation, conversion, retention, satisfaction.";
 
 export const metadata: Metadata = {
   title,
@@ -27,7 +50,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${instrumentSerif.variable} ${instrumentSans.variable} ${spaceGrotesk.variable}`}
+    >
       <body className="antialiased">{children}</body>
     </html>
   );

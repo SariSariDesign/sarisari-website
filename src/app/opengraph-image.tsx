@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 // Static link-preview card. Brand colors from the DS (neutral-100 bg, primary-400
 // accent, neutral-800 text). Uses Satori's default sans — the licensed brand faces
 // aren't embeddable here yet, and the card reads fine without them.
-export const alt = "Sari Sari Design — Design to help SaaS apps work just right.";
+export const alt = "Sari Sari — Your fractional product team.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -33,7 +33,7 @@ export default function OgImage() {
             textTransform: "uppercase",
           }}
         >
-          Seed → Series A
+          Product design &amp; development
         </div>
 
         <div
@@ -47,14 +47,10 @@ export default function OgImage() {
             maxWidth: "1000px",
           }}
         >
-          <span>Design to help SaaS apps</span>
-          {/* Satori has no italic-synthesis without an italic font file, and trims
-              whitespace around nested spans — so emphasis is the brand blue, and the
-              trailing space is baked into the leading text node. */}
-          <span style={{ display: "flex" }}>
-            <span>work&nbsp;</span>
-            <span style={{ color: "#1f5fa6" }}>just right.</span>
-          </span>
+          <span>Your fractional</span>
+          {/* Satori has no italic-synthesis without an italic font file, so emphasis is
+              carried by the brand blue instead of the site's editorial italic. */}
+          <span style={{ color: "#1f5fa6" }}>product team.</span>
         </div>
 
         <div
@@ -74,7 +70,7 @@ export default function OgImage() {
             sarisari
           </span>
           <span style={{ fontSize: "24px", color: "#575452" }}>
-            A digital product design studio that gets you.
+            A digital product design and development studio that gets you.
           </span>
         </div>
       </div>

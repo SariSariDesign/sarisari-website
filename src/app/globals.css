@@ -80,10 +80,14 @@
   --color-success-500: var(--color-green-500);
   --color-success-600: var(--color-green-600);
 
-  /* ---- type faces (PP Editorial Old / Neue Montreal / Supply, with fallbacks) ---- */
-  --font-brand: "PP Editorial Old", "Playfair Display", Georgia, serif;
-  --font-body: "Neue Montreal", "Inter", system-ui, sans-serif;
-  --font-code: "Supply", "Space Mono", ui-monospace, monospace;
+  /* ---- type faces ----
+   * Paid faces stay primary; the comp's Google faces (wired in layout.tsx as
+   * --font-instrument-serif / -sans / --font-space-grotesk) are the live fallback and
+   * render today until PP Editorial Old / Neue Montreal / Supply land in /public/fonts.
+   */
+  --font-brand: "PP Editorial Old", var(--font-instrument-serif), "Playfair Display", Georgia, serif;
+  --font-body: "Neue Montreal", var(--font-instrument-sans), "Inter", system-ui, sans-serif;
+  --font-code: "Supply", var(--font-space-grotesk), "Space Mono", ui-monospace, monospace;
 
   /* ---- typescale (size / line-height / tracking from DS variables) ---- */
   --text-display-l: 120px;
@@ -183,8 +187,10 @@
   font-display: swap;
 }
 
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -224,4 +230,47 @@ body {
   width: 1px;
   background: currentColor;
   opacity: 0.07;
+}
+
+/* ---- Motion (new comp) ---- */
+
+/* Scroll-reveal: elements start hidden and are revealed once by the <Reveal> wrapper,
+   which adds `.in` when the element scrolls into view. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 600ms ease,
+    transform 600ms ease;
+}
+[data-reveal].in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Logo marquee — the track is a duplicated (2×) strip translated by -50% so the loop is
+   seamless; speed comes from --mqdur, pauses on hover. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--mqdur, 40s) linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
 }
