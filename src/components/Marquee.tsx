@@ -25,7 +25,7 @@ export function Marquee({
         aria-hidden
       >
         {strip.map((name, i) => (
-          <span key={i} className="ds-label whitespace-nowrap text-label-m text-neutral-600">
+          <span key={i} className="ds-label whitespace-nowrap text-label-m text-neutral-700">
             {name}
           </span>
         ))}

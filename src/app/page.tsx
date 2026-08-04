@@ -85,11 +85,11 @@ function Hero() {
             </Button>
           ))}
         </div>
-        <p className="max-w-[60ch] text-body-m text-neutral-600">{hero.finePrint}</p>
+        <p className="max-w-[60ch] text-body-m text-neutral-700">{hero.finePrint}</p>
       </Reveal>
 
       <div className="mt-24 flex flex-col gap-6">
-        <span className="ds-label text-label-s text-neutral-600">{hero.marquee.label}</span>
+        <span className="ds-label text-label-s text-neutral-700">{hero.marquee.label}</span>
         <Marquee items={hero.marquee.logos} />
       </div>
     </Section>
@@ -111,7 +111,7 @@ function Services() {
             key={c.title}
             className="flex flex-col gap-4 rounded-lg border border-neutral-300 bg-white p-8"
           >
-            <span className="ds-label text-label-s text-neutral-600">{c.n}</span>
+            <span className="ds-label text-label-s text-neutral-700">{c.n}</span>
             <h3 className="text-title-l font-medium text-neutral-1000">{c.title}</h3>
             <p className="text-body-s text-neutral-700">{c.body}</p>
           </div>
@@ -154,13 +154,13 @@ function CaseRow({ c, flip }: { c: CaseStudy; flip: boolean }) {
           <span className="font-brand text-display-s italic leading-none text-orange-500">
             {c.metric}
           </span>
-          <span className="ds-label text-label-s text-neutral-600">{c.metricLabel}</span>
+          <span className="ds-label text-label-s text-neutral-700">{c.metricLabel}</span>
         </div>
         {c.stats.length > 0 && (
           <dl className="grid grid-cols-3 gap-4 border-t border-neutral-300 pt-5">
             {c.stats.map((s) => (
               <div key={s.label} className="flex flex-col gap-1">
-                <dt className="order-2 ds-label text-label-s text-neutral-600">{s.label}</dt>
+                <dt className="order-2 ds-label text-label-s text-neutral-700">{s.label}</dt>
                 <dd className="order-1 text-title-m font-medium text-neutral-1000">{s.value}</dd>
               </div>
             ))}
@@ -169,7 +169,7 @@ function CaseRow({ c, flip }: { c: CaseStudy; flip: boolean }) {
         {c.testimonial && (
           <blockquote className="border-l-2 border-neutral-400 pl-4">
             <p className="text-body-m text-neutral-800">“{c.testimonial.quote}”</p>
-            <cite className="ds-label mt-2 block text-label-s not-italic text-neutral-600">
+            <cite className="ds-label mt-2 block text-label-s not-italic text-neutral-700">
               {c.testimonial.attribution}
             </cite>
           </blockquote>
@@ -199,7 +199,7 @@ function Process() {
             <span className="font-brand text-h1 leading-none text-orange-300">{s.n}</span>
             <h3 className="text-title-l font-medium text-neutral-1000">{s.title}</h3>
             <p className="text-body-s text-neutral-700">{s.body}</p>
-            <span className="ds-label mt-2 text-label-s text-neutral-600">{s.when}</span>
+            <span className="ds-label mt-2 text-label-s text-neutral-700">{s.when}</span>
           </div>
         ))}
       </Reveal>
@@ -233,7 +233,7 @@ function About() {
             <Placeholder className="aspect-square w-full" label={m.name} />
             <div className="flex flex-col gap-1">
               <h3 className="text-title-l font-medium text-neutral-1000">{m.name}</h3>
-              <span className="ds-label text-label-s text-neutral-600">{m.role}</span>
+              <span className="ds-label text-label-s text-neutral-700">{m.role}</span>
               <p className="mt-2 text-body-m text-neutral-700">{m.bio}</p>
             </div>
           </div>
@@ -281,7 +281,7 @@ function RetainerPanel() {
           <span className="text-title-l text-neutral-700">{r.period}</span>
         </div>
         <p className="text-body-m text-neutral-700">{r.description}</p>
-        <p className="text-body-s text-neutral-600">{r.terms}</p>
+        <p className="text-body-s text-neutral-700">{r.terms}</p>
         <div>
           <Button href={r.cta.href} external>
             {r.cta.label}
@@ -306,7 +306,7 @@ function DiagnosticPanel() {
           <span className="ds-label rounded-full bg-orange-100 px-3 py-1 text-label-s text-orange-600">
             {d.tag}
           </span>
-          <span className="ds-label text-label-s text-neutral-600">{d.label}</span>
+          <span className="ds-label text-label-s text-neutral-700">{d.label}</span>
         </div>
         <div className="flex items-baseline gap-2">
           <span className="font-brand text-display-m italic leading-none text-neutral-1000">

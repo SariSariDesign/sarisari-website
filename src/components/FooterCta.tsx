@@ -22,7 +22,7 @@ export function FooterCta() {
                 {footerCta.cta.label}
               </Button>
             </div>
-            <span className="ds-label mt-4 text-label-m text-primary-300">{footerCta.slots}</span>
+            <span className="ds-label mt-4 text-label-m text-primary-200">{footerCta.slots}</span>
           </div>
         </div>
       </section>

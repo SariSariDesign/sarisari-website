@@ -34,7 +34,7 @@ export function Placeholder({ className = "", label, tone = "hatch", rounded = t
       {label && (
         <span
           className={`ds-label px-4 text-center text-label-s ${
-            isHatch ? "text-neutral-600" : "text-neutral-100/60"
+            isHatch ? "text-neutral-700" : "text-neutral-100/60"
           }`}
         >
           {label}
