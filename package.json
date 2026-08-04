@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "description": "sarisari.design — public marketing site built from the Sari-Sari DS Figma file.",
+  "engines": {
+    "node": ">=22.14"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
