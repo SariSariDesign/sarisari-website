@@ -235,15 +235,17 @@ body {
 /* ---- Motion (new comp) ---- */
 
 /* Scroll-reveal: elements start hidden and are revealed once by the <Reveal> wrapper,
-   which adds `.in` when the element scrolls into view. */
-[data-reveal] {
+   which adds `.in` when the element scrolls into view. Gated on the `.js` class (set
+   before paint in layout.tsx) so content stays visible if JS never runs — progressive
+   enhancement, and no invisible content for crawlers or on script failure. */
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(8px);
   transition:
     opacity 600ms ease,
     transform 600ms ease;
 }
-[data-reveal].in {
+.js [data-reveal].in {
   opacity: 1;
   transform: none;
 }
@@ -265,7 +267,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
+  .js [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;

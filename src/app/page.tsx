@@ -196,7 +196,7 @@ function Process() {
       <Reveal className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {process.steps.map((s) => (
           <div key={s.n} className="flex flex-col gap-4 border-t border-neutral-400 pt-6">
-            <span className="font-brand text-h1 leading-none text-orange-300">{s.n}</span>
+            <span className="font-brand text-h1 leading-none text-orange-500">{s.n}</span>
             <h3 className="text-title-l font-medium text-neutral-1000">{s.title}</h3>
             <p className="text-body-s text-neutral-700">{s.body}</p>
             <span className="ds-label mt-2 text-label-s text-neutral-700">{s.when}</span>

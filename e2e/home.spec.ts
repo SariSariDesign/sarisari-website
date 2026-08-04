@@ -39,6 +39,9 @@ test.describe("homepage", () => {
   });
 
   test("has no serious or critical accessibility violations", async ({ page }) => {
+    // Reduced motion forces reveal content to its settled, fully-visible state, so axe
+    // judges the real UI rather than a mid-fade animation frame.
+    await page.emulateMedia({ reducedMotion: "reduce" });
     const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
     const serious = results.violations.filter((v) =>
       ["serious", "critical"].includes(v.impact ?? ""),

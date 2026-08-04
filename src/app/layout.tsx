@@ -54,7 +54,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${instrumentSerif.variable} ${instrumentSans.variable} ${spaceGrotesk.variable}`}
     >
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {/* Mark JS-capable before paint so scroll-reveal only hides content when it can
+            actually reveal it (see the `.js [data-reveal]` rules in globals.css). */}
+        <script
+          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
