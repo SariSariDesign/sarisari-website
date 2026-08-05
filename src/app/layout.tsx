@@ -1,6 +1,18 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Instrument_Serif, Instrument_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+
+/**
+ * Dev-only visual tooling (Agentation feedback toolbar + DialKit control panel).
+ * The dynamic import lives inside a statically-false branch in production
+ * (NODE_ENV is inlined at build time), so `agentation`, `dialkit`, and `motion`
+ * are tree-shaken out of the production bundle and never ship.
+ */
+const DevTools =
+  process.env.NODE_ENV === "development"
+    ? dynamic(() => import("@/components/dev/DevTools").then((m) => m.DevTools))
+    : null;
 
 // The comp's typefaces — the free analogs of the studio's paid faces. These render as
 // the live fallback (via CSS-var font stacks in globals.css) until PP Editorial Old /
@@ -61,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
         />
         {children}
+        {DevTools ? <DevTools /> : null}
       </body>
     </html>
   );

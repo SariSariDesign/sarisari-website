@@ -2,6 +2,7 @@ import { Accordion } from "@/components/Accordion";
 import { Button } from "@/components/Button";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FooterCta } from "@/components/FooterCta";
+import { Gridlines } from "@/components/Gridlines";
 import { Marquee } from "@/components/Marquee";
 import { Nav } from "@/components/Nav";
 import { Placeholder } from "@/components/Placeholder";
@@ -31,7 +32,6 @@ export default function Home() {
         <Services />
         <Work />
         <Process />
-        <Why />
         <About />
         <Pricing />
         <Faq />
@@ -48,14 +48,14 @@ function SectionHeader({
   intro,
   headingId,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   headline: string;
   intro?: string;
   headingId?: string;
 }) {
   return (
     <Reveal className="flex max-w-[760px] flex-col gap-5">
-      <Eyebrow>{eyebrow}</Eyebrow>
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2
         id={headingId}
         className="text-balance font-brand text-display-s leading-[1.05] text-neutral-1000"
@@ -70,29 +70,49 @@ function SectionHeader({
 function Hero() {
   const active = hero.headlineOptions[hero.activeHeadline];
   return (
-    <Section className="bg-neutral-100" containerClassName="pb-24 pt-16 md:pt-24">
-      <Reveal
-        className={`flex flex-col gap-8 ${active.centered ? "mx-auto max-w-[900px] items-center text-center" : "max-w-[900px]"}`}
-      >
-        <h1 className="text-balance font-brand text-[clamp(44px,8vw,120px)] italic leading-[1.0] tracking-[-0.02em] text-neutral-1000">
-          {active.headline}
-        </h1>
-        <p className="max-w-[60ch] text-body-l text-neutral-700">{hero.subhead}</p>
-        <div className={`flex flex-wrap gap-4 ${active.centered ? "justify-center" : ""}`}>
-          {hero.ctas.map((cta) => (
-            <Button key={cta.label} href={cta.href} variant={cta.variant} external={isExternal(cta.href)}>
-              {cta.label}
-            </Button>
-          ))}
-        </div>
-        <p className="max-w-[60ch] text-body-m text-neutral-700">{hero.finePrint}</p>
-      </Reveal>
+    <section className="relative overflow-hidden bg-neutral-100">
+      <Gridlines />
+      <div className="relative z-[1]">
+        {/* Full-width split: content left (aligned to the 1200px measure), graphic bleeds right. */}
+        <div className="grid lg:grid-cols-2">
+          <div className="flex items-center px-6 pb-12 pt-16 md:px-8 md:pt-24 lg:pb-24 lg:pl-[max(2rem,calc((100vw-1200px)/2+1.5rem))] lg:pr-12">
+            <Reveal className="flex max-w-[640px] flex-col gap-8">
+              <h1 className="text-balance font-brand text-[clamp(40px,5vw,84px)] italic leading-[1.02] tracking-[-0.02em] text-neutral-1000">
+                {active.headline}
+              </h1>
+              <p className="max-w-[52ch] text-body-l text-neutral-700">{hero.subhead}</p>
+              <div className="flex flex-wrap gap-4">
+                {hero.ctas.map((cta) => (
+                  <Button
+                    key={cta.label}
+                    href={cta.href}
+                    variant={cta.variant}
+                    external={isExternal(cta.href)}
+                  >
+                    {cta.label}
+                  </Button>
+                ))}
+              </div>
+              <p className="max-w-[52ch] text-label-s text-neutral-700">{hero.finePrint}</p>
+            </Reveal>
+          </div>
 
-      <div className="mt-24 flex flex-col gap-6">
-        <span className="ds-label text-label-s text-neutral-700">{hero.marquee.label}</span>
-        <Marquee items={hero.marquee.logos} />
+          <div className="relative min-h-[280px] px-6 pb-12 md:px-8 lg:min-h-[560px] lg:p-0">
+            <Placeholder
+              className="h-full min-h-[280px] w-full lg:absolute lg:inset-0 lg:rounded-2xl lg:rounded-r-none"
+              label="Hero graphic — asset pending"
+            />
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-[1200px] px-6 pb-16 md:px-8 md:pb-24">
+          <div className="flex flex-col gap-6">
+            <span className="ds-label text-label-s text-neutral-700">{hero.marquee.label}</span>
+            <Marquee items={hero.marquee.logos} />
+          </div>
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }
 
@@ -207,22 +227,6 @@ function Process() {
   );
 }
 
-function Why() {
-  return (
-    <Section aria-labelledby="why-h" className="bg-neutral-100">
-      <SectionHeader headingId="why-h" eyebrow={why.eyebrow} headline={why.headline} />
-      <Reveal className="mt-16 grid gap-x-12 gap-y-12 md:grid-cols-2">
-        {why.items.map((item) => (
-          <div key={item.title} className="flex flex-col gap-3">
-            <h3 className="text-title-m font-medium text-neutral-1000">{item.title}</h3>
-            <p className="max-w-[52ch] text-body-m text-neutral-700">{item.body}</p>
-          </div>
-        ))}
-      </Reveal>
-    </Section>
-  );
-}
-
 function About() {
   return (
     <Section id="about" aria-labelledby="about-h" className="bg-orange-100">
@@ -274,6 +278,7 @@ function RetainerPanel() {
   return (
     <div className="grid gap-12 rounded-2xl bg-neutral-200 p-8 md:grid-cols-2 md:p-12">
       <div className="flex flex-col gap-6">
+        <span className="ds-label text-label-s text-neutral-700">{r.label}</span>
         <div className="flex items-baseline gap-2">
           <span className="font-brand text-display-m italic leading-none text-neutral-1000">
             {r.price}
@@ -351,11 +356,16 @@ function FeatureRow({ n, title, body }: { n: string; title: string; body: string
 }
 
 function Faq() {
+  // The former "Why Sari Sari?" comparisons now live as FAQ entries (see site.ts `why`).
+  const items = [
+    ...faq.items.map((f) => ({ label: f.q, body: f.a })),
+    ...why.items.map((w) => ({ label: w.title, body: w.body })),
+  ];
   return (
     <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-200">
       <SectionHeader headingId="faq-h" eyebrow={faq.eyebrow} headline={faq.headline} />
       <Reveal className="mt-12 max-w-[820px]">
-        <Accordion items={faq.items.map((f) => ({ label: f.q, body: f.a }))} defaultOpen={0} />
+        <Accordion items={items} defaultOpen={0} />
       </Reveal>
     </Section>
   );

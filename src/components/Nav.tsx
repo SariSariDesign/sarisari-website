@@ -37,6 +37,10 @@ export function Nav() {
               {l.label}
             </Link>
           ))}
+          <span className="ds-label hidden items-center gap-2 text-label-s text-neutral-600 lg:flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-success-400" aria-hidden />
+            {nav.availability}
+          </span>
           <Button href={nav.cta.href} size="medium" external>
             {nav.cta.label}
           </Button>

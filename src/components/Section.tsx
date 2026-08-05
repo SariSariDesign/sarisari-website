@@ -1,3 +1,5 @@
+import { Gridlines } from "./Gridlines";
+
 type SectionProps = {
   id?: string;
   className?: string;
@@ -17,7 +19,8 @@ export function Section({
 }: SectionProps) {
   return (
     <section id={id} className={`relative ${className}`} {...rest}>
-      <div className={`mx-auto max-w-[1200px] px-6 py-24 md:px-8 ${containerClassName}`}>
+      <Gridlines />
+      <div className={`relative z-[1] mx-auto max-w-[1200px] px-6 py-24 md:px-8 ${containerClassName}`}>
         {children}
       </div>
     </section>

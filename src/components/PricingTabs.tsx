@@ -17,21 +17,25 @@ export function PricingTabs({
 }) {
   const [tab, setTab] = useState<"retainer" | "diagnostic">("retainer");
 
-  const pill = (active: boolean) =>
-    `ds-label rounded-full px-5 py-2 text-label-m transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300 ${
+  const seg = (active: boolean) =>
+    `ds-label rounded-full px-6 py-2.5 text-label-m transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300 ${
       active
-        ? "bg-primary-400 text-neutral-100"
-        : "bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+        ? "bg-white text-primary-500 shadow-sm"
+        : "text-neutral-700 hover:text-neutral-1000"
     }`;
 
   return (
     <div className="flex flex-col gap-8">
-      <div role="tablist" aria-label="Pricing options" className="flex flex-wrap gap-2">
+      <div
+        role="tablist"
+        aria-label="Pricing options"
+        className="inline-flex self-start gap-1 rounded-full border border-neutral-300 bg-neutral-200 p-1"
+      >
         <button
           type="button"
           role="tab"
           aria-selected={tab === "retainer"}
-          className={pill(tab === "retainer")}
+          className={seg(tab === "retainer")}
           onClick={() => setTab("retainer")}
         >
           {labels.retainer}
@@ -40,7 +44,7 @@ export function PricingTabs({
           type="button"
           role="tab"
           aria-selected={tab === "diagnostic"}
-          className={pill(tab === "diagnostic")}
+          className={seg(tab === "diagnostic")}
           onClick={() => setTab("diagnostic")}
         >
           {labels.diagnostic}

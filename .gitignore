@@ -11,6 +11,12 @@ next-env.d.ts
 # impeccable design-hook local cache/sidecar — regenerated locally from DESIGN.md
 .impeccable/
 
+# Local agent tooling (not app code)
+.claude/settings.local.json
+.claude/skills/
+.agents/
+skills-lock.json
+
 # Playwright
 /test-results/
 /playwright-report/
