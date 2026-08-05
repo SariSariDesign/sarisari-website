@@ -112,7 +112,9 @@ metric — as a third voice alongside blue. Surfaces breathe across a warm neutr
 rhythm (paper → warm grey → peach) with a deep navy closing band. Structure is now
 signalled by a quiet **eyebrow-dash header device** rather than numbered rails, and
 the page comes alive with subtle **scroll-reveal** motion and a **logo marquee**.
-Grain and gridlines are dropped from the homepage.
+Film grain stays dropped, but the structural gridline returns in a softer key: a
+faint **dotted column grid** now runs the full page as a quiet underlay behind
+content — the old exposed hard rules reinterpreted as low-contrast dots.
 
 The anti-reference is still the generic SaaS landing page — gradient blobs, glow
 accents, heavy multi-layer drop-shadows, glassy 3D. Rounded corners and motion are
@@ -126,6 +128,7 @@ now welcome; decoration for its own sake is not.
 - Orange as a functional third accent (eyebrow dash, process numerals, case metric, amber sector tags)
 - Eyebrow-dash section headers (orange dash + uppercase label + serif headline)
 - Quiet motion: scroll-reveal fades and a logo marquee, both off under reduced-motion
+- A faint dotted 6-column grid (7 lines) running the full page as a structural underlay
 - Largely flat still — separation comes from color, hairline borders, and radius, not heavy shadow
 
 ## Colors
@@ -224,28 +227,34 @@ in italic serif.
 
 ## Layout
 
-A single centered column, `max-width: 1200px`, with a 24px horizontal gutter (`px-6`,
-opening to `px-8` at `md`). Vertical rhythm is `py-24` (96px) per section; the hero
-and navy CTA band carry extra top/bottom padding. Sections are full-bleed for
-background color but content is constrained to the 1200px measure (`Section`
-component).
+Content is held to a centered column, `max-width: 1200px`, with a 24px horizontal
+gutter (`px-6`, opening to `px-8` at `md`). Vertical rhythm is `py-24` (96px) per
+section; the hero and navy CTA band carry extra top/bottom padding. Sections are
+full-bleed for background color but content is constrained to the 1200px measure
+(`Section` component). The one exception is the **hero**, which breaks to a
+**full-width split**: the headline/CTAs are held to the measure on the left while the
+graphic bleeds to the right viewport edge (stacks vertically below `lg`).
 
-**Eyebrow-dash headers replace numbered rails.** Every section opens with the shared
-`SectionHeader`: an `Eyebrow` (orange dash + uppercase label), a serif `display-s`
-headline, and an optional body-l intro — all wrapped in a `Reveal`. The old
-absolutely-positioned numbered index rail ("01"…"08") and the 7-column gridline
-overlay are **not used on the homepage** (the `.gridlines` / `.noise` helpers survive
-in CSS for legacy/other pages only).
+**Eyebrow-dash headers replace numbered rails; the dotted grid returns.** Every
+section opens with the shared `SectionHeader`: an `Eyebrow` (orange dash + uppercase
+label), a serif `display-s` headline, and an optional body-l intro — all wrapped in a
+`Reveal`. The old absolutely-positioned numbered index rail ("01"…"08") stays retired.
+The **dotted column grid is now a page-wide device**: `<Gridlines>` renders 7 faint
+`neutral-300` dotted verticals (6 columns), aligned to the 1200px measure, inside
+every `Section`, so the grid reads as one continuous underlay down the page. The
+`.noise` film-grain helper stays legacy-only.
 
 **Section background rhythm:** Hero (paper) → Services (warm-grey) → Work (paper) →
-Process (warm-grey) → Why (paper) → About (peach) → Pricing (paper) → FAQ (warm-grey)
-→ CTA (navy) → Footer (near-black). Multi-column grids collapse to a single stack
-below `sm`/`md`; work case rows alternate image side (`flip`) at `lg`.
+Process (warm-grey) → About (peach) → Pricing (paper) → FAQ (warm-grey) → CTA (navy)
+→ Footer (near-black). The former standalone **Why Sari Sari?** section is gone — its
+four comparison rows now live inside the FAQ accordion. Multi-column grids collapse to
+a single stack below `sm`/`md`; work case rows alternate image side (`flip`) at `lg`.
 
 ## Elevation & Depth
 
-Still largely flat, but the depth cues changed. **Grain and gridlines are gone** from
-the homepage. Separation now comes from:
+Still largely flat, but the depth cues changed. **Film grain is gone** from the
+homepage (the dotted column grid returns as a faint structural underlay, not a depth
+cue — see Layout). Separation now comes from:
 - **Rounded surfaces + hairline borders:** service cards and the diagnostic panel are
   white/`rounded-lg` (8px) with a 1px `neutral-300` border; pricing panels are
   `rounded-2xl` (16px). Feature rows and process steps use hairline `neutral-400`
@@ -288,6 +297,7 @@ soft-rectilinear: architectural proportions, rounded corners.
   - `secondary` — pale-blue (`primary-100`) bg, blue text; hover `primary-200` (hero "See our work").
   - `white` — white bg, navy text; hover `primary-100`. Used on the navy CTA band.
   - `ghost` — text-only blue, no padding, no pill; hover `primary-500`. Inline CTAs ("View case study", "See the diagnostic").
+- **Hover:** the trailing arrow nudges right (`translate-x-1`, 150ms ease-out) — the shared button micro-interaction across every variant.
 
 ### Eyebrow (`Eyebrow.tsx`, new signature)
 - The section-header device: a `h-0.5 w-6` **orange-400 dash** + `.ds-label`
@@ -308,12 +318,17 @@ soft-rectilinear: architectural proportions, rounded corners.
   a **sentence-case sans question** (`title-m`, not uppercase) with a `+ / −` glyph
   toggle; body drawer is `body-m`, `whitespace-pre-line`. Opens index 0 by default;
   clicking the open row closes all. (Note: this differs from the old uppercase-label
-  Services/pricing accordion — the FAQ is the only accordion on the homepage now.)
+  Services/pricing accordion — the FAQ is the only accordion on the homepage now.) The
+  list now also carries the four former **Why Sari Sari?** comparison rows ("Versus
+  hiring a Head of Design.", etc.) after the standard questions.
 
-### PricingTabs (`PricingTabs.tsx`, new)
-- A `role="tablist"` of two pill toggles ("Ongoing partnership" / "Want a taste
-  first?") switching between the Retainer and Diagnostic panels. Active pill =
-  `primary-400` fill; inactive = `neutral-200`. Retainer is the default tab.
+### PricingTabs (`PricingTabs.tsx`)
+- A `role="tablist"` **segmented control**: two pill segments inside a rounded
+  `neutral-200` track with a hairline `neutral-300` border. The active segment is a
+  **white pill with a soft shadow** and `primary-500` text; the inactive is
+  `neutral-700` (hover `neutral-1000`). Labels: "One stop shop" (Retainer, default) /
+  "Single Project" (Diagnostic). The Retainer panel carries an "Ongoing Partnership"
+  `.ds-label` subtitle above the price.
 
 ### Reveal (`Reveal.tsx`, new)
 - Client wrapper that adds `.in` when the element scrolls into view via
@@ -323,14 +338,18 @@ soft-rectilinear: architectural proportions, rounded corners.
 ### Marquee (`Marquee.tsx`, new)
 - Duplicated logo strip animated with the CSS `marquee` keyframe (`translateX(-50%)`),
   seamless loop, `--mqdur` speed (40s default), pauses on hover, edge-faded with a
-  horizontal mask, `aria-hidden`. Disabled under reduced-motion.
+  horizontal mask, `aria-hidden`. Renders each client's **grey silhouette logo mark**
+  (`/public/logos/*.png`, `h-6`, 60% opacity); a `mark: null` entry falls back to the
+  uppercase name (`.ds-label`). Disabled under reduced-motion.
 
 ### Navigation (`Nav.tsx`)
 - Sticky, **transparent over the hero**, gaining a `neutral-100/90` `backdrop-blur`
-  background + hairline `neutral-300` border once scrolled past 24px. Left: lowercase
-  italic-serif "sarisari" wordmark. Right: `.ds-label` uppercase links
-  (`neutral-800`, hover `primary-400`) + a `medium` pill CTA. Below `md` the links
-  collapse behind a "Menu"/"Close" toggle into a paper drawer.
+  background + hairline `neutral-300` border once scrolled past 24px. Left: the
+  "sarisari" SVG wordmark (see Wordmark). Right: `.ds-label` uppercase links
+  (`neutral-800`, hover `primary-400`), then a small **availability indicator**
+  (green `success-400` dot + `.ds-label` "1 spot left in …", `lg`+ only), then a
+  `medium` pill CTA. Below `md` the links collapse behind a "Menu"/"Close" toggle into
+  a paper drawer.
 
 ### Image Placeholder (`Placeholder.tsx`)
 - Default `hatch` tone: a **diagonal-hatch** stand-in (repeating `-45deg` stripes in
@@ -339,8 +358,17 @@ soft-rectilinear: architectural proportions, rounded corners.
   `aria-label`.
 
 ### Wordmark (`Wordmark.tsx`)
-- Lowercase italic serif "sarisari", set tight. Used at `title-l` in the nav and
-  footer (text stand-in until the SVG vectors are exported).
+- The **"sarisari" SVG logo** (vectors exported from the DS Figma), rendered at `1em`
+  tall with `fill: currentColor` so it inherits the surrounding text color —
+  `neutral-1000` in the nav, `neutral-100` in the footer.
+
+### Gridlines (`Gridlines.tsx`, signature)
+- The page-wide structural underlay: **7 vertical dotted lines** (`neutral-300`, 3px
+  dot / 6px gap) forming 6 columns, aligned to the 1200px measure via a matching
+  `padding-inline`. Rendered inside every `Section` behind content (`aria-hidden`,
+  `pointer-events: none`, `z-0` under `z-[1]` content), so the dotted grid runs
+  continuously down the page. Not drawn on the navy CTA band or the near-black footer,
+  where it would clash.
 
 ## Motion (new)
 
@@ -352,7 +380,8 @@ reduce`:
 - **Logo marquee:** a continuously scrolling, hover-pausing, edge-faded strip.
 - **Smooth scroll:** `scroll-behavior: smooth` on `html`, also gated behind
   `no-preference`.
-- **Micro-transitions:** 150ms color transitions on buttons, tabs, and nav.
+- **Micro-transitions:** 150ms color transitions on buttons, tabs, and nav; the
+  button's trailing arrow nudges right (`translate-x-1`) on hover.
 
 ## Do's and Don'ts
 
@@ -368,10 +397,14 @@ reduce`:
 - **Do** use the radius steps consistently: pills for buttons/tabs/tags, 8px cards,
   16px images/panels, 4px sector tags.
 - **Do** keep motion subtle and honor `prefers-reduced-motion`.
+- **Do** run the faint dotted column grid (`Gridlines` — `neutral-300`, dotted, 6
+  columns) as a page-wide underlay behind content, aligned to the 1200px measure; keep
+  it faint and never let it read as foreground.
 
 ### Don't:
-- **Don't** reintroduce homepage grain, gridlines, or numbered section rails — the
-  eyebrow-dash header replaced them.
+- **Don't** reintroduce homepage film grain or numbered section rails — the
+  eyebrow-dash header replaced the rails. (The dotted column grid is sanctioned as a
+  faint underlay; film grain is not.)
 - **Don't** use pure white as a page canvas (raised cards only), gradients, glow, or
   heavy multi-layer drop-shadows.
 - **Don't** turn orange into a full-bleed band or let it compete with blue as a
