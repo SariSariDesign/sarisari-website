@@ -1,222 +1,338 @@
 /**
- * Site copy — mirrors content/copy-deck.md (the reviewable source).
- * ✅ verbatim from the Figma comp · ⚠️ drafted, pending Zach/Patti review.
+ * Site copy — the reviewable source of truth for the homepage, ported verbatim from
+ * the Claude-Design comp (decoded to `.context/decoded-template.html`).
+ * ⚠️ = drafted / placeholder, pending Zach/Patti sign-off · everything else is comp-verbatim.
+ * Full narrative + follow-ups tracked in content/copy-deck.md.
  */
 
 export const BOOKING_URL = "https://calendly.com/sarisari/30min";
-export const CONTACT_EMAIL = "hello@sarisari.design"; // TBD — confirm address
+export const DIAGNOSTIC_URL = "https://activation-diagnostic.sarisari.design/";
+export const CONTACT_EMAIL = "hello@sarisari.design"; // ⚠️ confirm address
+export const LINKEDIN_URL = "https://www.linkedin.com/company/sarisaridesign"; // ⚠️ confirm URL
+
+/**
+ * Engagement terms — the comp shipped these as [BRACKET] placeholders. Drafted below,
+ * flagged ⚠️ until Zach/Patti confirm. Interpolated into pricing terms + FAQ answers.
+ */
+export const terms = {
+  minimumEngagement: "3-month", // ⚠️ [MINIMUM_ENGAGEMENT]
+  noticePeriod: "30 days", // ⚠️ [NOTICE_PERIOD]
+  pauseHoldPeriod: "30 days", // ⚠️ [PAUSE_HOLD_PERIOD]
+  startLeadTime: "two weeks", // ⚠️ [START_LEAD_TIME]
+};
+
+/** Footer-CTA availability line — ⚠️ [N] new client slots for [QUARTER]. */
+export const clientSlots = { n: "2", quarter: "Q3 2026" }; // ⚠️ confirm
 
 export const nav = {
   links: [
     { label: "Work", href: "/#work" },
     { label: "Services", href: "/#services" },
-    { label: "Process", href: "/#process" },
+    { label: "Pricing", href: "/#pricing" },
     { label: "About", href: "/#about" },
+    { label: "FAQ", href: "/#faq" },
   ],
-  cta: { label: "Book an Intro", href: BOOKING_URL },
+  cta: { label: "Book an intro call", href: BOOKING_URL },
 };
 
+/**
+ * Hero headline A/B/C — comp shipped an author-facing switcher; A is the production
+ * default. B/C are sanctioned alternates (recorded in copy-deck). The headline renders
+ * in the editorial italic serif; option C is a centered two-line pairing.
+ */
 export const hero = {
-  eyebrow: "Seed → Series A",
-  // [pre, italic, post] — italic span renders in PP Editorial Old Italic
-  headline: { pre: "Design to help SaaS apps work ", em: "just right", post: "." },
-  subhead: "A digital product design studio that gets you.",
-  cta: { label: "Book an Intro", href: BOOKING_URL },
-};
-
-export const differentiator = {
-  index: "01",
-  headline: "We close the gap between a great product and a shipped one.", // ⚠️ draft
-  body: [
-    "At Sari Sari Design, we build products that look & WORK as well as you think, closing the gap between a great product + a shipped one.",
-    "Strategy, design, development, & AI-powered workflows work together to deliver results that matter.",
+  headlineOptions: {
+    A: { headline: "Your fractional product team.", note: "A — the fractional play", centered: false },
+    B: { headline: "We build products people use.", note: "B — quiet confidence", centered: false },
+    C: {
+      headline: "Products your people need. Experiences they come back to.",
+      note: "C — on-brand pairing",
+      centered: true,
+    },
+  },
+  activeHeadline: "A" as "A" | "B" | "C",
+  subhead: "Senior product design & development for growth-stage software companies.",
+  ctas: [
+    { label: "Book an intro call", href: BOOKING_URL, variant: "primary" as const },
+    { label: "See our work", href: "/#work", variant: "secondary" as const },
   ],
-};
-
-export const work = {
-  index: "02",
-  headline: "Work that moves the numbers that matter.", // ⚠️ draft
-  projects: [
-    {
-      title: "Kenchan Ramen",
-      year: "2025",
-      type: "Product validation / CRO",
-      industry: "e-commerce, food",
-      href: "/work/kenchan-ramen",
-    },
-    {
-      title: "Funding Solutions",
-      year: "2026",
-      type: "Website design",
-      industry: "finance, fintech",
-      href: "https://sarisari.short.gy/website-CS-FS", // external deck until page exists
-    },
-    {
-      title: "Lendzi",
-      year: "2025",
-      type: "Design system, product design",
-      industry: "finance, fintech",
-      href: null,
-    },
-  ],
-  ctaCard: { title: "Your Project", year: "2026", href: BOOKING_URL },
+  finePrint:
+    "Half an hour, no deck. Tell us where the product is holding growth back — we'll tell you straight whether we can help.",
+  marquee: {
+    label: "Trusted by 20+ global teams", // ⚠️ substantiate before launch
+    logos: ["Lendzi", "SignalVerified", "Silk & Sonder", "Lions & Lambs", "Selfbook"], // ⚠️ confirm/permission logos
+  },
 };
 
 export const services = {
-  index: "03",
-  headline: "Design, develop, deliver, repeat.",
-  aside: "A digital product design studio that gets you.",
-  cta: { label: "Book an Intro", href: BOOKING_URL },
+  eyebrow: "What we offer",
+  headline: "The product that got you here, rebuilt for what's next.",
+  intro:
+    "Design and development in one team, aimed at the four numbers that decide your next round: activation, conversion, retention, satisfaction.",
+  cards: [
+    {
+      n: "01",
+      title: "User research",
+      body: "We talk to your actual users and come back with the reason they stall — not a deck of opinions.",
+    },
+    {
+      n: "02",
+      title: "UX design",
+      body: "Flows and wireframes for every state, so your engineers stop guessing and your funnel stops leaking.",
+    },
+    {
+      n: "03",
+      title: "UI design",
+      body: "Screens that make a two-year-old product look like the company you've become.",
+    },
+    {
+      n: "04",
+      title: "Design systems",
+      body: "A component library and tokens your team assembles from — new features stop being redesigns.",
+    },
+    {
+      n: "05",
+      title: "Prototyping",
+      body: "Test the new flow with real users before an engineer touches it. Same week, not next quarter.",
+    },
+    {
+      n: "06",
+      title: "Full development",
+      body: "We ship the front-end ourselves. What we design is what goes live, on your stack.",
+    },
+  ],
+};
+
+export type CaseStudy = {
+  sector: string;
+  client: string;
+  problem: string;
+  approach: string;
+  metric: string;
+  metricLabel: string;
+  stats: { value: string; label: string }[];
+  testimonial: { quote: string; attribution: string } | null;
+  href: string;
+};
+
+export const work = {
+  eyebrow: "Our regulars",
+  headline: "The problem, the change, the number.",
+  // Only fully-authored cases are rendered. ⚠️ Cases 2 & 3 (Funding Solutions / Lendzi)
+  // await real problem/change/metric narrative — tracked in copy-deck; do not fabricate.
+  cases: [
+    {
+      sector: "DTC food · Shopify",
+      client: "Kenchan Ramen",
+      problem:
+        "The founder wanted a competitor's custom bundle builder — a $13K, six-to-eight-week build, with no proof their customers bundled at all.",
+      approach:
+        "We reframed it from shipping a feature to testing the behavior: native Shopify discounts, one UI surface, a schema their operators could edit. Live the same afternoon.",
+      metric: "37%",
+      metricLabel: "of digital revenue",
+      stats: [
+        { value: "+8.1%", label: "AOV lift YoY" },
+        { value: "<1 hour", label: "To first conversion" },
+        { value: "711", label: "Bundle redemptions" },
+      ],
+      testimonial: {
+        quote:
+          "They reframed a feature request into a validation question and shipped proof in a day. That bundle test became one of the most reliable revenue levers in our digital channel.",
+        attribution: "Jed G., Kocah",
+      },
+      href: "/work/kenchan-ramen",
+    },
+  ] satisfies CaseStudy[],
+};
+
+export const process = {
+  eyebrow: "How we work",
+  headline: "A double diamond pointed at a metric.",
+  intro:
+    "We widen to find the real problem, narrow to the one worth solving, then do it again on the solution. Each phase is judged on whether the number moved — not on how the screens look.",
+  steps: [
+    {
+      n: "01",
+      title: "Discover",
+      body: "We watch real users and read your funnel data until we can name the step where people drop off.",
+      when: "Week 1",
+    },
+    {
+      n: "02",
+      title: "Define",
+      body: "We pick one metric to move and agree what a win looks like before any design starts.",
+      when: "Week 2",
+    },
+    {
+      n: "03",
+      title: "Design",
+      body: "A working prototype in week three, tested with your users, narrowed to the version that performs.",
+      when: "Weeks 3–6",
+    },
+    {
+      n: "04",
+      title: "Ship",
+      body: "We build it, ship it, and read the numbers with you — then keep going on the next drop-off.",
+      when: "Weeks 7+",
+    },
+  ],
+};
+
+export const why = {
+  eyebrow: "Why Sari Sari?",
+  headline: "Four options on your desk. Here's ours.",
   items: [
     {
-      label: "Design Consultation",
-      body: "Not sure where design fits in your roadmap? We audit what you have, identify the highest-leverage fixes, and give you a prioritized plan — whether or not you build with us.", // ⚠️ draft
+      title: "Versus hiring a Head of Design.",
+      body: "Six months to hire, $400K+ loaded, and one person still can't cover design and development. We're live in weeks, and we'll help you hand off to an in-house team when the time is right.",
     },
     {
-      label: "Product Design",
-      body: "Translate your post-funding product backlog into structured, shippable, done-for-you flows. We scope, design, and spec features end-to-end so your engineering teams can build with confidence.",
+      title: "Versus a dev shop.",
+      body: "They build what they're told. Nobody there owns whether it converts. We bring the product judgment first, then write the code ourselves.",
     },
     {
-      label: "UX Design",
-      body: "Research, flows, and interaction design that remove friction where it costs you money — onboarding, verification, checkout, and the unglamorous edge cases in between.", // ⚠️ draft
+      title: "Versus a brand agency.",
+      body: "Beautiful decks, then a handoff cliff and an invoice for every revision. We ship working product, and we stay after launch.",
     },
     {
-      label: "UI Design",
-      body: "Interfaces that signal the trust your product has earned. Design systems, component libraries, and UI that looks as legitimate as your business is.", // ⚠️ draft
-    },
-    {
-      label: "Development",
-      body: "We deliver annotated Figma files, design tokens, and documentation so nothing gets lost between design and code.",
+      title: "Versus patching it yourself.",
+      body: "The most expensive option, because it never ends. Work out what one point of conversion is worth at your volume, then compare.",
     },
   ],
 };
 
-export const approach = {
-  index: "04",
-  headline: "We focus on conversion UX to meet goals quickly.",
-  body: [
-    "Pretty isn't the goal — converting is. We design against the metrics you already track: activation, AOV, retention, time-to-value.", // ⚠️ draft (comp had duplicate of differentiator body)
-  ],
-};
-
-export const testimonials = {
-  index: "05",
-  headline: "Word around the block",
-  reviews: [
-    {
-      date: "2025 May",
-      quote:
-        "Sari Sari didn't just execute a feature request—they reframed it into a validation question and shipped proof in a day. That bundle test went on to become one of the most reliable revenue levers in our digital channel.",
-      name: "Jed G.",
-      role: "Cofounder of Kocah",
-    },
-    // ⚠️ 2 more candidates pending permission — see copy-deck §6
-  ],
-};
-
-export const team = {
-  index: "06",
-  headline: "People you'll actually work with.",
+export const about = {
+  eyebrow: "About",
+  headline: "Senior people, on your product.",
   members: [
     {
-      name: "zach",
-      bio: "Zach leads strategy and development. 20+ years across startups and Fortune 500s (Meta, Disney), focused on making design decisions that survive contact with engineering.", // ⚠️ draft
+      name: "Zach Chaco",
+      role: "Chief Executive Officer",
+      bio: "Producer, previously Meta and Disney.",
     },
     {
-      name: "patricia",
-      bio: "Patti leads design. She turns messy product backlogs into shipped, compliant, conversion-focused UX — and the design systems that keep them consistent.", // ⚠️ draft
+      name: "Patricia Capiral",
+      role: "Chief Creative Officer",
+      bio: "15+ years of product and brand design.",
     },
   ],
+  pullQuote: "A short shelf of things we do well, for people we know by name.",
+  origin:
+    "A sari-sari store is the small neighborhood shop in the Philippines: it stocks exactly what its street needs, and the owner knows every customer by name. That's how we run this studio — a few services we're genuinely good at, for a small number of clients we know well. Much of our work has been with health and wellness companies, where trust and retention are the whole business.",
 };
 
 export const pricing = {
-  index: "07",
-  headline: "Let's make things that people will keep coming back for.",
-  label: "Pricing",
-  price: "$12,000 / month",
-  body: "Easy, predictable pricing you can depend on. Perfect for seed to Series A teams who need to be as legitimate, trustworthy, and compliant as your investors + users need you to be.",
-  cta: { label: "Let's Do It", href: BOOKING_URL },
-  included: [
-    {
-      label: "Senior design leadership",
-      body: "Principal-level product thinking on every engagement — not juniors behind a senior's title slide.", // ⚠️ draft
-    },
-    {
-      label: "Complete UX audit",
-      body: "A thorough review of your existing product experience with a prioritized roadmap of what to fix, what to redesign, and what to leave alone.",
-    },
-    {
-      label: "Strategic product roadmap",
-      body: "We map your priorities with you and reprioritize every sprint. No long-term contracts or cancellation penalties.", // ⚠️ draft
-    },
-    {
-      label: "Compliant product design",
-      body: "Onboarding, verification, payments, and permissions designed with SOC2, PCI DSS, and KYC requirements built in from day one.",
-    },
-    {
-      label: "Dev-Ready Handoff",
-      body: "Annotated specs, edge cases, error states, and responsive behavior documentation with every design.", // ⚠️ draft
-    },
-    {
-      label: "Fast, Scalable Shipping Cadence",
-      body: "Productive within the first week. Focused sprints on your highest-priority features, shipped continuously.", // ⚠️ draft
-    },
-  ],
+  eyebrow: "Pricing",
+  headline: "One core offer, priced plainly.",
+  intro:
+    "A monthly retainer as your embedded design and development team. If that's more than you're ready to commit to, there's a shorter way to try us.",
+  tabs: {
+    retainer: "Ongoing partnership",
+    diagnostic: "Want a taste first?",
+  },
+  retainer: {
+    price: "$16,000",
+    period: "/ month",
+    description:
+      "Your embedded design and development team, month to month. For growth-stage companies with a live product and more roadmap than capacity. Not for you if you're pre-product-market-fit, need a logo, or want someone to manage an existing design org.",
+    terms: `Monthly, no long-term contract. ${terms.minimumEngagement} minimum engagement, ${terms.noticePeriod} notice to stop or pause.`,
+    cta: { label: "Book an intro call", href: BOOKING_URL },
+    features: [
+      {
+        title: "Ship multiple product initiatives simultaneously, not sequentially.",
+        body: "We own the full product lifecycle from research through front-end build, running parallel on your highest-priority workstreams so nothing stalls waiting for the right hire.",
+      },
+      {
+        title: "Your team ships 2–3x faster with a system that scales.",
+        body: "A production-grade design system with reusable components, design tokens, and usage guidelines. New features get assembled, not designed from scratch.",
+      },
+      {
+        title: "Build the right things, not just build things right.",
+        body: "We work on your roadmap, surface product opportunities your team hasn't seen, and help prioritize what to build next based on user impact and your next funding stage.",
+      },
+      {
+        title: "Senior product leadership, not a rotating cast.",
+        body: "Dedicated senior designers and engineers who learn your product deeply and operate with the context and ownership of in-house leads — not contractors.",
+      },
+      {
+        title: "Zero onboarding drag, zero status theater.",
+        body: "We work inside your Slack, Figma, and project management tools. Syncs are reserved for alignment, not status updates.",
+      },
+    ],
+  },
+  diagnostic: {
+    tag: "Try us first",
+    label: "Activation Diagnostic",
+    price: "21 days",
+    period: "/ $2,500",
+    headline: "Not ready for the full retainer? Start with three weeks.",
+    description:
+      "We diagnose, redesign, and prototype your highest-impact flow. You end up with a working prototype, the reasons your users stall, and a prioritized roadmap — whether or not you keep us on.",
+    cta: { label: "See the diagnostic", href: DIAGNOSTIC_URL },
+    rows: [
+      {
+        title: "Week 1 — where growth is actually leaking",
+        body: "User sessions and funnel data, ending in the one step costing you the most.",
+      },
+      {
+        title: "Weeks 2–3 — a redesigned flow you can click",
+        body: "A working prototype of the fix, tested with your users, ready for your engineers.",
+      },
+      {
+        title: "Day 21 — the roadmap, yours either way",
+        body: "Prioritized next moves with the reasoning, so you can run them with us or without us.",
+      },
+    ],
+  },
 };
 
 export const faq = {
-  index: "08",
-  headline: "Questions?",
-  cta: { label: "Ask Us Anything", href: `mailto:${CONTACT_EMAIL}` },
+  eyebrow: "FAQ",
+  headline: "The questions people actually ask.",
   items: [
     {
-      q: "Why Sari Sari over others?",
-      a: "We've worked in startups and Fortune 500 companies, including Meta and Disney, with combined experience of 20+ years working in tech and design.",
+      q: "How soon can you start?",
+      a: `Usually within ${terms.startLeadTime} of a signed agreement, and the diagnostic can start faster than a retainer. We hold a limited number of clients at once, so we'll give you the real date on the call.`,
     },
     {
-      q: "How is this easier than hiring a full-time designer?",
-      a: "A senior product designer costs $180k–$220k/yr before benefits and equity, takes months to hire, and still needs to be managed.",
+      q: "What if it isn't working?",
+      a: `You give ${terms.noticePeriod} notice and stop paying. No wind-down fees, no penalty. We'd rather part cleanly than hold a client who isn't getting value.`,
     },
     {
-      q: "How is this different from an agency?",
-      a: "Agencies scope projects, deliver mockups, and move on. We embed into your team and work continuously on your roadmap.",
+      q: "Who owns the IP and the files?",
+      a: "You do, from the first invoice. Design files, code, research recordings — everything lives in accounts you control, and it stays yours if we stop working together.",
     },
     {
-      q: "How quickly can you get up to speed on our product?",
-      a: "Most engagements are productive within the first week.",
+      q: "Can we pause the retainer?",
+      a: `Yes, with ${terms.noticePeriod} notice. Pausing holds your slot for ${terms.pauseHoldPeriod}; after that we may fill it and you'd rejoin when one opens.`,
     },
     {
-      q: "How do you handle compliance and regulatory requirements?",
-      a: "We design with SOC2, PCI DSS, and KYC frameworks in mind from the start.",
+      q: "What happens when we hire an in-house design lead?",
+      a: "We help you hire them and hand over cleanly — files, systems, context. We'd rather be the bridge to your in-house team than the reason you never build one.",
     },
     {
-      q: "How do you work with our engineering team?",
-      a: "Every design we deliver includes annotated specs, edge cases, error states, and responsive behavior documentation.",
+      q: "What do we need ready before starting?",
+      a: "A decision-maker who can join a weekly review, access to your analytics and customers, and one owner on your side for approvals. That's it — we handle the rest of the setup in week one.",
     },
     {
-      q: "What does the first month look like?",
-      a: "Week one is kickoff and audit — we review your existing product, map your priorities, and align on scope.",
-    },
-    {
-      q: "What if our needs change mid-engagement?",
-      a: "We work in sprints and reprioritize with you regularly. No long-term contracts or cancellation penalties.",
+      q: "Do you only work with health and wellness companies?",
+      a: "No. Much of our work has been there, because trust and retention are everything in that category, and those are the problems we're best at. Any growth-stage consumer software company with the same pressures is a fit.",
     },
   ],
 };
 
+export const footerCta = {
+  headline: "Hand the product experience to someone senior.",
+  subhead:
+    "Thirty minutes on where growth is stalling. We'll tell you what we'd change first, and whether we're the right team to do it.",
+  cta: { label: "Book an intro call", href: BOOKING_URL },
+  slots: `${clientSlots.n} new client slots for ${clientSlots.quarter}`,
+};
+
 export const footer = {
-  headline: "Make things that people keep coming back for.",
-  cta: { label: "Book Intro Call", href: BOOKING_URL },
-  columns: [
-    [
-      { label: "Email", href: `mailto:${CONTACT_EMAIL}` },
-      { label: "LinkedIn", href: "https://www.linkedin.com/company/sarisaridesign" }, // ⚠️ confirm URL
-      { label: "Instagram", href: "https://www.instagram.com/sarisari.design" }, // ⚠️ confirm URL
-    ],
-    [
-      { label: "© Sari Sari llc", href: null },
-      { label: "Privacy", href: "/privacy" },
-      { label: "T&Cs", href: "/terms" },
-    ],
+  links: [
+    { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
+    { label: "LinkedIn", href: LINKEDIN_URL },
   ],
+  copyright: "© 2026 Sari Sari LLC",
 };

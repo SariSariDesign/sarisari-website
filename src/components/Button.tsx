@@ -1,17 +1,22 @@
 import Link from "next/link";
 
+type Variant = "primary" | "secondary" | "white" | "ghost";
+type Size = "large" | "medium";
+
 type Props = {
   href: string;
   children: React.ReactNode;
-  variant?: "primary" | "light" | "ghost";
-  size?: "large" | "medium";
+  variant?: Variant;
+  size?: Size;
   /** Opens in a new tab with rel="noopener noreferrer" (used for offsite CTAs like Calendly). */
   external?: boolean;
-  /** Extra classes (e.g. pill radius on the offer landing page). */
   className?: string;
 };
 
-/** DS button: Supply label + arrow-right, per Figma component `type=primary/ghost`. */
+/**
+ * DS button (new comp): pill-shaped, Space-Grotesk uppercase label + trailing arrow.
+ * `ghost` is the text-only inline link ("View case study →").
+ */
 export function Button({
   href,
   children,
@@ -21,13 +26,16 @@ export function Button({
   className = "",
 }: Props) {
   const base =
-    "ds-label inline-flex items-center gap-3 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-400";
-  const sizing =
-    size === "large" ? "px-8 py-4 text-label-l" : "px-6 py-2 text-label-m";
+    "ds-label inline-flex items-center gap-2 text-label-m transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
+  const shape =
+    variant === "ghost"
+      ? ""
+      : `rounded-full ${size === "large" ? "px-8 py-4" : "px-6 py-3"}`;
   const skin = {
     primary: "bg-primary-400 text-neutral-100 hover:bg-primary-500 active:bg-primary-600",
-    light: "bg-primary-100 text-primary-400 hover:bg-primary-200",
-    ghost: "text-primary-400 hover:text-primary-500 px-0",
+    secondary: "bg-primary-100 text-primary-400 hover:bg-primary-200",
+    white: "bg-white text-primary-600 hover:bg-primary-100",
+    ghost: "text-primary-400 hover:text-primary-500",
   }[variant];
 
   const externalProps = external
@@ -35,11 +43,7 @@ export function Button({
     : {};
 
   return (
-    <Link
-      href={href}
-      className={`${base} ${sizing} ${skin} ${className}`}
-      {...externalProps}
-    >
+    <Link href={href} className={`${base} ${shape} ${skin} ${className}`} {...externalProps}>
       {children}
       <Arrow />
     </Link>

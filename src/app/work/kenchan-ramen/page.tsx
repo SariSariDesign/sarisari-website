@@ -55,7 +55,7 @@ function HeroStats() {
       {kenchan.heroStats.map((s) => (
         <div key={s.value} className="flex flex-1 flex-col gap-2">
           <span className="font-brand text-display-s text-neutral-900">{s.value}</span>
-          <span className="ds-label text-label-m text-neutral-600">{s.label}</span>
+          <span className="ds-label text-label-m text-neutral-700">{s.label}</span>
         </div>
       ))}
     </div>
@@ -89,7 +89,7 @@ function Block({ block }: { block: KenchanBlock }) {
           </blockquote>
           <figcaption className="flex flex-col gap-1">
             <span className="ds-label text-label-m text-neutral-900">{block.name}</span>
-            <span className="text-body-s text-neutral-600">{block.role}</span>
+            <span className="text-body-s text-neutral-700">{block.role}</span>
           </figcaption>
         </figure>
       );
