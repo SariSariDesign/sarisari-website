@@ -135,36 +135,85 @@ export type CaseStudy = {
 
 export type RegularCard = {
   client: string;
-  /** Project types, shown as tags (e.g. "Ecommerce", "Conversion"). */
+  /** "case" = a case-study card with copy; "reference" = an image on the gallery wall. */
+  kind: "case" | "reference";
+  /** Project types, shown as tags on case cards (e.g. "Ecommerce", "Conversion"). */
   types: string[];
   /** One to two sentences on the impact. null = case not yet authored. */
   impact: string | null;
   href: string | null;
-  /** Client-work photo; null renders the hatch placeholder. */
+  /** Client-work image; null renders the hatch placeholder. */
   image: string | null;
+  /** Print aspect ratio (CSS `aspect-ratio`), kept identical while hanging and landed. */
+  aspect: string;
 };
 
 export const work = {
   eyebrow: "",
   headline: "Our Regulars",
-  // The four hanging photos in the hero that drop into the Our Regulars grid on scroll.
-  // ⚠️ Only Kenchan is authored; the other three are named-but-pending (copy-deck) —
-  // they render as "coming soon" with no link and no invented impact.
+  // Six portfolio pieces hang in the hero like stock in a sari-sari store window, then
+  // fall into place on scroll: case studies into the case row, references onto the
+  // gallery wall beneath it. ⚠️ Only Kenchan is authored; Funding Solutions + GenWell
+  // case studies are coming. Kenchan + Funding Solutions shots are from the old Webflow
+  // site; NutriSnap is a supplied composite; GenWell (unbranded version), Lendzi and the
+  // sixth piece still need images. Do not invent impact copy.
   regulars: [
     {
       client: "Kenchan Ramen",
+      kind: "case",
       types: ["Ecommerce", "Conversion"],
       impact:
         "We tested a bundle offer in an afternoon instead of a six-week build. Bundles now drive 37% of digital revenue.",
       href: "/work/kenchan-ramen",
-      image: null,
+      image: "/work/kenchan-ramen.webp",
+      aspect: "4/3",
     },
-    { client: "Lendzi", types: ["Fintech"], impact: null, href: null, image: null },
-    { client: "Funding Solutions", types: ["Fintech"], impact: null, href: null, image: null },
-    { client: "Next regular", types: [], impact: null, href: null, image: null },
+    {
+      client: "Funding Solutions",
+      kind: "case",
+      types: ["Fintech"],
+      impact: null,
+      href: null,
+      image: "/work/funding-solutions.webp",
+      aspect: "4/3",
+    },
+    {
+      client: "GenWell",
+      kind: "case",
+      types: [], // ⚠️ project types
+      impact: null,
+      href: null,
+      image: null, // ⚠️ unbranded version pending
+      aspect: "4/3",
+    },
+    {
+      client: "Lendzi",
+      kind: "reference",
+      types: [],
+      impact: null,
+      href: null,
+      image: null,
+      aspect: "3/2",
+    },
+    {
+      client: "NutriSnap",
+      kind: "reference",
+      types: [],
+      impact: null,
+      href: null,
+      image: "/work/nutrisnap.webp",
+      aspect: "6/7",
+    },
+    {
+      client: "Portfolio piece", // ⚠️ sixth piece TBD
+      kind: "reference",
+      types: [],
+      impact: null,
+      href: null,
+      image: null,
+      aspect: "1/1",
+    },
   ] satisfies RegularCard[],
-  // Only fully-authored cases are rendered. ⚠️ Cases 2 & 3 (Funding Solutions / Lendzi)
-  // await real problem/change/metric narrative — tracked in copy-deck; do not fabricate.
   cases: [
     {
       sector: "DTC food · Shopify",

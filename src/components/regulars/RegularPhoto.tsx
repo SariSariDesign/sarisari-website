@@ -7,15 +7,18 @@ import { Placeholder } from "../Placeholder";
  * read as the same object while it falls from one to the other. Border, radius and
  * caption are proportional (%, cqw) so the print looks identical at any scale.
  */
-export function RegularPhoto({ r }: { r: Pick<RegularCard, "client" | "image"> }) {
+export function RegularPhoto({ r }: { r: Pick<RegularCard, "client" | "image" | "aspect"> }) {
   return (
-    <div className="regular-print relative aspect-[4/3] w-full rounded-[2.5%/3.33%] bg-white p-[2.4%] shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]">
+    <div
+      className="regular-print relative w-full rounded-[2.5%] bg-white p-[2.4%] shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
+      style={{ aspectRatio: r.aspect }}
+    >
       {r.image ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={r.image} alt="" className="h-full w-full rounded-[1.5%/2%] object-cover" />
+        <img src={r.image} alt="" className="h-full w-full rounded-[1.5%] object-cover" />
       ) : (
         <div className="relative h-full w-full">
-          <Placeholder className="h-full w-full rounded-[1.5%/2%]" rounded={false} />
+          <Placeholder className="h-full w-full rounded-[1.5%]" rounded={false} />
           <span className="ds-label absolute inset-0 flex items-center justify-center text-center text-[2.6cqw] tracking-[0.2em] text-neutral-700">
             {r.client} — photo pending
           </span>

@@ -68,7 +68,7 @@ export function Regulars({ items }: { items: RegularCard[] }) {
         const text = texts.current[i];
         if (!el) return;
         // Staggered: each print lets go a beat after the one before it.
-        const t = clamp01((v - i * 0.07) / 0.79);
+        const t = clamp01((v - i * 0.05) / 0.75);
         const f = smooth(t);
         const rot = Math.sin(t * Math.PI) * g.wobble;
         const scale = g.s + (1 - g.s) * f;
@@ -150,25 +150,43 @@ export function Regulars({ items }: { items: RegularCard[] }) {
     };
   }, []);
 
+  const cellRef = (i: number) => (el: HTMLDivElement | null) => void (cells.current[i] = el);
+  const printRef = (i: number) => (el: HTMLDivElement | null) => void (prints.current[i] = el);
+  const textRef = (i: number) => (el: HTMLDivElement | null) => void (texts.current[i] = el);
+
+  /** The landing cell for piece `i`: an untransformed box the print flies into. */
+  // A render helper, not a component, so React never remounts the measured nodes.
+  const print = (r: RegularCard, i: number) => (
+    <div ref={cellRef(i)} className="relative" style={{ aspectRatio: r.aspect }}>
+      <div ref={printRef(i)} className="regular-fly absolute inset-0 origin-top">
+        <div className="hang-sway relative transition-transform duration-300 ease-out group-hover:-translate-y-1">
+          <HangHardware />
+          <RegularPhoto r={r} />
+        </div>
+      </div>
+    </div>
+  );
+
+  const indexed = items.map((r, i) => ({ r, i }));
+  const cases = indexed.filter(({ r }) => r.kind === "case");
+  const refs = indexed.filter(({ r }) => r.kind === "reference");
+  // Gallery-wall placement for the references: varied sizes, staggered heights.
+  const wall = [
+    "w-full sm:w-[46%] lg:w-[40%]",
+    "w-[72%] sm:w-[30%] lg:w-[24%] lg:mt-24",
+    "w-[60%] sm:w-[26%] lg:w-[21%] lg:mt-8",
+  ];
+
   return (
-    <div className="mt-12 grid gap-x-8 gap-y-16 md:grid-cols-2">
-      {items.map((r, i) => {
-        const body = (
-          <>
-            <div ref={(el) => void (cells.current[i] = el)} className="relative aspect-[4/3]">
-              <div
-                ref={(el) => void (prints.current[i] = el)}
-                className="regular-fly absolute inset-0 origin-top"
-              >
-                <div className="hang-sway relative transition-transform duration-300 ease-out group-hover:-translate-y-1">
-                  <HangHardware />
-                  <RegularPhoto r={r} />
-                </div>
-              </div>
-            </div>
-            <div ref={(el) => void (texts.current[i] = el)} className="mt-6 flex flex-col gap-3">
-              {r.types.length > 0 && (
-                <ul className="flex flex-wrap gap-2" aria-label="Project type">
+    <>
+      <div className="mt-12 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
+        {cases.map(({ r, i }) => {
+          const body = (
+            <>
+              {print(r, i)}
+              <div ref={textRef(i)} className="mt-6 flex flex-col gap-3">
+                {/* Tag row keeps its height when empty so titles line up across the row. */}
+                <ul className="flex min-h-5 flex-wrap gap-2" aria-label="Project type">
                   {r.types.map((t) => (
                     <li
                       key={t}
@@ -178,34 +196,50 @@ export function Regulars({ items }: { items: RegularCard[] }) {
                     </li>
                   ))}
                 </ul>
-              )}
-              <h3 className="font-brand text-[clamp(32px,3.4vw,44px)] leading-[1.1] text-neutral-1000">
-                {r.client}
-              </h3>
-              <p className="max-w-[46ch] text-body-m text-neutral-700">
-                {r.impact ?? "Case study coming soon."}
-              </p>
-              {r.href && (
-                <span className="ds-label inline-flex items-center gap-2 text-label-m text-primary-400 group-hover:text-primary-500">
-                  View case study
-                  <Arrow />
-                </span>
-              )}
-            </div>
-          </>
-        );
-        return r.href ? (
-          <Link
-            key={r.client}
-            href={r.href}
-            className="group block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-primary-300"
-          >
-            {body}
-          </Link>
-        ) : (
-          <div key={r.client}>{body}</div>
-        );
-      })}
-    </div>
+                <h3 className="font-brand text-[clamp(30px,2.6vw,40px)] leading-[1.1] text-neutral-1000">
+                  {r.client}
+                </h3>
+                <p className="text-body-m text-neutral-700">
+                  {r.impact ?? "Case study coming soon."}
+                </p>
+                {r.href && (
+                  <span className="ds-label inline-flex items-center gap-2 text-label-m text-primary-400 group-hover:text-primary-500">
+                    View case study
+                    <Arrow />
+                  </span>
+                )}
+              </div>
+            </>
+          );
+          return r.href ? (
+            <Link
+              key={r.client}
+              href={r.href}
+              className="group block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-primary-300"
+            >
+              {body}
+            </Link>
+          ) : (
+            <div key={r.client}>{body}</div>
+          );
+        })}
+      </div>
+
+      {refs.length > 0 && (
+        <ul
+          className="mt-24 flex flex-wrap items-start justify-center gap-x-10 gap-y-12"
+          aria-label="More work"
+        >
+          {refs.map(({ r, i }, k) => (
+            <li key={r.client} className={wall[k % wall.length]}>
+              {print(r, i)}
+              <div ref={textRef(i)}>
+                <p className="ds-label mt-4 text-label-s text-neutral-700">{r.client}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   );
 }
