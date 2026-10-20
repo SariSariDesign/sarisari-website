@@ -8,7 +8,7 @@ test.describe("homepage", () => {
 
   test("renders the hero and every anchored section", async ({ page }) => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      "Your fractional product team",
+      "Design that turns sign ups into regulars",
     );
     for (const id of ["services", "work", "about", "pricing", "faq"]) {
       await expect(page.locator(`#${id}`)).toBeVisible();
@@ -28,7 +28,7 @@ test.describe("homepage", () => {
   });
 
   test("pricing tabs switch between retainer and diagnostic", async ({ page }) => {
-    await page.getByRole("tab", { name: /want a taste first/i }).click();
+    await page.getByRole("tab", { name: /single project/i }).click();
     await expect(page.getByRole("heading", { name: /start with three weeks/i })).toBeVisible();
     await expect(page.getByText(/\$2,500/)).toBeVisible();
   });

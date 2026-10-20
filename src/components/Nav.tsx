@@ -6,38 +6,73 @@ import { nav } from "@/content/site";
 import { Button } from "./Button";
 import { Wordmark } from "./Wordmark";
 
-/** Sticky nav: transparent over the hero, gaining a paper background + hairline on scroll. */
+/**
+ * Sticky nav. Over the hero it spans the 1200px measure, wordmark left and links right.
+ * Once the hero has scrolled away it condenses into a smaller centered pill (paper,
+ * hairline, soft shadow) so it stays out of the content's way.
+ */
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      const hero = document.querySelector<HTMLElement>("[data-hero]");
+      const threshold = hero ? hero.offsetTop + hero.offsetHeight - 80 : 24;
+      setCompact(window.scrollY > threshold);
+      setScrolled(window.scrollY > 24);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b transition-colors duration-200 ${
-        scrolled
-          ? "border-neutral-300 bg-neutral-100/90 backdrop-blur-md"
-          : "border-transparent bg-transparent"
+      className={`sticky top-0 z-50 border-b px-3 transition-[padding,background-color,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:px-4 ${
+        compact
+          ? "border-transparent pt-3"
+          : scrolled
+            ? "border-neutral-300 bg-neutral-100/90 pt-0 backdrop-blur-md"
+            : "border-transparent pt-0"
       }`}
     >
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4 md:px-8">
+      <div
+        className={`mx-auto flex items-center justify-between border transition-[max-width,padding,background-color,border-color,box-shadow,border-radius] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          compact
+            ? "max-w-[760px] rounded-full border-neutral-300 bg-neutral-100/90 py-2 pl-6 pr-2 shadow-[0_10px_30px_-18px_rgba(31,29,28,0.45)] backdrop-blur-md"
+            : "max-w-[1200px] rounded-none border-transparent px-3 py-4 md:px-4"
+        }`}
+      >
         <Link href="/" aria-label="Sari Sari Design home" className="py-2">
-          <Wordmark className="text-title-l text-neutral-1000" />
+          <Wordmark
+            className={`text-neutral-1000 transition-[font-size] duration-300 ${
+              compact ? "text-title-m" : "text-title-l"
+            }`}
+          />
         </Link>
 
-        <nav className="ds-label hidden items-center gap-8 text-label-m md:flex">
+        <nav
+          className={`ds-label hidden items-center transition-[gap,font-size] duration-300 md:flex ${
+            compact ? "gap-6 text-label-s" : "gap-8 text-label-m"
+          }`}
+        >
           {nav.links.map((l) => (
             <Link key={l.label} href={l.href} className="text-neutral-800 hover:text-primary-400">
               {l.label}
             </Link>
           ))}
-          <Button href={nav.cta.href} size="medium" external>
+          <Button
+            href={nav.cta.href}
+            size="medium"
+            external
+            className={compact ? "px-4! py-2! text-label-s!" : ""}
+          >
             {nav.cta.label}
           </Button>
         </nav>
@@ -53,7 +88,7 @@ export function Nav() {
       </div>
 
       {open && (
-        <nav className="ds-label flex flex-col gap-4 border-t border-neutral-300 bg-neutral-100 px-6 py-6 text-label-m md:hidden">
+        <nav className="ds-label mx-auto mt-2 flex max-w-[760px] flex-col gap-4 rounded-2xl border border-neutral-300 bg-neutral-100 px-6 py-6 text-label-m md:hidden">
           {nav.links.map((l) => (
             <Link
               key={l.label}

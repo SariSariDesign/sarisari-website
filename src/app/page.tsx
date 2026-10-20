@@ -2,19 +2,21 @@ import { Accordion } from "@/components/Accordion";
 import { Button } from "@/components/Button";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FooterCta } from "@/components/FooterCta";
+import { Gridlines } from "@/components/Gridlines";
 import { Marquee } from "@/components/Marquee";
 import { Nav } from "@/components/Nav";
 import { Placeholder } from "@/components/Placeholder";
 import { PricingTabs } from "@/components/PricingTabs";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
+import { SnackShelf } from "@/components/SnackShelf";
+import { HangingShop } from "@/components/regulars/HangingShop";
+import { Regulars } from "@/components/regulars/Regulars";
 import {
   about,
-  type CaseStudy,
   faq,
   hero,
   pricing,
-  process,
   services,
   why,
   work,
@@ -28,10 +30,8 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <Services />
         <Work />
-        <Process />
-        <Why />
+        <Services />
         <About />
         <Pricing />
         <Faq />
@@ -48,14 +48,14 @@ function SectionHeader({
   intro,
   headingId,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   headline: string;
   intro?: string;
   headingId?: string;
 }) {
   return (
     <Reveal className="flex max-w-[760px] flex-col gap-5">
-      <Eyebrow>{eyebrow}</Eyebrow>
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2
         id={headingId}
         className="text-balance font-brand text-display-s leading-[1.05] text-neutral-1000"
@@ -70,29 +70,50 @@ function SectionHeader({
 function Hero() {
   const active = hero.headlineOptions[hero.activeHeadline];
   return (
-    <Section className="bg-neutral-100" containerClassName="pb-24 pt-16 md:pt-24">
-      <Reveal
-        className={`flex flex-col gap-8 ${active.centered ? "mx-auto max-w-[900px] items-center text-center" : "max-w-[900px]"}`}
-      >
-        <h1 className="text-balance font-brand text-[clamp(44px,8vw,120px)] italic leading-[1.0] tracking-[-0.02em] text-neutral-1000">
-          {active.headline}
-        </h1>
-        <p className="max-w-[60ch] text-body-l text-neutral-700">{hero.subhead}</p>
-        <div className={`flex flex-wrap gap-4 ${active.centered ? "justify-center" : ""}`}>
-          {hero.ctas.map((cta) => (
-            <Button key={cta.label} href={cta.href} variant={cta.variant} external={isExternal(cta.href)}>
-              {cta.label}
-            </Button>
-          ))}
-        </div>
-        <p className="max-w-[60ch] text-body-m text-neutral-700">{hero.finePrint}</p>
-      </Reveal>
+    // At lg the hero stops ~150px short of the viewport bottom so the "Our Regulars"
+    // header peeks in on landing (76px = sticky nav height).
+    <section data-hero className="relative overflow-hidden bg-neutral-100 lg:h-[calc(100svh-76px-150px)] lg:min-h-[620px]">
+      <Gridlines />
+      <div className="relative z-[1] flex h-full flex-col">
+        {/* Full-width split: content left (aligned to the 1200px measure), graphic bleeds right. */}
+        <div className="grid min-h-0 flex-1 lg:grid-cols-2">
+          <div className="flex items-center px-6 pb-12 pt-16 md:px-8 md:pt-24 lg:py-12 lg:pl-[max(2rem,calc((100vw-1200px)/2+1.5rem))] lg:pr-12">
+            <Reveal className="flex max-w-[640px] flex-col gap-8">
+              <h1 className="text-balance font-brand text-[clamp(40px,5vw,84px)] italic leading-[1.02] tracking-[-0.02em] text-neutral-1000">
+                {active.headline}
+              </h1>
+              <p className="max-w-[52ch] text-body-l text-neutral-700">{hero.subhead}</p>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+                {hero.ctas.map((cta) => (
+                  <Button
+                    key={cta.label}
+                    href={cta.href}
+                    variant={cta.variant}
+                    external={isExternal(cta.href)}
+                  >
+                    {cta.label}
+                  </Button>
+                ))}
+              </div>
+            </Reveal>
+          </div>
 
-      <div className="mt-24 flex flex-col gap-6">
-        <span className="ds-label text-label-s text-neutral-700">{hero.marquee.label}</span>
-        <Marquee items={hero.marquee.logos} />
+          <div className="relative px-6 pb-12 md:px-8 lg:p-0 lg:pt-6">
+            <HangingShop />
+          </div>
+        </div>
+
+        {/* Label sits on the 1200px measure; the logo strip runs the full viewport width. */}
+        <div className="flex flex-col gap-8 pb-16 pt-8 md:pb-24 lg:pb-12 lg:pt-20">
+          <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8">
+            <span className="ds-label text-[15px] leading-[18px] tracking-[2px] text-neutral-700">
+              {hero.marquee.label}
+            </span>
+          </div>
+          <Marquee items={hero.marquee.logos} />
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }
 
@@ -105,17 +126,8 @@ function Services() {
         headline={services.headline}
         intro={services.intro}
       />
-      <Reveal className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {services.cards.map((c) => (
-          <div
-            key={c.title}
-            className="flex flex-col gap-4 rounded-lg border border-neutral-300 bg-white p-8"
-          >
-            <span className="ds-label text-label-s text-neutral-700">{c.n}</span>
-            <h3 className="text-title-l font-medium text-neutral-1000">{c.title}</h3>
-            <p className="text-body-s text-neutral-700">{c.body}</p>
-          </div>
-        ))}
+      <Reveal>
+        <SnackShelf items={services.cards} />
       </Reveal>
     </Section>
   );
@@ -123,102 +135,14 @@ function Services() {
 
 function Work() {
   return (
-    <Section id="work" aria-labelledby="work-h" className="bg-neutral-100">
+    <Section
+      id="work"
+      aria-labelledby="work-h"
+      className="bg-neutral-100"
+      containerClassName="pt-12 md:pt-16"
+    >
       <SectionHeader headingId="work-h" eyebrow={work.eyebrow} headline={work.headline} />
-      <div className="mt-16 flex flex-col gap-24">
-        {work.cases.map((c, i) => (
-          <CaseRow key={c.client} c={c} flip={i % 2 === 1} />
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-function CaseRow({ c, flip }: { c: CaseStudy; flip: boolean }) {
-  return (
-    <Reveal className="grid items-center gap-12 lg:grid-cols-2">
-      <Placeholder
-        className={`aspect-[4/3] w-full ${flip ? "lg:order-2" : ""}`}
-        label={`${c.client} — asset pending`}
-      />
-      <div className={`flex flex-col gap-5 ${flip ? "lg:order-1" : ""}`}>
-        <span className="ds-label w-fit rounded bg-yellow-200 px-3 py-1 text-label-s text-yellow-600">
-          {c.sector}
-        </span>
-        <h3 className="font-brand text-[clamp(32px,4vw,48px)] leading-[1.1] text-neutral-1000">
-          {c.client}
-        </h3>
-        <p className="text-body-m text-neutral-700">{c.problem}</p>
-        <p className="text-body-m text-neutral-700">{c.approach}</p>
-        <div className="flex items-baseline gap-3">
-          <span className="font-brand text-display-s italic leading-none text-orange-500">
-            {c.metric}
-          </span>
-          <span className="ds-label text-label-s text-neutral-700">{c.metricLabel}</span>
-        </div>
-        {c.stats.length > 0 && (
-          <dl className="grid grid-cols-3 gap-4 border-t border-neutral-300 pt-5">
-            {c.stats.map((s) => (
-              <div key={s.label} className="flex flex-col gap-1">
-                <dt className="order-2 ds-label text-label-s text-neutral-700">{s.label}</dt>
-                <dd className="order-1 text-title-m font-medium text-neutral-1000">{s.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-        {c.testimonial && (
-          <blockquote className="border-l-2 border-neutral-400 pl-4">
-            <p className="text-body-m text-neutral-800">“{c.testimonial.quote}”</p>
-            <cite className="ds-label mt-2 block text-label-s not-italic text-neutral-700">
-              {c.testimonial.attribution}
-            </cite>
-          </blockquote>
-        )}
-        <div>
-          <Button href={c.href} variant="ghost">
-            View case study
-          </Button>
-        </div>
-      </div>
-    </Reveal>
-  );
-}
-
-function Process() {
-  return (
-    <Section aria-labelledby="process-h" className="bg-neutral-200">
-      <SectionHeader
-        headingId="process-h"
-        eyebrow={process.eyebrow}
-        headline={process.headline}
-        intro={process.intro}
-      />
-      <Reveal className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {process.steps.map((s) => (
-          <div key={s.n} className="flex flex-col gap-4 border-t border-neutral-400 pt-6">
-            <span className="font-brand text-h1 leading-none text-orange-500">{s.n}</span>
-            <h3 className="text-title-l font-medium text-neutral-1000">{s.title}</h3>
-            <p className="text-body-s text-neutral-700">{s.body}</p>
-            <span className="ds-label mt-2 text-label-s text-neutral-700">{s.when}</span>
-          </div>
-        ))}
-      </Reveal>
-    </Section>
-  );
-}
-
-function Why() {
-  return (
-    <Section aria-labelledby="why-h" className="bg-neutral-100">
-      <SectionHeader headingId="why-h" eyebrow={why.eyebrow} headline={why.headline} />
-      <Reveal className="mt-16 grid gap-x-12 gap-y-12 md:grid-cols-2">
-        {why.items.map((item) => (
-          <div key={item.title} className="flex flex-col gap-3">
-            <h3 className="text-title-m font-medium text-neutral-1000">{item.title}</h3>
-            <p className="max-w-[52ch] text-body-m text-neutral-700">{item.body}</p>
-          </div>
-        ))}
-      </Reveal>
+      <Regulars items={work.regulars} />
     </Section>
   );
 }
@@ -244,6 +168,23 @@ function About() {
           {about.pullQuote}
         </p>
         <p className="text-body-l text-neutral-800">{about.origin}</p>
+      </Reveal>
+      <Reveal className="mt-16 grid gap-6 md:grid-cols-3">
+        {about.testimonials.map((t, i) =>
+          t.quote ? (
+            <figure
+              key={i}
+              className="flex flex-col justify-between gap-6 rounded-lg border border-orange-200 bg-white p-8"
+            >
+              <blockquote className="text-body-m text-neutral-800">“{t.quote}”</blockquote>
+              <figcaption className="ds-label text-label-s text-neutral-700">
+                {t.attribution}
+              </figcaption>
+            </figure>
+          ) : (
+            <Placeholder key={i} className="min-h-[220px] rounded-lg" rounded={false} label={t.attribution} />
+          ),
+        )}
       </Reveal>
     </Section>
   );
@@ -274,6 +215,7 @@ function RetainerPanel() {
   return (
     <div className="grid gap-12 rounded-2xl bg-neutral-200 p-8 md:grid-cols-2 md:p-12">
       <div className="flex flex-col gap-6">
+        <span className="ds-label text-label-s text-neutral-700">{r.label}</span>
         <div className="flex items-baseline gap-2">
           <span className="font-brand text-display-m italic leading-none text-neutral-1000">
             {r.price}
@@ -351,11 +293,16 @@ function FeatureRow({ n, title, body }: { n: string; title: string; body: string
 }
 
 function Faq() {
+  // The former "Why Sari Sari?" comparisons now live as FAQ entries (see site.ts `why`).
+  const items = [
+    ...faq.items.map((f) => ({ label: f.q, body: f.a })),
+    ...why.items.map((w) => ({ label: w.title, body: w.body })),
+  ];
   return (
     <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-200">
       <SectionHeader headingId="faq-h" eyebrow={faq.eyebrow} headline={faq.headline} />
       <Reveal className="mt-12 max-w-[820px]">
-        <Accordion items={faq.items.map((f) => ({ label: f.q, body: f.a }))} defaultOpen={0} />
+        <Accordion items={items} defaultOpen={0} />
       </Reveal>
     </Section>
   );

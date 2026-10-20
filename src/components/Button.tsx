@@ -26,7 +26,7 @@ export function Button({
   className = "",
 }: Props) {
   const base =
-    "ds-label inline-flex items-center gap-2 text-label-m transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
+    "group ds-label inline-flex items-center gap-2 text-label-m transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
   const shape =
     variant === "ghost"
       ? ""
@@ -50,9 +50,17 @@ export function Button({
   );
 }
 
-function Arrow() {
+/** Trailing arrow; nudges right on `group` hover. Shared by inline link labels. */
+export function Arrow() {
   return (
-    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden>
+    <svg
+      width="18"
+      height="16"
+      viewBox="0 0 18 16"
+      fill="none"
+      aria-hidden
+      className="transition-transform duration-150 ease-out group-hover:translate-x-1"
+    >
       <path d="M10 1l7 7-7 7M17 8H1" stroke="currentColor" strokeWidth="1.6" />
     </svg>
   );

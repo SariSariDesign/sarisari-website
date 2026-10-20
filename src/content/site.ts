@@ -32,7 +32,7 @@ export const nav = {
     { label: "About", href: "/#about" },
     { label: "FAQ", href: "/#faq" },
   ],
-  cta: { label: "Book an intro call", href: BOOKING_URL },
+  cta: { label: "Book a Call", href: BOOKING_URL },
 };
 
 /**
@@ -42,38 +42,46 @@ export const nav = {
  */
 export const hero = {
   headlineOptions: {
-    A: { headline: "Your fractional product team.", note: "A — the fractional play", centered: false },
+    A: { headline: "Let's build products your people need.", note: "A — the fractional play", centered: false },
     B: { headline: "We build products people use.", note: "B — quiet confidence", centered: false },
     C: {
       headline: "Products your people need. Experiences they come back to.",
       note: "C — on-brand pairing",
       centered: true,
     },
+    D: { headline: "Design that turns sign ups into regulars", note: "D — the regulars play", centered: false },
   },
-  activeHeadline: "A" as "A" | "B" | "C",
-  subhead: "Senior product design & development for growth-stage software companies.",
+  activeHeadline: "D" as "A" | "B" | "C" | "D",
+  subhead: "A product design studio that helps you acquire, convert, and retain more customers.",
   ctas: [
-    { label: "Book an intro call", href: BOOKING_URL, variant: "primary" as const },
-    { label: "See our work", href: "/#work", variant: "secondary" as const },
+    { label: "Let's chat", href: BOOKING_URL, variant: "primary" as const },
   ],
-  finePrint:
-    "Half an hour, no deck. Tell us where the product is holding growth back — we'll tell you straight whether we can help.",
   marquee: {
     label: "Trusted by 20+ global teams", // ⚠️ substantiate before launch
-    logos: ["Lendzi", "SignalVerified", "Silk & Sonder", "Lions & Lambs", "Selfbook"], // ⚠️ confirm/permission logos
+    // Real client marks (grey silhouettes in /public/logos, from the activation-diagnostic
+    // set). `mark: null` renders the name as text. ⚠️ confirm/permission logos before launch.
+    logos: [
+      { name: "Lendzi", mark: "/logos/lendzi.png" },
+      { name: "SignalVerified", mark: "/logos/signalverified.png" },
+      { name: "Silk & Sonder", mark: null },
+      { name: "Lions & Lambs", mark: "/logos/lionslambs.png" },
+      { name: "Selfbook", mark: "/logos/selfbook.png" },
+    ],
   },
 };
 
 export const services = {
-  eyebrow: "What we offer",
-  headline: "The product that got you here, rebuilt for what's next.",
+  eyebrow: "",
+  headline: "Your product got you here. We build what's next.",
   intro:
-    "Design and development in one team, aimed at the four numbers that decide your next round: activation, conversion, retention, satisfaction.",
+    "Whether you've just launched or you're preparing for the next raise, our design-led product team is aimed at the numbers that matter most: conversion, retention, activation, and satisfaction.",
+  // ⚠️ Digital products / Marketing support / Branding bodies are drafted, pending sign-off.
+  // Eight cards = two even shelves of four; Design systems restored from the original six.
   cards: [
     {
       n: "01",
-      title: "User research",
-      body: "We talk to your actual users and come back with the reason they stall — not a deck of opinions.",
+      title: "Digital products",
+      body: "From idea to launch: strategy, design, and build under one roof, aimed at the metric your next round depends on.",
     },
     {
       n: "02",
@@ -88,16 +96,26 @@ export const services = {
     {
       n: "04",
       title: "Design systems",
-      body: "A component library and tokens your team assembles from — new features stop being redesigns.",
+      body: "A component library and tokens your team assembles from, so new features stop being redesigns.",
     },
     {
       n: "05",
-      title: "Prototyping",
-      body: "Test the new flow with real users before an engineer touches it. Same week, not next quarter.",
+      title: "User testing & research",
+      body: "We put your flows in front of real users and come back with the reason they stall, not a deck of opinions.",
     },
     {
       n: "06",
-      title: "Full development",
+      title: "Marketing support",
+      body: "Landing pages, launch assets, and site updates that match the product, so growth doesn't wait on a separate agency.",
+    },
+    {
+      n: "07",
+      title: "Branding",
+      body: "Type, color, and voice that grow with you, so the brand keeps pace with the product.",
+    },
+    {
+      n: "08",
+      title: "Front-end development",
       body: "We ship the front-end ourselves. What we design is what goes live, on your stack.",
     },
   ],
@@ -115,9 +133,36 @@ export type CaseStudy = {
   href: string;
 };
 
+export type RegularCard = {
+  client: string;
+  /** Project types, shown as tags (e.g. "Ecommerce", "Conversion"). */
+  types: string[];
+  /** One to two sentences on the impact. null = case not yet authored. */
+  impact: string | null;
+  href: string | null;
+  /** Client-work photo; null renders the hatch placeholder. */
+  image: string | null;
+};
+
 export const work = {
-  eyebrow: "Our regulars",
-  headline: "The problem, the change, the number.",
+  eyebrow: "",
+  headline: "Our Regulars",
+  // The four hanging photos in the hero that drop into the Our Regulars grid on scroll.
+  // ⚠️ Only Kenchan is authored; the other three are named-but-pending (copy-deck) —
+  // they render as "coming soon" with no link and no invented impact.
+  regulars: [
+    {
+      client: "Kenchan Ramen",
+      types: ["Ecommerce", "Conversion"],
+      impact:
+        "We tested a bundle offer in an afternoon instead of a six-week build. Bundles now drive 37% of digital revenue.",
+      href: "/work/kenchan-ramen",
+      image: null,
+    },
+    { client: "Lendzi", types: ["Fintech"], impact: null, href: null, image: null },
+    { client: "Funding Solutions", types: ["Fintech"], impact: null, href: null, image: null },
+    { client: "Next regular", types: [], impact: null, href: null, image: null },
+  ] satisfies RegularCard[],
   // Only fully-authored cases are rendered. ⚠️ Cases 2 & 3 (Funding Solutions / Lendzi)
   // await real problem/change/metric narrative — tracked in copy-deck; do not fabricate.
   cases: [
@@ -125,7 +170,7 @@ export const work = {
       sector: "DTC food · Shopify",
       client: "Kenchan Ramen",
       problem:
-        "The founder wanted a competitor's custom bundle builder — a $13K, six-to-eight-week build, with no proof their customers bundled at all.",
+        "The founder wanted a competitor's custom bundle builder: a $13K, six-to-eight-week build, with no proof their customers bundled at all.",
       approach:
         "We reframed it from shipping a feature to testing the behavior: native Shopify discounts, one UI surface, a schema their operators could edit. Live the same afternoon.",
       metric: "37%",
@@ -149,7 +194,7 @@ export const process = {
   eyebrow: "How we work",
   headline: "A double diamond pointed at a metric.",
   intro:
-    "We widen to find the real problem, narrow to the one worth solving, then do it again on the solution. Each phase is judged on whether the number moved — not on how the screens look.",
+    "We widen to find the real problem, narrow to the one worth solving, then do it again on the solution. Each phase is judged on whether the number moved, not on how the screens look.",
   steps: [
     {
       n: "01",
@@ -172,7 +217,7 @@ export const process = {
     {
       n: "04",
       title: "Ship",
-      body: "We build it, ship it, and read the numbers with you — then keep going on the next drop-off.",
+      body: "We build it, ship it, and read the numbers with you, then keep going on the next drop-off.",
       when: "Weeks 7+",
     },
   ],
@@ -203,7 +248,7 @@ export const why = {
 
 export const about = {
   eyebrow: "About",
-  headline: "Senior people, on your product.",
+  headline: "Your team",
   members: [
     {
       name: "Zach Chaco",
@@ -216,48 +261,42 @@ export const about = {
       bio: "15+ years of product and brand design.",
     },
   ],
+  // ⚠️ Only the Kenchan quote is real; `quote: null` renders a pending placeholder. Do not fabricate.
+  testimonials: [
+    {
+      quote:
+        "They reframed a feature request into a validation question and shipped proof in a day. That bundle test became one of the most reliable revenue levers in our digital channel.",
+      attribution: "Jed G., Kocah",
+    },
+    { quote: null, attribution: "Client testimonial pending" },
+    { quote: null, attribution: "Client testimonial pending" },
+  ] as { quote: string | null; attribution: string }[],
   pullQuote: "A short shelf of things we do well, for people we know by name.",
-  origin:
-    "A sari-sari store is the small neighborhood shop in the Philippines: it stocks exactly what its street needs, and the owner knows every customer by name. That's how we run this studio — a few services we're genuinely good at, for a small number of clients we know well. Much of our work has been with health and wellness companies, where trust and retention are the whole business.",
+  origin: "Named for the Filipino corner store whose owner knows every customer by name.",
 };
 
 export const pricing = {
   eyebrow: "Pricing",
-  headline: "One core offer, priced plainly.",
+  headline: "No guesswork. One price.",
   intro:
     "A monthly retainer as your embedded design and development team. If that's more than you're ready to commit to, there's a shorter way to try us.",
   tabs: {
-    retainer: "Ongoing partnership",
-    diagnostic: "Want a taste first?",
+    retainer: "One stop shop",
+    diagnostic: "Single Project",
   },
   retainer: {
+    label: "Ongoing Partnership",
     price: "$16,000",
     period: "/ month",
-    description:
-      "Your embedded design and development team, month to month. For growth-stage companies with a live product and more roadmap than capacity. Not for you if you're pre-product-market-fit, need a logo, or want someone to manage an existing design org.",
+    description: "Product design expertise and one price, so you can move quickly.",
     terms: `Monthly, no long-term contract. ${terms.minimumEngagement} minimum engagement, ${terms.noticePeriod} notice to stop or pause.`,
     cta: { label: "Book an intro call", href: BOOKING_URL },
     features: [
-      {
-        title: "Ship multiple product initiatives simultaneously, not sequentially.",
-        body: "We own the full product lifecycle from research through front-end build, running parallel on your highest-priority workstreams so nothing stalls waiting for the right hire.",
-      },
-      {
-        title: "Your team ships 2–3x faster with a system that scales.",
-        body: "A production-grade design system with reusable components, design tokens, and usage guidelines. New features get assembled, not designed from scratch.",
-      },
-      {
-        title: "Build the right things, not just build things right.",
-        body: "We work on your roadmap, surface product opportunities your team hasn't seen, and help prioritize what to build next based on user impact and your next funding stage.",
-      },
-      {
-        title: "Senior product leadership, not a rotating cast.",
-        body: "Dedicated senior designers and engineers who learn your product deeply and operate with the context and ownership of in-house leads — not contractors.",
-      },
-      {
-        title: "Zero onboarding drag, zero status theater.",
-        body: "We work inside your Slack, Figma, and project management tools. Syncs are reserved for alignment, not status updates.",
-      },
+      { title: "Parallel workstreams, not a queue.", body: "Research through front-end, on your top priorities." },
+      { title: "A design system that scales.", body: "New features get assembled, not redesigned." },
+      { title: "Roadmap partners, not order-takers.", body: "We help decide what to build next." },
+      { title: "Senior people only.", body: "No rotating cast of contractors." },
+      { title: "Zero status theater.", body: "We work inside your Slack, Figma, and tools." },
     ],
   },
   diagnostic: {
@@ -267,19 +306,19 @@ export const pricing = {
     period: "/ $2,500",
     headline: "Not ready for the full retainer? Start with three weeks.",
     description:
-      "We diagnose, redesign, and prototype your highest-impact flow. You end up with a working prototype, the reasons your users stall, and a prioritized roadmap — whether or not you keep us on.",
+      "We diagnose, redesign, and prototype your highest-impact flow. You end up with a working prototype, the reasons your users stall, and a prioritized roadmap, whether or not you keep us on.",
     cta: { label: "See the diagnostic", href: DIAGNOSTIC_URL },
     rows: [
       {
-        title: "Week 1 — where growth is actually leaking",
+        title: "Week 1: where growth is actually leaking",
         body: "User sessions and funnel data, ending in the one step costing you the most.",
       },
       {
-        title: "Weeks 2–3 — a redesigned flow you can click",
+        title: "Weeks 2–3: a redesigned flow you can click",
         body: "A working prototype of the fix, tested with your users, ready for your engineers.",
       },
       {
-        title: "Day 21 — the roadmap, yours either way",
+        title: "Day 21: the roadmap, yours either way",
         body: "Prioritized next moves with the reasoning, so you can run them with us or without us.",
       },
     ],
@@ -288,7 +327,7 @@ export const pricing = {
 
 export const faq = {
   eyebrow: "FAQ",
-  headline: "The questions people actually ask.",
+  headline: "Questions for us?",
   items: [
     {
       q: "How soon can you start?",
@@ -296,11 +335,11 @@ export const faq = {
     },
     {
       q: "What if it isn't working?",
-      a: `You give ${terms.noticePeriod} notice and stop paying. No wind-down fees, no penalty. We'd rather part cleanly than hold a client who isn't getting value.`,
+      a: `You give ${terms.noticePeriod} notice and stop paying, with no wind-down fees or penalties. We'd rather part cleanly than hold a client who isn't getting value.`,
     },
     {
       q: "Who owns the IP and the files?",
-      a: "You do, from the first invoice. Design files, code, research recordings — everything lives in accounts you control, and it stays yours if we stop working together.",
+      a: "You do, from the first invoice. Design files, code, research recordings. Everything lives in accounts you control, and it stays yours if we stop working together.",
     },
     {
       q: "Can we pause the retainer?",
@@ -308,11 +347,11 @@ export const faq = {
     },
     {
       q: "What happens when we hire an in-house design lead?",
-      a: "We help you hire them and hand over cleanly — files, systems, context. We'd rather be the bridge to your in-house team than the reason you never build one.",
+      a: "We help you hire them and hand over cleanly: files, systems, context. We'd rather be the bridge to your in-house team than the reason you never build one.",
     },
     {
       q: "What do we need ready before starting?",
-      a: "A decision-maker who can join a weekly review, access to your analytics and customers, and one owner on your side for approvals. That's it — we handle the rest of the setup in week one.",
+      a: "A decision-maker who can join a weekly review, access to your analytics and customers, and one owner on your side for approvals. That's it, we handle the rest of the setup in week one.",
     },
     {
       q: "Do you only work with health and wellness companies?",
