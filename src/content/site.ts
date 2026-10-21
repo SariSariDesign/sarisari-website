@@ -7,6 +7,8 @@
 
 export const BOOKING_URL = "https://calendly.com/sarisari/30min";
 export const DIAGNOSTIC_URL = "https://activation-diagnostic.sarisari.design/";
+/** Free activation scorecard (lead magnet). Lives in the activation-diagnostic app. */
+export const SCORECARD_URL = "https://activation-diagnostic.sarisari.design/preview";
 export const CONTACT_EMAIL = "hello@sarisari.design"; // ⚠️ confirm address
 export const LINKEDIN_URL = "https://www.linkedin.com/company/sarisaridesign"; // ⚠️ confirm URL
 
@@ -21,13 +23,10 @@ export const terms = {
   startLeadTime: "two weeks", // ⚠️ [START_LEAD_TIME]
 };
 
-/** Footer-CTA availability line — ⚠️ [N] new client slots for [QUARTER]. */
-export const clientSlots = { n: "2", quarter: "Q3 2026" }; // ⚠️ confirm
-
 export const nav = {
   links: [
-    { label: "Work", href: "/#work" },
     { label: "Services", href: "/#services" },
+    { label: "Work", href: "/#work" },
     { label: "Pricing", href: "/#pricing" },
     { label: "About", href: "/#about" },
     { label: "FAQ", href: "/#faq" },
@@ -42,20 +41,26 @@ export const nav = {
  */
 export const hero = {
   headlineOptions: {
-    A: { headline: "Let's build products your people need.", note: "A — the fractional play", centered: false },
+    A: {
+      headline: "Let's build products your people need.",
+      note: "A — the fractional play",
+      centered: false,
+    },
     B: { headline: "We build products people use.", note: "B — quiet confidence", centered: false },
     C: {
       headline: "Products your people need. Experiences they come back to.",
       note: "C — on-brand pairing",
       centered: true,
     },
-    D: { headline: "Design that turns sign ups into regulars", note: "D — the regulars play", centered: false },
+    D: {
+      headline: "Design that turns sign ups into regulars",
+      note: "D — the regulars play",
+      centered: false,
+    },
   },
   activeHeadline: "D" as "A" | "B" | "C" | "D",
   subhead: "A product design studio that helps you acquire, convert, and retain more customers.",
-  ctas: [
-    { label: "Let's chat", href: BOOKING_URL, variant: "primary" as const },
-  ],
+  ctas: [{ label: "Let's chat", href: BOOKING_URL, variant: "primary" as const }],
   marquee: {
     label: "Trusted by 20+ global teams", // ⚠️ substantiate before launch
     // Real client marks (grey silhouettes in /public/logos, from the activation-diagnostic
@@ -121,122 +126,47 @@ export const services = {
   ],
 };
 
-export type CaseStudy = {
-  sector: string;
+/** A portfolio piece in the hero clutter and the Our Regulars gallery wall. */
+export type PortfolioPiece = {
   client: string;
-  problem: string;
-  approach: string;
-  metric: string;
-  metricLabel: string;
-  stats: { value: string; label: string }[];
-  testimonial: { quote: string; attribution: string } | null;
-  href: string;
-};
-
-export type RegularCard = {
-  client: string;
-  /** "case" = a case-study card with copy; "reference" = an image on the gallery wall. */
-  kind: "case" | "reference";
-  /** Project types, shown as tags on case cards (e.g. "Ecommerce", "Conversion"). */
-  types: string[];
-  /** One to two sentences on the impact. null = case not yet authored. */
-  impact: string | null;
-  href: string | null;
   /** Client-work image; null renders the hatch placeholder. */
   image: string | null;
   /** Print aspect ratio (CSS `aspect-ratio`), kept identical while hanging and landed. */
   aspect: string;
+  /** Slug of the matching case study, if any (links once that case study is published). */
+  caseStudy?: string;
 };
 
 export const work = {
   eyebrow: "",
   headline: "Our Regulars",
-  // Six portfolio pieces hang in the hero like stock in a sari-sari store window, then
-  // fall into place on scroll: case studies into the case row, references onto the
-  // gallery wall beneath it. ⚠️ Only Kenchan is authored; Funding Solutions + GenWell
-  // case studies are coming. Kenchan + Funding Solutions shots are from the old Webflow
-  // site; NutriSnap is a supplied composite; GenWell (unbranded version), Lendzi and the
-  // sixth piece still need images. Do not invent impact copy.
+  // Six pieces hang in the hero like stock in a sari-sari store window and fall onto this
+  // gallery wall on scroll: the visual hook before Services. ⚠️ GenWell (unbranded),
+  // Lendzi and the sixth piece still need images.
   regulars: [
     {
       client: "Kenchan Ramen",
-      kind: "case",
-      types: ["Ecommerce", "Conversion"],
-      impact:
-        "We tested a bundle offer in an afternoon instead of a six-week build. Bundles now drive 37% of digital revenue.",
-      href: "/work/kenchan-ramen",
       image: "/work/kenchan-ramen.webp",
       aspect: "4/3",
+      caseStudy: "kenchan-ramen",
     },
     {
       client: "Funding Solutions",
-      kind: "case",
-      types: ["Fintech"],
-      impact: null,
-      href: null,
       image: "/work/funding-solutions.webp",
       aspect: "4/3",
+      caseStudy: "funding-solutions",
     },
-    {
-      client: "GenWell",
-      kind: "case",
-      types: [], // ⚠️ project types
-      impact: null,
-      href: null,
-      image: null, // ⚠️ unbranded version pending
-      aspect: "4/3",
-    },
-    {
-      client: "Lendzi",
-      kind: "reference",
-      types: [],
-      impact: null,
-      href: null,
-      image: null,
-      aspect: "3/2",
-    },
-    {
-      client: "NutriSnap",
-      kind: "reference",
-      types: [],
-      impact: null,
-      href: null,
-      image: "/work/nutrisnap.webp",
-      aspect: "6/7",
-    },
-    {
-      client: "Portfolio piece", // ⚠️ sixth piece TBD
-      kind: "reference",
-      types: [],
-      impact: null,
-      href: null,
-      image: null,
-      aspect: "1/1",
-    },
-  ] satisfies RegularCard[],
-  cases: [
-    {
-      sector: "DTC food · Shopify",
-      client: "Kenchan Ramen",
-      problem:
-        "The founder wanted a competitor's custom bundle builder: a $13K, six-to-eight-week build, with no proof their customers bundled at all.",
-      approach:
-        "We reframed it from shipping a feature to testing the behavior: native Shopify discounts, one UI surface, a schema their operators could edit. Live the same afternoon.",
-      metric: "37%",
-      metricLabel: "of digital revenue",
-      stats: [
-        { value: "+8.1%", label: "AOV lift YoY" },
-        { value: "<1 hour", label: "To first conversion" },
-        { value: "711", label: "Bundle redemptions" },
-      ],
-      testimonial: {
-        quote:
-          "They reframed a feature request into a validation question and shipped proof in a day. That bundle test became one of the most reliable revenue levers in our digital channel.",
-        attribution: "Jed G., Kocah",
-      },
-      href: "/work/kenchan-ramen",
-    },
-  ] satisfies CaseStudy[],
+    { client: "GenWell", image: null, aspect: "4/3", caseStudy: "genwell" },
+    { client: "Lendzi", image: null, aspect: "3/2" },
+    { client: "NutriSnap", image: "/work/nutrisnap.webp", aspect: "6/7" },
+    { client: "Portfolio piece", image: null, aspect: "1/1" }, // ⚠️ sixth piece TBD
+  ] satisfies PortfolioPiece[],
+};
+
+/** Homepage Case Studies section copy; the studies themselves live in `content/case-studies`. */
+export const caseStudiesSection = {
+  eyebrow: "Case studies",
+  headline: "The problem, the change, the number.",
 };
 
 export const process = {
@@ -303,36 +233,66 @@ export const about = {
       name: "Zach Chaco",
       role: "Chief Executive Officer",
       bio: "Producer, previously Meta and Disney.",
+      photo: "/team/zach-chaco.jpg",
     },
     {
       name: "Patricia Capiral",
       role: "Chief Creative Officer",
       bio: "15+ years of product and brand design.",
+      photo: "/team/patricia-capiral.jpg",
     },
   ],
-  // ⚠️ Only the Kenchan quote is real; `quote: null` renders a pending placeholder. Do not fabricate.
-  testimonials: [
-    {
-      quote:
-        "They reframed a feature request into a validation question and shipped proof in a day. That bundle test became one of the most reliable revenue levers in our digital channel.",
-      attribution: "Jed G., Kocah",
-    },
-    { quote: null, attribution: "Client testimonial pending" },
-    { quote: null, attribution: "Client testimonial pending" },
-  ] as { quote: string | null; attribution: string }[],
   pullQuote: "A short shelf of things we do well, for people we know by name.",
   origin: "Named for the Filipino corner store whose owner knows every customer by name.",
+};
+
+export type Testimonial = {
+  /** null = quote pending sign-off; renders a placeholder card. */
+  quote: string | null;
+  name: string;
+  role: string | null;
+  company: string;
+  photo: string | null;
+};
+
+export const testimonials = {
+  eyebrow: "Testimonials",
+  headline: "Ask our regulars.", // ⚠️ new intro copy, pending sign-off
+  // Jed G. is verbatim from the Kenchan case study; Michael Campbell is verbatim from the
+  // live activation-diagnostic site. ⚠️ The rest are pending (testimonial bank in Notion;
+  // Steve's is being drafted from his 1 Million Cups endorsement). Do not fabricate.
+  items: [
+    {
+      quote:
+        "Sari Sari didn't just execute a feature request—they reframed it into a validation question and shipped proof in a day. That bundle test went on to become one of the most reliable revenue levers in our digital channel.",
+      name: "Jed G.",
+      role: "Cofounder",
+      company: "Kocah",
+      photo: null,
+    },
+    {
+      quote:
+        "The five findings are spot on, and the usability session data makes them hard to argue with. The competing CTAs, the undefined proprietary terms, and the buried proof are all things I knew felt off but couldn't articulate this clearly. Highly recommend giving your process a shot; you have nothing to lose.",
+      name: "Michael Campbell",
+      role: "CEO",
+      company: "Signal Verified",
+      photo: "/testimonials/michael-campbell.webp",
+    },
+    { quote: null, name: "Steve", role: null, company: "", photo: null },
+    { quote: null, name: "Lendzi", role: null, company: "", photo: null },
+    { quote: null, name: "Dre", role: null, company: "", photo: null },
+    { quote: null, name: "Nora", role: null, company: "", photo: null },
+    { quote: null, name: "NutriSnap", role: null, company: "", photo: null },
+    { quote: null, name: "Nirvana", role: null, company: "", photo: null },
+    { quote: null, name: "GenWell", role: null, company: "", photo: null },
+  ] satisfies Testimonial[],
 };
 
 export const pricing = {
   eyebrow: "Pricing",
   headline: "No guesswork. One price.",
   intro:
-    "A monthly retainer as your embedded design and development team. If that's more than you're ready to commit to, there's a shorter way to try us.",
-  tabs: {
-    retainer: "One stop shop",
-    diagnostic: "Single Project",
-  },
+    "A monthly retainer as your embedded design and development team, plus smaller ways to try us first.",
   retainer: {
     label: "Ongoing Partnership",
     price: "$16,000",
@@ -341,37 +301,45 @@ export const pricing = {
     terms: `Monthly, no long-term contract. ${terms.minimumEngagement} minimum engagement, ${terms.noticePeriod} notice to stop or pause.`,
     cta: { label: "Book an intro call", href: BOOKING_URL },
     features: [
-      { title: "Parallel workstreams, not a queue.", body: "Research through front-end, on your top priorities." },
-      { title: "A design system that scales.", body: "New features get assembled, not redesigned." },
+      {
+        title: "Parallel workstreams, not a queue.",
+        body: "Research through front-end, on your top priorities.",
+      },
+      {
+        title: "A design system that scales.",
+        body: "New features get assembled, not redesigned.",
+      },
       { title: "Roadmap partners, not order-takers.", body: "We help decide what to build next." },
       { title: "Senior people only.", body: "No rotating cast of contractors." },
       { title: "Zero status theater.", body: "We work inside your Slack, Figma, and tools." },
     ],
   },
-  diagnostic: {
-    tag: "Try us first",
-    label: "Activation Diagnostic",
-    price: "21 days",
-    period: "/ $2,500",
-    headline: "Not ready for the full retainer? Start with three weeks.",
-    description:
-      "We diagnose, redesign, and prototype your highest-impact flow. You end up with a working prototype, the reasons your users stall, and a prioritized roadmap, whether or not you keep us on.",
-    cta: { label: "See the diagnostic", href: DIAGNOSTIC_URL },
-    rows: [
-      {
-        title: "Week 1: where growth is actually leaking",
-        body: "User sessions and funnel data, ending in the one step costing you the most.",
-      },
-      {
-        title: "Weeks 2–3: a redesigned flow you can click",
-        body: "A working prototype of the fix, tested with your users, ready for your engineers.",
-      },
-      {
-        title: "Day 21: the roadmap, yours either way",
-        body: "Prioritized next moves with the reasoning, so you can run them with us or without us.",
-      },
-    ],
-  },
+  offersHeading: "Not ready for a retainer? Start smaller.",
+  // Lighter cards under the retainer hero. Prices per the 2026-10-20 sync. ⚠️ Audit and
+  // Build bodies are drafted; the diagnostic copy is condensed from its landing page.
+  offers: [
+    {
+      name: "Activation Audit",
+      price: "$1,500",
+      period: null,
+      body: "A 0–100 activation score, benchmarked against your vertical, with the top friction points costing you conversions.",
+      cta: { label: "Start free", href: SCORECARD_URL },
+    },
+    {
+      name: "Activation Diagnostic",
+      price: "$6,000",
+      period: "/ 21 days",
+      body: "Find the highest-impact fix in one activation flow, with a clickable prototype and a 90-day roadmap.",
+      cta: { label: "See the diagnostic", href: DIAGNOSTIC_URL },
+    },
+    {
+      name: "Build",
+      price: "Let's talk",
+      period: null,
+      body: "Design and front-end build for a defined product initiative, scoped to your roadmap.",
+      cta: { label: "Book a call", href: BOOKING_URL },
+    },
+  ],
 };
 
 export const faq = {
@@ -414,13 +382,14 @@ export const footerCta = {
   subhead:
     "Thirty minutes on where growth is stalling. We'll tell you what we'd change first, and whether we're the right team to do it.",
   cta: { label: "Book an intro call", href: BOOKING_URL },
-  slots: `${clientSlots.n} new client slots for ${clientSlots.quarter}`,
 };
 
 export const footer = {
   links: [
     { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
     { label: "LinkedIn", href: LINKEDIN_URL },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
   ],
   copyright: "© 2026 Sari Sari LLC",
 };

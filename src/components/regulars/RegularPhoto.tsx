@@ -1,4 +1,4 @@
-import type { RegularCard } from "@/content/site";
+import type { PortfolioPiece } from "@/content/site";
 import { Placeholder } from "../Placeholder";
 
 /**
@@ -7,7 +7,7 @@ import { Placeholder } from "../Placeholder";
  * read as the same object while it falls from one to the other. Border, radius and
  * caption are proportional (%, cqw) so the print looks identical at any scale.
  */
-export function RegularPhoto({ r }: { r: Pick<RegularCard, "client" | "image" | "aspect"> }) {
+export function RegularPhoto({ r }: { r: Pick<PortfolioPiece, "client" | "image" | "aspect"> }) {
   return (
     <div
       className="regular-print relative w-full rounded-[2.5%] bg-white p-[2.4%] shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
