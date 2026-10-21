@@ -53,7 +53,7 @@ export const hero = {
       centered: true,
     },
     D: {
-      headline: "Design that turns sign ups into regulars",
+      headline: "Design that turns sign\u2011ups into regulars", // non-breaking hyphen
       note: "D — the regulars play",
       centered: false,
     },
@@ -75,27 +75,42 @@ export const hero = {
   },
 };
 
+export type Service = {
+  n: string;
+  title: string;
+  body: string;
+  /** Image shown when the row is open; null renders the hatch placeholder. */
+  media?: string | null;
+  /** Capability bullets shown when open. */
+  points?: string[];
+  link?: { label: string; href: string };
+};
+
 export const services = {
-  eyebrow: "",
+  eyebrow: "Our Services",
   headline: "Your product got you here. We build what's next.",
   intro:
-    "Whether you've just launched or you're preparing for the next raise, our design-led product team is aimed at the numbers that matter most: conversion, retention, activation, and satisfaction.",
-  // ⚠️ Digital products / Marketing support / Branding bodies are drafted, pending sign-off.
-  // Eight cards = two even shelves of four; Design systems restored from the original six.
+    "Whether you've just launched or you're preparing for the next raise, our team of senior-level product designers is aimed at the numbers that matter most: conversion, retention, activation, and satisfaction.",
+  // Expandable rows: title collapsed; open shows `media` (client work or a placeholder),
+  // the body, and optional `points`. ⚠️ Final service list pending Zach's pick; Digital
+  // products / Marketing support / Branding bodies are drafted, pending sign-off.
   cards: [
     {
       n: "01",
       title: "Digital products",
+      media: "/work/nutrisnap.webp",
       body: "From idea to launch: strategy, design, and build under one roof, aimed at the metric your next round depends on.",
     },
     {
       n: "02",
       title: "UX design",
+      media: "/work/funding-solutions.webp",
       body: "Flows and wireframes for every state, so your engineers stop guessing and your funnel stops leaking.",
     },
     {
       n: "03",
       title: "UI design",
+      media: "/work/kenchan-ramen.webp",
       body: "Screens that make a two-year-old product look like the company you've become.",
     },
     {
@@ -123,7 +138,7 @@ export const services = {
       title: "Front-end development",
       body: "We ship the front-end ourselves. What we design is what goes live, on your stack.",
     },
-  ],
+  ] satisfies Service[],
 };
 
 /** A portfolio piece in the hero clutter and the Our Regulars gallery wall. */
@@ -139,7 +154,7 @@ export type PortfolioPiece = {
 
 export const work = {
   eyebrow: "",
-  headline: "Our Regulars",
+  headline: "Our Recent Clients",
   // Six pieces hang in the hero like stock in a sari-sari store window and fall onto this
   // gallery wall on scroll: the visual hook before Services. ⚠️ GenWell (unbranded),
   // Lendzi and the sixth piece still need images.
@@ -165,8 +180,8 @@ export const work = {
 
 /** Homepage Case Studies section copy; the studies themselves live in `content/case-studies`. */
 export const caseStudiesSection = {
-  eyebrow: "Case studies",
-  headline: "The problem, the change, the number.",
+  eyebrow: "",
+  headline: "Our Recent Projects",
 };
 
 export const process = {
@@ -226,7 +241,7 @@ export const why = {
 };
 
 export const about = {
-  eyebrow: "About",
+  eyebrow: "",
   headline: "Your team",
   members: [
     {
@@ -242,8 +257,6 @@ export const about = {
       photo: "/team/patricia-capiral.jpg",
     },
   ],
-  pullQuote: "A short shelf of things we do well, for people we know by name.",
-  origin: "Named for the Filipino corner store whose owner knows every customer by name.",
 };
 
 export type Testimonial = {
@@ -256,7 +269,7 @@ export type Testimonial = {
 };
 
 export const testimonials = {
-  eyebrow: "Testimonials",
+  eyebrow: "",
   headline: "Ask our regulars.", // ⚠️ new intro copy, pending sign-off
   // Jed G. is verbatim from the Kenchan case study; Michael Campbell is verbatim from the
   // live activation-diagnostic site. ⚠️ The rest are pending (testimonial bank in Notion;
@@ -289,54 +302,52 @@ export const testimonials = {
 };
 
 export const pricing = {
-  eyebrow: "Pricing",
+  eyebrow: "",
   headline: "No guesswork. One price.",
-  intro:
-    "A monthly retainer as your embedded design and development team, plus smaller ways to try us first.",
   retainer: {
-    label: "Ongoing Partnership",
     price: "$16,000",
     period: "/ month",
-    description: "Product design expertise and one price, so you can move quickly.",
-    terms: `Monthly, no long-term contract. ${terms.minimumEngagement} minimum engagement, ${terms.noticePeriod} notice to stop or pause.`,
+    description:
+      "Product design expertise focused on getting you more customers. Priced so you can move quickly. No long-term contracts. Pause or cancel anytime.",
     cta: { label: "Book an intro call", href: BOOKING_URL },
+    // `body` is optional: some features are a single line.
     features: [
       {
-        title: "Parallel workstreams, not a queue.",
-        body: "Research through front-end, on your top priorities.",
+        title: "One team for design, development, and strategy.",
+        body: "Senior product experts that design and ship at the speed your startup actually moves.",
+      },
+      { title: "Design systems built to scale." },
+      { title: "We shape the roadmap together; you decide on the direction." },
+      {
+        title: "We embed into your product team's rituals.",
+        body: "Anything from standups and design workshops to test parties.",
       },
       {
-        title: "A design system that scales.",
-        body: "New features get assembled, not redesigned.",
+        title: "We focus on where you're leaking customers.",
+        body: "Not just prototypes and wireframes: product design that gets outcomes.",
       },
-      { title: "Roadmap partners, not order-takers.", body: "We help decide what to build next." },
-      { title: "Senior people only.", body: "No rotating cast of contractors." },
-      { title: "Zero status theater.", body: "We work inside your Slack, Figma, and tools." },
-    ],
+    ] as { title: string; body?: string }[],
   },
   offersHeading: "Not ready for a retainer? Start smaller.",
-  // Lighter cards under the retainer hero. Prices per the 2026-10-20 sync. ⚠️ Audit and
-  // Build bodies are drafted; the diagnostic copy is condensed from its landing page.
+  // Lighter cards under the retainer hero. Prices per the 2026-10-20 sync; the diagnostic
+  // body is condensed from its landing page.
   offers: [
     {
-      name: "Activation Audit",
+      name: "Audit",
       price: "$1,500",
-      period: null,
-      body: "A 0–100 activation score, benchmarked against your vertical, with the top friction points costing you conversions.",
-      cta: { label: "Start free", href: SCORECARD_URL },
+      body: "Best to get quick clarity and direction.",
+      cta: { label: "Try it for free", href: SCORECARD_URL },
     },
     {
-      name: "Activation Diagnostic",
+      name: "Diagnostic",
       price: "$6,000",
-      period: "/ 21 days",
       body: "Find the highest-impact fix in one activation flow, with a clickable prototype and a 90-day roadmap.",
       cta: { label: "See the diagnostic", href: DIAGNOSTIC_URL },
     },
     {
       name: "Build",
       price: "Let's talk",
-      period: null,
-      body: "Design and front-end build for a defined product initiative, scoped to your roadmap.",
+      body: "Looking for something more? Got something big in the works?",
       cta: { label: "Book a call", href: BOOKING_URL },
     },
   ],

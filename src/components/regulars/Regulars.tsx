@@ -155,58 +155,60 @@ export function Regulars({ items }: { items: PortfolioPiece[] }) {
   const printRef = (i: number) => (el: HTMLDivElement | null) => void (prints.current[i] = el);
   const textRef = (i: number) => (el: HTMLDivElement | null) => void (texts.current[i] = el);
 
+  const piece = (r: PortfolioPiece, i: number) => {
+    const study = r.caseStudy ? getCaseStudy(r.caseStudy) : undefined;
+    const href = study ? caseStudyHref(study) : null;
+    const body = (
+      <>
+        <div ref={cellRef(i)} className="relative" style={{ aspectRatio: r.aspect }}>
+          <div ref={printRef(i)} className="regular-fly absolute inset-0 origin-top">
+            <div className="hang-sway relative">
+              <HangHardware />
+              <RegularPhoto r={r} />
+            </div>
+          </div>
+        </div>
+        <div ref={textRef(i)}>
+          <p className="ds-label mt-3 text-label-s text-neutral-700">{r.client}</p>
+        </div>
+      </>
+    );
+    return (
+      <li
+        key={r.client}
+        className="wall-item min-w-0"
+        style={{ "--a": aspect(r.aspect) } as React.CSSProperties}
+      >
+        {href ? (
+          <Link
+            href={href}
+            aria-label={`${r.client} case study`}
+            className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
+          >
+            {body}
+          </Link>
+        ) : (
+          body
+        )}
+      </li>
+    );
+  };
+
+  // Two justified rows (equal heights at rest); index order matches the hero cluster, so
+  // prints fall straight down. Hovering a piece grows it while its row-mates give way.
+  const rows = [items.slice(0, 3), items.slice(3)];
   return (
-    <ul className="mt-12 grid grid-cols-2 items-start gap-x-6 gap-y-10 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-12">
-      {items.map((r, i) => {
-        const study = r.caseStudy ? getCaseStudy(r.caseStudy) : undefined;
-        const href = study ? caseStudyHref(study) : null;
-        const body = (
-          <>
-            <div ref={cellRef(i)} className="relative" style={{ aspectRatio: r.aspect }}>
-              <div ref={printRef(i)} className="regular-fly absolute inset-0 origin-top">
-                <div className="hang-sway relative transition-transform duration-300 ease-out group-hover:-translate-y-1">
-                  <HangHardware />
-                  <RegularPhoto r={r} />
-                </div>
-              </div>
-            </div>
-            <div ref={textRef(i)}>
-              <p className="ds-label mt-4 text-label-s text-neutral-700 group-hover:text-primary-400">
-                {r.client}
-              </p>
-            </div>
-          </>
-        );
-        return (
-          <li key={r.client} className={WALL[i % WALL.length]}>
-            {href ? (
-              <Link
-                href={href}
-                aria-label={`${r.client} case study`}
-                className="group block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-primary-300"
-              >
-                {body}
-              </Link>
-            ) : (
-              body
-            )}
-          </li>
-        );
-      })}
-    </ul>
+    <div className="wall mt-12 flex flex-col gap-3 md:gap-4">
+      {rows.map((row, r) => (
+        <ul key={r} className="wall-row flex items-center gap-3 md:gap-4">
+          {row.map((p, k) => piece(p, r * 3 + k))}
+        </ul>
+      ))}
+    </div>
   );
 }
 
-/**
- * Salon-style gallery-wall placement on the 12-column grid: varied sizes and staggered
- * heights. Index order matches the hero cluster (front row first), so prints fall
- * straight down without crossing.
- */
-const WALL = [
-  "col-span-2 lg:col-span-5",
-  "lg:col-span-4 lg:mt-16",
-  "lg:col-span-3 lg:mt-4",
-  "lg:col-span-4 lg:col-start-2 lg:-mt-4",
-  "lg:col-span-3 lg:mt-10",
-  "col-span-2 mx-auto w-2/3 lg:col-span-3 lg:mx-0 lg:mt-2 lg:w-full",
-];
+const aspect = (ratio: string) => {
+  const [w, h] = ratio.split("/").map(Number);
+  return w / h;
+};

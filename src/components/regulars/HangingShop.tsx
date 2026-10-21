@@ -16,6 +16,14 @@ const HANG = [
   { left: 61, top: 33, width: 17, sway: "2.7s" },
 ];
 
+/** Height of the hanging cluster (deepest string + print), in cqw, for vertical centering. */
+const CLUSTER_H = Math.max(...HANG.map((h, i) => h.top + h.width * aspectRatio(i)));
+
+function aspectRatio(i: number) {
+  const [w, h] = work.regulars[i].aspect.split("/").map(Number);
+  return h / w;
+}
+
 /**
  * Hero: six client prints hanging straight on strings that fade out as they rise,
  * swaying gently and crowding each other like stock in a sari-sari store window. On desktop
@@ -30,33 +38,37 @@ export function HangingShop() {
       className="relative aspect-[100/58] w-full [container-type:inline-size] lg:aspect-auto lg:h-full"
       aria-hidden
     >
-      {work.regulars.map((r, i) => {
-        const h = HANG[i % HANG.length];
-        return (
-          <div
-            key={r.client}
-            data-hang-slot={i}
-            className="hang-static absolute"
-            style={{
-              left: `${h.left}cqw`,
-              top: `${h.top}cqw`,
-              width: `${h.width}cqw`,
-              // Case studies hang in front; references peek out from behind.
-              zIndex: HANG.length - i,
-            }}
-          >
+      {/* The cluster is centered vertically; strings keep their lengths (fading out above). */}
+      <div
+        className="absolute inset-x-0 top-1/2 -translate-y-1/2"
+        style={{ height: `${CLUSTER_H}cqw` }}
+      >
+        {work.regulars.map((r, i) => {
+          const h = HANG[i % HANG.length];
+          return (
             <div
-              className="hang-sway relative"
-              style={
-                { "--len": `${h.top}cqw`, animationDuration: h.sway } as React.CSSProperties
-              }
+              key={r.client}
+              data-hang-slot={i}
+              className="hang-static absolute"
+              style={{
+                left: `${h.left}cqw`,
+                top: `${h.top}cqw`,
+                width: `${h.width}cqw`,
+                // Case studies hang in front; references peek out from behind.
+                zIndex: HANG.length - i,
+              }}
             >
-              <HangHardware />
-              <RegularPhoto r={r} />
+              <div
+                className="hang-sway relative"
+                style={{ "--len": `${h.top}cqw`, animationDuration: h.sway } as React.CSSProperties}
+              >
+                <HangHardware />
+                <RegularPhoto r={r} />
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
