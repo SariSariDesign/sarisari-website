@@ -92,8 +92,8 @@ export const services = {
   intro:
     "Whether you've just launched or you're preparing for the next raise, our team of senior-level product designers is aimed at the numbers that matter most: conversion, retention, activation, and satisfaction.",
   // Expandable rows: title collapsed; open shows `media` (client work or a placeholder),
-  // the body, and optional `points`. ⚠️ Final service list pending Zach's pick; Digital
-  // products / Marketing support / Branding bodies are drafted, pending sign-off.
+  // the body, and optional `points`. Six rows per the 2026-10-21 feedback. ⚠️ Combined
+  // bodies (UX/UI, Branding & marketing) and Digital products are drafted, pending sign-off.
   cards: [
     {
       n: "01",
@@ -103,40 +103,30 @@ export const services = {
     },
     {
       n: "02",
-      title: "UX design",
+      title: "UX/UI design",
       media: "/work/funding-solutions.webp",
-      body: "Flows and wireframes for every state, so your engineers stop guessing and your funnel stops leaking.",
+      body: "Flows and wireframes for every state, and screens that make a two-year-old product look like the company you've become.",
     },
     {
       n: "03",
-      title: "UI design",
-      media: "/work/kenchan-ramen.webp",
-      body: "Screens that make a two-year-old product look like the company you've become.",
-    },
-    {
-      n: "04",
       title: "Design systems",
       body: "A component library and tokens your team assembles from, so new features stop being redesigns.",
     },
     {
-      n: "05",
+      n: "04",
       title: "User testing & research",
       body: "We put your flows in front of real users and come back with the reason they stall, not a deck of opinions.",
     },
     {
+      n: "05",
+      title: "Full-stack development",
+      media: "/work/kenchan-ramen.webp",
+      body: "We build it ourselves. What we design is what goes live, on your stack.", // ⚠️ confirm full-stack wording
+    },
+    {
       n: "06",
-      title: "Marketing support",
-      body: "Landing pages, launch assets, and site updates that match the product, so growth doesn't wait on a separate agency.",
-    },
-    {
-      n: "07",
-      title: "Branding",
-      body: "Type, color, and voice that grow with you, so the brand keeps pace with the product.",
-    },
-    {
-      n: "08",
-      title: "Front-end development",
-      body: "We ship the front-end ourselves. What we design is what goes live, on your stack.",
+      title: "Branding & marketing support",
+      body: "Type, color, and voice that grow with the product, plus landing pages and launch assets that match it.",
     },
   ] satisfies Service[],
 };
@@ -308,7 +298,7 @@ export const pricing = {
     price: "$16,000",
     period: "/ month",
     description:
-      "Product design expertise focused on getting you more customers. Priced so you can move quickly. No long-term contracts. Pause or cancel anytime.",
+      "Product design expertise focused on getting you more customers that stay longer. Priced so you can move quickly. No long-term contracts.",
     cta: { label: "Book an intro call", href: BOOKING_URL },
     // `body` is optional: some features are a single line.
     features: [
@@ -329,19 +319,18 @@ export const pricing = {
     ] as { title: string; body?: string }[],
   },
   offersHeading: "Not ready for a retainer? Start smaller.",
-  // Lighter cards under the retainer hero. Prices per the 2026-10-20 sync; the diagnostic
-  // body is condensed from its landing page.
+  // Lighter cards under the retainer hero. Prices per the 2026-10-20 sync.
   offers: [
     {
       name: "Audit",
       price: "$1,500",
-      body: "Best to get quick clarity and direction.",
+      body: "You give us the flow; we find where customers are leaking. You get a scorecard and a teardown of that flow with prioritized recommendations. Best if you've been guessing why users leave and want clarity.",
       cta: { label: "Try it for free", href: SCORECARD_URL },
     },
     {
       name: "Diagnostic",
       price: "$6,000",
-      body: "Find the highest-impact fix in one activation flow, with a clickable prototype and a 90-day roadmap.",
+      body: "We find the highest-impact fix, whether that's activation, conversion, or retention, and deliver a redesigned prototype you can implement. Best if you know where the leak is and want the fix.",
       cta: { label: "See the diagnostic", href: DIAGNOSTIC_URL },
     },
     {
@@ -354,7 +343,7 @@ export const pricing = {
 };
 
 export const faq = {
-  eyebrow: "FAQ",
+  eyebrow: "",
   headline: "Questions for us?",
   items: [
     {

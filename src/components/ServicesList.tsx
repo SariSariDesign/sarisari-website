@@ -30,12 +30,12 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="group flex w-full items-center gap-6 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 md:gap-12 md:py-8"
+                className="group flex w-full items-center gap-6 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 md:gap-10 md:py-6"
               >
                 <span className="ds-label w-10 shrink-0 text-label-m text-neutral-700 md:w-16">
                   {s.n}
                 </span>
-                <span className="flex-1 text-[clamp(26px,3.2vw,44px)] font-medium leading-[1.1] tracking-[-0.01em] text-neutral-1000 transition-colors group-hover:text-primary-400">
+                <span className="flex-1 text-[clamp(22px,2.4vw,33px)] font-medium leading-[1.1] tracking-[-0.01em] text-neutral-1000 transition-colors group-hover:text-primary-400">
                   {s.title}
                 </span>
                 <PlusMinus open={isOpen} />
@@ -48,7 +48,7 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
               className={`services-drawer grid ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
             >
               <div className="min-h-0 overflow-hidden" inert={!isOpen}>
-                <div className="grid gap-8 pb-10 md:grid-cols-2 md:gap-12 md:pl-28">
+                <div className="grid gap-8 pb-8 md:grid-cols-2 md:gap-10 md:pl-[104px]">
                   <div className="aspect-[4/3] overflow-hidden rounded-2xl">
                     {s.media ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -90,7 +90,7 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
 /** Drawn plus that collapses to a minus when open (the vertical stroke folds away). */
 function PlusMinus({ open }: { open: boolean }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden className="shrink-0 text-primary-400">
+    <svg width="22" height="22" viewBox="0 0 28 28" aria-hidden className="shrink-0 text-primary-400">
       <path d="M2 14h24" stroke="currentColor" strokeWidth="2" />
       <path
         d="M14 2v24"
