@@ -1,15 +1,33 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { FooterCta } from "@/components/FooterCta";
 import { Nav } from "@/components/Nav";
 import { Placeholder } from "@/components/Placeholder";
-import { kenchan, type KenchanBlock } from "@/content/kenchan";
+import { type CaseStudyBlock, getCaseStudy, publishedCaseStudies } from "@/content/case-studies";
 
-export const metadata: Metadata = {
-  title: `${kenchan.title} — Sari Sari Design`,
-  description: kenchan.intro,
+type Params = { slug: string };
+
+/** Only published case studies get a page; coming-soon slugs 404. */
+export const dynamicParams = false;
+
+export function generateStaticParams(): Params[] {
+  return publishedCaseStudies.map((c) => ({ slug: c.slug }));
+}
+
+const load = (slug: string) => {
+  const study = getCaseStudy(slug);
+  return study?.status === "published" && study.page ? study.page : null;
 };
 
-export default function KenchanCaseStudy() {
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  const page = load((await params).slug);
+  return page ? { title: `${page.title} — Sari Sari Design`, description: page.intro } : {};
+}
+
+/** Case-study template: renders any published entry in `src/content/case-studies`. */
+export default async function CaseStudyPage({ params }: { params: Promise<Params> }) {
+  const page = load((await params).slug);
+  if (!page) notFound();
   return (
     <>
       <Nav />
@@ -18,26 +36,35 @@ export default function KenchanCaseStudy() {
           {/* headline */}
           <header className="flex flex-col gap-6 py-16 md:py-24">
             <h1 className="max-w-[971px] font-brand text-[clamp(36px,5vw,72px)] leading-[1.1] tracking-[-0.014em] text-primary-600">
-              {kenchan.title}
+              {page.title}
             </h1>
-            <p className="ds-label text-label-l text-neutral-900">{kenchan.client}</p>
+            <p className="ds-label text-label-l text-neutral-900">{page.byline}</p>
           </header>
 
           {/* hero image */}
-          <Placeholder className="aspect-video w-full" label="Bundle builder hero — asset pending" />
+          {page.heroImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={page.heroImage}
+              alt=""
+              className="aspect-video w-full rounded-2xl object-cover"
+            />
+          ) : (
+            <Placeholder className="aspect-video w-full" label="Hero image — asset pending" />
+          )}
 
           {/* article */}
           <div className="grid gap-12 py-16 md:py-24 lg:grid-cols-[180px_1fr]">
             <aside className="ds-label flex flex-row gap-6 text-label-m text-neutral-900 lg:flex-col">
-              {kenchan.tags.map((t) => (
+              {page.tags.map((t) => (
                 <span key={t}>{t}</span>
               ))}
             </aside>
 
             <article className="flex max-w-[760px] flex-col gap-12">
-              <HeroStats />
-              <p className="font-brand text-h3 text-primary-600">{kenchan.intro}</p>
-              {kenchan.blocks.map((block, i) => (
+              <HeroStats stats={page.heroStats} />
+              <p className="font-brand text-h3 text-primary-600">{page.intro}</p>
+              {page.blocks.map((block, i) => (
                 <Block key={i} block={block} />
               ))}
             </article>
@@ -49,10 +76,10 @@ export default function KenchanCaseStudy() {
   );
 }
 
-function HeroStats() {
+function HeroStats({ stats }: { stats: { value: string; label: string }[] }) {
   return (
     <div className="flex flex-col gap-12 sm:flex-row">
-      {kenchan.heroStats.map((s) => (
+      {stats.map((s) => (
         <div key={s.value} className="flex flex-1 flex-col gap-2">
           <span className="font-brand text-display-s text-neutral-900">{s.value}</span>
           <span className="ds-label text-label-m text-neutral-700">{s.label}</span>
@@ -62,12 +89,12 @@ function HeroStats() {
   );
 }
 
-function Block({ block }: { block: KenchanBlock }) {
+function Block({ block }: { block: CaseStudyBlock }) {
   switch (block.kind) {
     case "section":
       return (
         <section className="flex flex-col gap-3">
-          {"label" in block && block.label && (
+          {block.label && (
             <span className="ds-label text-label-m text-neutral-900">{block.label}</span>
           )}
           <h2 className="text-title-l font-medium text-primary-600">{block.title}</h2>
@@ -94,8 +121,7 @@ function Block({ block }: { block: KenchanBlock }) {
         </figure>
       );
     case "stats": {
-      const big = "big" in block && block.big;
-      return big ? (
+      return block.big ? (
         <div className="flex flex-col py-4">
           {block.stats.map((s, i) => (
             <div
@@ -119,12 +145,12 @@ function Block({ block }: { block: KenchanBlock }) {
       );
     }
     case "figure":
-      return <Figure ratio={block.ratio} caption={block.caption} />;
+      return <Figure ratio={block.ratio} caption={block.caption} image={block.image} />;
     case "figure-row":
       return (
         <div className="flex flex-col gap-4 py-4 sm:flex-row">
           {block.figures.map((f) => (
-            <Figure key={f.caption} ratio={f.ratio} caption={f.caption} grow />
+            <Figure key={f.caption} ratio={f.ratio} caption={f.caption} image={f.image} grow />
           ))}
         </div>
       );
@@ -154,12 +180,27 @@ function Paragraphs({ paragraphs }: { paragraphs: string[] }) {
   );
 }
 
-function Figure({ ratio, caption, grow }: { ratio: string; caption: string; grow?: boolean }) {
+function Figure({
+  ratio,
+  caption,
+  image,
+  grow,
+}: {
+  ratio: string;
+  caption: string;
+  image?: string;
+  grow?: boolean;
+}) {
   const [w, h] = ratio.split("x").map(Number);
   return (
     <figure className={`flex flex-col gap-3 py-4 ${grow ? "flex-1" : ""}`}>
       <div style={{ aspectRatio: `${w}/${h}` }} className="w-full">
-        <Placeholder className="h-full w-full" label="asset pending" />
+        {image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={image} alt="" className="h-full w-full rounded-2xl object-cover" />
+        ) : (
+          <Placeholder className="h-full w-full" label="asset pending" />
+        )}
       </div>
       <figcaption className="flex flex-col gap-1">
         <span className="ds-label text-label-s text-neutral-900">{caption.split("—")[0]}</span>

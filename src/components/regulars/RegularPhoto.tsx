@@ -1,24 +1,24 @@
-import type { RegularCard } from "@/content/site";
+import type { PortfolioPiece } from "@/content/site";
 import { Placeholder } from "../Placeholder";
 
 /**
- * A client-work print: the photo inside a white border, like a snapshot pinned up in a
- * shop window. Shared by the hero's hanging line and the Our Regulars grid so the two
- * read as the same object while it falls from one to the other. Border, radius and
- * caption are proportional (%, cqw) so the print looks identical at any scale.
+ * A client-work print: the photo, unframed, like a snapshot pinned up in a shop window.
+ * Shared by the hero's hanging line and the Our Recent Clients gallery so the two read as
+ * the same object while it falls from one to the other. Radius and caption are
+ * proportional (%, cqw) so the print looks identical at any scale.
  */
-export function RegularPhoto({ r }: { r: Pick<RegularCard, "client" | "image" | "aspect"> }) {
+export function RegularPhoto({ r }: { r: Pick<PortfolioPiece, "client" | "image" | "aspect"> }) {
   return (
     <div
-      className="regular-print relative w-full rounded-[2.5%] bg-white p-[2.4%] shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
+      className="regular-print relative w-full overflow-hidden rounded-[2%] bg-neutral-200 shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
       style={{ aspectRatio: r.aspect }}
     >
       {r.image ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={r.image} alt="" className="h-full w-full rounded-[1.5%] object-cover" />
+        <img src={r.image} alt="" className="h-full w-full object-cover" />
       ) : (
         <div className="relative h-full w-full">
-          <Placeholder className="h-full w-full rounded-[1.5%]" rounded={false} />
+          <Placeholder className="h-full w-full" rounded={false} />
           <span className="ds-label absolute inset-0 flex items-center justify-center text-center text-[2.6cqw] tracking-[0.2em] text-neutral-700">
             {r.client} — photo pending
           </span>

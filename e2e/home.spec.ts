@@ -8,9 +8,9 @@ test.describe("homepage", () => {
 
   test("renders the hero and every anchored section", async ({ page }) => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      "Design that turns sign ups into regulars",
+      /Design that turns sign.ups into regulars/, // headline uses a non-breaking hyphen
     );
-    for (const id of ["services", "work", "about", "pricing", "faq"]) {
+    for (const id of ["regulars", "services", "work", "pricing", "about", "testimonials", "faq"]) {
       await expect(page.locator(`#${id}`)).toBeVisible();
     }
   });
@@ -21,16 +21,26 @@ test.describe("homepage", () => {
   });
 
   test("the Kenchan case links to its study page", async ({ page }) => {
-    await expect(page.getByRole("link", { name: /view case study/i }).first()).toHaveAttribute(
+    await expect(page.getByRole("link", { name: /kenchan ramen case study/i }).first()).toHaveAttribute(
       "href",
       "/work/kenchan-ramen",
     );
   });
 
-  test("pricing tabs switch between retainer and diagnostic", async ({ page }) => {
-    await page.getByRole("tab", { name: /single project/i }).click();
-    await expect(page.getByRole("heading", { name: /start with three weeks/i })).toBeVisible();
-    await expect(page.getByText(/\$2,500/)).toBeVisible();
+  test("pricing shows the retainer hero and three smaller offers", async ({ page }) => {
+    const pricing = page.locator("#pricing");
+    await expect(pricing.getByText("$16,000")).toBeVisible();
+    await expect(pricing.getByText("$1,500")).toBeVisible();
+    await expect(pricing.getByText("$6,000")).toBeVisible();
+    await expect(pricing.getByRole("link", { name: /try it for free/i })).toHaveAttribute(
+      "href",
+      /activation-diagnostic\.sarisari\.design\/preview/,
+    );
+  });
+
+  test("the case-study template renders a published study", async ({ page }) => {
+    await page.goto("/work/kenchan-ramen");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("37% of Digital Revenue");
   });
 
   test("FAQ opens one item at a time", async ({ page }) => {

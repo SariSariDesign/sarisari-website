@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import type { RegularCard } from "@/content/site";
-import { Arrow } from "../Button";
+import { caseStudyHref, getCaseStudy } from "@/content/case-studies";
+import type { PortfolioPiece } from "@/content/site";
 import { HangHardware, RegularPhoto } from "./RegularPhoto";
 
 const FLY_QUERY = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
@@ -14,7 +14,8 @@ const smooth = (t: number) => t * t * (3 - 2 * t);
 type Geo = { dx: number; dy: number; s: number; len: number; wobble: number };
 
 /**
- * Our Regulars: four client prints that link to their case studies.
+ * Our Regulars: the gallery wall of client work right under the hero, the visual hook
+ * before Services. Pieces with a published case study link to it.
  *
  * Motion study: on desktop (motion allowed) each print starts out hanging on the hero's
  * shop wire (`HangingShop` slots) and, as the page scrolls toward this grid, its string
@@ -24,7 +25,7 @@ type Geo = { dx: number; dy: number; s: number; len: number; wobble: number };
  * rather than tracking the wheel 1:1. Without JS, on mobile, or under reduced motion,
  * the grid is a plain static grid and the hero keeps its still illustration.
  */
-export function Regulars({ items }: { items: RegularCard[] }) {
+export function Regulars({ items }: { items: PortfolioPiece[] }) {
   const cells = useRef<(HTMLDivElement | null)[]>([]);
   const prints = useRef<(HTMLDivElement | null)[]>([]);
   const texts = useRef<(HTMLDivElement | null)[]>([]);
@@ -154,92 +155,60 @@ export function Regulars({ items }: { items: RegularCard[] }) {
   const printRef = (i: number) => (el: HTMLDivElement | null) => void (prints.current[i] = el);
   const textRef = (i: number) => (el: HTMLDivElement | null) => void (texts.current[i] = el);
 
-  /** The landing cell for piece `i`: an untransformed box the print flies into. */
-  // A render helper, not a component, so React never remounts the measured nodes.
-  const print = (r: RegularCard, i: number) => (
-    <div ref={cellRef(i)} className="relative" style={{ aspectRatio: r.aspect }}>
-      <div ref={printRef(i)} className="regular-fly absolute inset-0 origin-top">
-        <div className="hang-sway relative transition-transform duration-300 ease-out group-hover:-translate-y-1">
-          <HangHardware />
-          <RegularPhoto r={r} />
+  const piece = (r: PortfolioPiece, i: number) => {
+    const study = r.caseStudy ? getCaseStudy(r.caseStudy) : undefined;
+    const href = study ? caseStudyHref(study) : null;
+    const body = (
+      <>
+        <div ref={cellRef(i)} className="relative" style={{ aspectRatio: r.aspect }}>
+          <div ref={printRef(i)} className="regular-fly absolute inset-0 origin-top">
+            <div className="hang-sway relative">
+              <HangHardware />
+              <RegularPhoto r={r} />
+            </div>
+          </div>
         </div>
-      </div>
+        <div ref={textRef(i)}>
+          <p className="ds-label mt-3 text-label-s text-neutral-700">{r.client}</p>
+        </div>
+      </>
+    );
+    return (
+      <li
+        key={r.client}
+        className="wall-item min-w-0"
+        style={{ "--a": aspect(r.aspect) } as React.CSSProperties}
+      >
+        {href ? (
+          <Link
+            href={href}
+            aria-label={`${r.client} case study`}
+            className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
+          >
+            {body}
+          </Link>
+        ) : (
+          body
+        )}
+      </li>
+    );
+  };
+
+  // Two justified rows (equal heights at rest); index order matches the hero cluster, so
+  // prints fall straight down. Hovering a piece grows it while its row-mates give way.
+  const rows = [items.slice(0, 3), items.slice(3)];
+  return (
+    <div className="wall mt-12 flex flex-col gap-3 md:gap-4">
+      {rows.map((row, r) => (
+        <ul key={r} className="wall-row flex items-center gap-3 md:gap-4">
+          {row.map((p, k) => piece(p, r * 3 + k))}
+        </ul>
+      ))}
     </div>
   );
-
-  const indexed = items.map((r, i) => ({ r, i }));
-  const cases = indexed.filter(({ r }) => r.kind === "case");
-  const refs = indexed.filter(({ r }) => r.kind === "reference");
-  // Gallery-wall placement for the references: varied sizes, staggered heights.
-  const wall = [
-    "w-full sm:w-[46%] lg:w-[40%]",
-    "w-[72%] sm:w-[30%] lg:w-[24%] lg:mt-24",
-    "w-[60%] sm:w-[26%] lg:w-[21%] lg:mt-8",
-  ];
-
-  return (
-    <>
-      <div className="mt-12 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
-        {cases.map(({ r, i }) => {
-          const body = (
-            <>
-              {print(r, i)}
-              <div ref={textRef(i)} className="mt-6 flex flex-col gap-3">
-                {/* Tag row keeps its height when empty so titles line up across the row. */}
-                <ul className="flex min-h-5 flex-wrap gap-2" aria-label="Project type">
-                  {r.types.map((t) => (
-                    <li
-                      key={t}
-                      className="ds-label rounded bg-yellow-200 px-3 py-1 text-label-s text-yellow-600"
-                    >
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-                <h3 className="font-brand text-[clamp(30px,2.6vw,40px)] leading-[1.1] text-neutral-1000">
-                  {r.client}
-                </h3>
-                <p className="text-body-m text-neutral-700">
-                  {r.impact ?? "Case study coming soon."}
-                </p>
-                {r.href && (
-                  <span className="ds-label inline-flex items-center gap-2 text-label-m text-primary-400 group-hover:text-primary-500">
-                    View case study
-                    <Arrow />
-                  </span>
-                )}
-              </div>
-            </>
-          );
-          return r.href ? (
-            <Link
-              key={r.client}
-              href={r.href}
-              className="group block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-primary-300"
-            >
-              {body}
-            </Link>
-          ) : (
-            <div key={r.client}>{body}</div>
-          );
-        })}
-      </div>
-
-      {refs.length > 0 && (
-        <ul
-          className="mt-24 flex flex-wrap items-start justify-center gap-x-10 gap-y-12"
-          aria-label="More work"
-        >
-          {refs.map(({ r, i }, k) => (
-            <li key={r.client} className={wall[k % wall.length]}>
-              {print(r, i)}
-              <div ref={textRef(i)}>
-                <p className="ds-label mt-4 text-label-s text-neutral-700">{r.client}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </>
-  );
 }
+
+const aspect = (ratio: string) => {
+  const [w, h] = ratio.split("/").map(Number);
+  return w / h;
+};

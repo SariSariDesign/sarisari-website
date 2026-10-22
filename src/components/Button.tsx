@@ -50,8 +50,7 @@ export function Button({
   );
 }
 
-/** Trailing arrow; nudges right on `group` hover. Shared by inline link labels. */
-export function Arrow() {
+function Arrow() {
   return (
     <svg
       width="18"
