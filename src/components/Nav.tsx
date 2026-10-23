@@ -45,7 +45,7 @@ export function Nav() {
       <div
         className={`mx-auto flex items-center justify-between border transition-[max-width,padding,background-color,border-color,box-shadow,border-radius] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           compact
-            ? "max-w-[760px] rounded-full border-neutral-300 bg-neutral-100/90 py-2 pl-6 pr-2 shadow-[0_10px_30px_-18px_rgba(31,29,28,0.45)] backdrop-blur-md"
+            ? "max-w-[860px] rounded-full border-neutral-300 bg-neutral-100/90 py-2 pl-6 pr-2 shadow-[0_10px_30px_-18px_rgba(31,29,28,0.45)] backdrop-blur-md"
             : "max-w-[1200px] rounded-none border-transparent px-3 py-4 md:px-4"
         }`}
       >
@@ -59,7 +59,7 @@ export function Nav() {
 
         <nav
           className={`ds-label hidden items-center transition-[gap,font-size] duration-300 md:flex ${
-            compact ? "gap-6 text-label-s" : "gap-8 text-label-m"
+            compact ? "gap-6 text-label-m" : "gap-8 text-label-m"
           }`}
         >
           {nav.links.map((l) => (
@@ -71,7 +71,7 @@ export function Nav() {
             href={nav.cta.href}
             size="medium"
             external
-            className={compact ? "px-4! py-2! text-label-s!" : ""}
+            className={compact ? "px-4! py-2! text-label-m!" : ""}
           >
             {nav.cta.label}
           </Button>
