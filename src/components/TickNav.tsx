@@ -23,7 +23,7 @@ const MIN = 14;
  * Stripe Press-style table of contents, fixed to the left browser edge (≥768px).
  * One horizontal tick per section, no column, rule or background. Ticks widen toward the
  * hovered or current section (48px max, −10px per step away, 14px min, 150ms ease-out);
- * the current tick is ink, the rest muted. Labels: section name at ≥1440px (where the
+ * the current tick is ink, the rest muted. Labels: section name at ≥1600px (where the
  * outer margin has room); below that, the current section number above the ticks. Click scrolls to the
  * section. Below 768px it becomes a sticky bottom bar: "01 · Hero" + progress segments.
  */
@@ -71,9 +71,9 @@ export function TickNav() {
         className="fixed left-2 top-1/2 z-40 hidden -translate-y-1/2 md:block"
         onMouseLeave={() => setHover(null)}
       >
-        {/* 768–1439px: current section number only, above the ticks so it never
+        {/* 768–1599px: current section number only, above the ticks so it never
             crosses into the content column. */}
-        <span aria-hidden className="ds-label mb-2 block text-label text-neutral-1000 min-[1440px]:hidden">
+        <span aria-hidden className="ds-label mb-2 block text-label text-neutral-1000 min-[1600px]:hidden">
           {num(current)}
         </span>
         <ul className="flex flex-col">
@@ -100,9 +100,9 @@ export function TickNav() {
                     }`}
                     style={{ width }}
                   />
-                  {/* ≥1440px: section name beside the hovered/current tick */}
+                  {/* ≥1600px: section name beside the hovered/current tick */}
                   {showName && (
-                    <span aria-hidden className="ds-label hidden whitespace-nowrap text-label text-neutral-1000 min-[1440px]:inline">
+                    <span aria-hidden className="ds-label hidden whitespace-nowrap text-label text-neutral-1000 min-[1600px]:inline">
                       {s.label}
                     </span>
                   )}

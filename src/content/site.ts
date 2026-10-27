@@ -208,7 +208,54 @@ export const work = {
 export const caseStudiesSection = {
   seeAll: { label: "See all work", href: "/work" },
   eyebrow: "",
-  headline: "Our Recent Projects",
+  headline: "Freshly stocked",
+  // Editorial layout: Kenchan square, Funding Solutions portrait (dropped lower),
+  // NutriSnap wide below. Tiles link only once the case study is published.
+  // ⚠️ Brand colors sampled from the project images; confirm the real ones.
+  tiles: [
+    {
+      slug: "kenchan-ramen",
+      title: "Building a bundle feature that drove 37% of digital revenue",
+      tags: ["E-commerce", "Conversion", "Shopify"],
+      color: "#1e2d74",
+      layout: "square" as const,
+    },
+    {
+      slug: "funding-solutions",
+      title: "Turning high-stakes loan ops into a self-serve lending pipeline",
+      tags: ["Fintech", "0→1 design", "B2B tools"],
+      color: "#2a1a52",
+      layout: "portrait" as const,
+    },
+    {
+      slug: "nutrisnap",
+      title: "Turning nutrition science into a first session people trust",
+      tags: ["Health", "Activation", "AI-built app"],
+      color: "#24543c",
+      layout: "wide" as const,
+    },
+  ],
+};
+
+/** Point of view: the belief statement panel and three pinned principles. */
+export const pointOfView = {
+  line1: "AI makes building easy.",
+  // `underline` is the word that gets the hand-drawn underline.
+  line2: { before: "We make it ", underline: "clear", after: ": what's wrong, what to fix first, and why." },
+  principles: [
+    {
+      title: "Machine speed, human curation.",
+      body: "Generative tools handle the heavy lifting of production. We provide the vision, direction, and editorial discipline to ensure the final product actually matters.",
+    },
+    {
+      title: "Trust at every touchpoint.",
+      body: "Just as sari sari stores run on familiarity and trust, we design the critical micro-moments that turn first-time users into regulars, from fintech to health to e-commerce.",
+    },
+    {
+      title: "Evidence over instincts.",
+      body: "We put interactive flows in front of actual users, watch where they hesitate, and fix that first. We test our instincts against real behavior, then build what holds up.",
+    },
+  ],
 };
 
 export const process = {

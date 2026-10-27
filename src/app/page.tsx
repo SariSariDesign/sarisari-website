@@ -1,6 +1,5 @@
 import { Accordion } from "@/components/Accordion";
 import { Button } from "@/components/Button";
-import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FooterCta } from "@/components/FooterCta";
 import { Marquee } from "@/components/Marquee";
@@ -12,10 +11,12 @@ import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesList } from "@/components/ServicesList";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
+import { Principles } from "@/components/Principles";
+import { StatementPanel } from "@/components/StatementPanel";
 import { TickNav } from "@/components/TickNav";
 import { UseCases } from "@/components/UseCases";
+import { WorkTile } from "@/components/WorkTile";
 import { HangingShop } from "@/components/regulars/HangingShop";
-import { caseStudies } from "@/content/case-studies";
 import {
   about,
   caseStudiesSection,
@@ -37,6 +38,8 @@ export default function Home() {
         <UseCasesSection />
         <Services />
         <CaseStudies />
+        <StatementPanel />
+        <Principles />
         <Testimonials />
         <Pricing />
         <About />
@@ -148,14 +151,15 @@ function CaseStudies() {
         headline={caseStudiesSection.headline}
       />
       <Reveal
+        as="ul"
         stagger
-        className="mt-12 grid grid-cols-4 gap-x-4 gap-y-14 md:grid-cols-8 lg:grid-cols-12"
+        className="mt-12 grid grid-cols-4 gap-x-4 gap-y-16 md:grid-cols-8 lg:grid-cols-12"
       >
-        {caseStudies.slice(0, 3).map((c, i) => (
-          <CaseStudyCard key={c.slug} c={c} featured={i === 0} />
+        {caseStudiesSection.tiles.map((t) => (
+          <WorkTile key={t.slug} t={t} />
         ))}
       </Reveal>
-      <Reveal className="mt-10">
+      <Reveal className="mt-12">
         <Button href={caseStudiesSection.seeAll.href} variant="ghost">
           {caseStudiesSection.seeAll.label}
         </Button>

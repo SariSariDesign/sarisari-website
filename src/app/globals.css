@@ -602,6 +602,41 @@ body {
     opacity: 1;
   }
 }
+/* Work tiles: brand color behind the image; hover deepens it (no zoom). */
+.work-frame {
+  background: var(--tile);
+  transition: background-color 150ms ease-out;
+}
+.group:hover .work-frame,
+.group:focus-visible .work-frame {
+  background: color-mix(in srgb, var(--tile) 80%, black);
+}
+
+/* Statement panel underline: draws left to right once the panel is centered. */
+.statement-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 800ms ease-out;
+}
+.statement.drawn .statement-underline path {
+  stroke-dashoffset: 0;
+}
+
+/* Principles: static by default (mobile, reduced motion); pinned from 768px up. The
+   section is ~2.6 screens tall and the stage sticks below the nav while it scrolls. */
+.principles-stage {
+  padding-block: clamp(80px, 10vw, 160px);
+}
+.principles[data-pinned="true"] {
+  height: 260svh;
+}
+.principles[data-pinned="true"] .principles-stage {
+  position: sticky;
+  top: 76px;
+  height: calc(100svh - 76px);
+  padding-block: 0;
+}
+
 /* Pricing card picked from a use case: 2px primary outline for ~3.5s. */
 .offer-highlight {
   outline: 2px solid var(--color-primary-400);
@@ -640,6 +675,10 @@ body {
   }
   .js .hero-seq > * {
     animation: none;
+  }
+  .statement-underline path {
+    stroke-dashoffset: 0;
+    transition: none;
   }
   .js [data-reveal] .line-icon path {
     stroke-dashoffset: 0;
