@@ -17,8 +17,8 @@
 ## Global / Nav
 
 - Wordmark: lowercase italic-serif **sarisari** (nav + footer). ✅
-- Nav links (anchors on the one-pager): **Work · Services · Pricing · About · FAQ** ✅
-- Nav CTA: **Book an intro call** → Calendly (`https://calendly.com/sarisari/30min`) ✅
+- Nav links: **Home · Work · Services · Process · About** + CTA **Book a Call** ✅ (Work/Services are routes; Process/About are homepage anchors)
+- Nav CTA: **Book a Call** → Calendly (`https://calendly.com/sarisari/30min`) ✅
 - Booking URL (all primary CTAs): `https://calendly.com/sarisari/30min`
 - Diagnostic URL: `https://activation-diagnostic.sarisari.design/`
 - Contact email: `hello@sarisari.design` ⚠️ confirm address
@@ -189,3 +189,16 @@ these need real answers from Zach/Patti before launch:
   and C are sanctioned alternates recorded above. Confirm A stays live.
 - **Kenchan case** — figure images + captions still pending.
 - **Terms & Privacy** — plain legal pages still needed (no source).
+
+## Multi-page routes: copy sources
+
+The sub-pages are not part of the one-pager above. Their copy lives in `src/content/site.ts`
+(drafted lines carry `// ⚠️`):
+
+| Route | `site.ts` object |
+|---|---|
+| `/work` | `workIndex` (cards come from `src/content/case-studies`) |
+| `/services` | `servicesPage` (reuses `services.cards` and a subset of `faq`) |
+| `/services/retainers` | `retainers` (Grow vs. Scale) |
+| `/services/activation-diagnostic` | `diagnostic` |
+| `/contact` | `contact` (Calendly embed + Say Hello form) |

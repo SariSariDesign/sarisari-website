@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { contact } from "@/content/site";
 
 type State = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
@@ -15,6 +15,12 @@ const MAX = { name: 200, email: 254, company: 200, message: 5000 } as const;
 export function ContactForm() {
   const [state, setState] = useState<State>({ kind: "idle" });
   const f = contact.form;
+  const statusRef = useRef<HTMLParagraphElement>(null);
+
+  // The form unmounts on success, dropping focus; move it to the confirmation so it is announced.
+  useEffect(() => {
+    if (state.kind === "sent") statusRef.current?.focus();
+  }, [state.kind]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,7 +42,7 @@ export function ContactForm() {
 
   if (state.kind === "sent") {
     return (
-      <p role="status" className="text-body-l text-neutral-1000">
+      <p ref={statusRef} tabIndex={-1} role="status" className="text-body-l text-neutral-1000 outline-none">
         {f.success}
       </p>
     );

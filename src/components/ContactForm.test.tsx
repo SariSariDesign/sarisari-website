@@ -19,7 +19,9 @@ describe("ContactForm", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<ContactForm />);
     await fill();
-    expect(await screen.findByRole("status")).toHaveTextContent(/thanks/i);
+    const status = await screen.findByRole("status");
+    expect(status).toHaveTextContent(/thanks/i);
+    expect(status).toHaveFocus(); // so screen readers announce it after the form unmounts
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe("/api/contact");
     expect(JSON.parse(init.body)).toMatchObject({ name: "Ada Lovelace", email: "ada@example.com", message: "Hello" });

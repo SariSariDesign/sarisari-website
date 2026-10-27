@@ -20,9 +20,11 @@ export default function ContactPage() {
     <>
       <Nav />
       <main>
-        <Section aria-labelledby="book-h" className="bg-neutral-100">
+        <Section className="bg-neutral-100">
           <PageHeader eyebrow={contact.eyebrow} title={contact.title} intro={contact.intro} />
-          <div className="mt-16 flex flex-col gap-6">
+        </Section>
+        <Section aria-labelledby="book-h" className="bg-neutral-100">
+          <div className="flex flex-col gap-6">
             <SectionHeader headingId="book-h" headline={contact.bookingHeading} />
             <iframe
               src={contact.bookingEmbed}

@@ -17,16 +17,18 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-### Environment
-
-- `ATTIO_API_KEY`: Attio access token with `record_permission:read-write` and `note:read-write` scopes. Needed by `/api/contact` (the Say Hello form). Set it in `.env.local` locally and in Vercel (Preview + Production).
-
 | Script | What it does |
 |---|---|
 | `npm run dev` | Local dev server |
 | `npm run build` | Production build |
 | `npm run start` | Serve the production build |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm test` | Unit tests (Vitest) |
+| `npm run test:e2e` | Playwright end-to-end + a11y tests |
+
+### Environment
+
+- `ATTIO_API_KEY`: Attio access token with `record_permission:read-write` and `note:read-write` scopes. Needed by `/api/contact` (the Say Hello form). Set it in `.env.local` locally and in Vercel (Preview + Production).
 
 ## Where things live
 
@@ -34,9 +36,12 @@ npm run dev        # http://localhost:3000
 |---|---|
 | Design tokens (colors, type scale, fonts) — **canonical source** | `src/app/globals.css` |
 | Homepage sections | `src/app/page.tsx` |
-| Homepage copy/content model | `src/content/site.ts` (mirrors `content/copy-deck.md`) |
-| Kenchan Ramen case study | `src/app/work/kenchan-ramen/page.tsx` + `src/content/kenchan.ts` |
-| Reusable components | `src/components/` (`Section`, `Nav`, `Button`, `Accordion`, `FooterCta`, `Wordmark`, `Placeholder`) |
+| Copy/content model (homepage + sub-pages) | `src/content/site.ts` (mirrors `content/copy-deck.md`) |
+| Routes | `src/app/`: `/` (`page.tsx`), `/work`, `/work/[slug]`, `/services`, `/services/retainers`, `/services/activation-diagnostic`, `/contact`, `/privacy`, `/terms` |
+| Contact API (Say Hello → Attio) | `src/app/api/contact/route.ts` + `src/lib/contact.ts`, `src/lib/attio.ts` |
+| Case studies (template + registry) | `src/content/case-studies/` (see `_template.ts`), rendered by `src/app/work/[slug]/page.tsx` |
+| Shared helpers | `src/lib/` (`metadata.ts` per-page SEO/OG, `links.ts`, `contact.ts`, `attio.ts`) |
+| Reusable components | `src/components/` (`Section`, `PageHeader`, `Nav`, `Button`, `Accordion`, `ContactForm`, `FooterCta`, `Wordmark`, `Placeholder`) |
 | Legacy Webflow URL redirects | `next.config.mjs` |
 | Launch docs | `docs/` (asset inventory, DNS cutover, Figma punch list) |
 
