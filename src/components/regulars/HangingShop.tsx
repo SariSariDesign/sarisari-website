@@ -1,4 +1,7 @@
-import { work } from "@/content/site";
+import { useCases, work } from "@/content/site";
+
+/** Slots whose print drops into a use-case card on scroll. */
+const FLIES = useCases.cards.map((c) => c.print);
 import { HangHardware, RegularPhoto } from "./RegularPhoto";
 
 /**
@@ -28,11 +31,10 @@ function aspectRatio(i: number) {
 
 /**
  * Hero: six client prints hanging straight on strings that fade out as they rise,
- * settling once on load and crowding each other like stock in a sari-sari store window. On desktop
- * with motion allowed, these are only measuring slots: `Regulars` hides them
- * (`[data-hang=fly]`) and drops the real Our Regulars prints from exactly these spots
- * into the grid as the page scrolls. Elsewhere (mobile, reduced motion, no JS) they
- * render as a still illustration.
+ * settling once on load and crowding each other like stock in a sari-sari store window. On
+ * desktop with motion allowed, the four use-case prints are only measuring slots:
+ * `UseCases` hides them (`[data-hang=fly]`) and drops the real prints from these spots
+ * into its cards as the page scrolls; the rest fade. Elsewhere they stay a still picture.
  */
 export function HangingShop() {
   return (
@@ -48,6 +50,7 @@ export function HangingShop() {
             <div
               key={r.client}
               data-hang-slot={i}
+              data-flies={FLIES.includes(i) ? "" : undefined}
               className="hang-static absolute"
               style={{
                 left: `${h.left}cqw`,

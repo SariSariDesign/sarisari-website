@@ -7,8 +7,8 @@ import { Placeholder } from "./Placeholder";
 
 /**
  * Services as a numbered, single-open list. Each row starts condensed (number + title);
- * opening it reveals a piece of relevant media, the description, optional capability
- * bullets, and an optional link. The drawer animates open via grid-template-rows so the
+ * opening it reveals a piece of relevant media, the description, keyword
+ * tags, and an optional link. The drawer animates open via grid-template-rows so the
  * height transition needs no measuring; it is instant under reduced motion.
  */
 export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; defaultOpen?: number }) {
@@ -59,12 +59,11 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                   </div>
                   <div className="flex flex-col gap-4">
                     <p className="text-lead text-neutral-800">{s.body}</p>
-                    {s.points && s.points.length > 0 && (
-                      <ul className="flex flex-col gap-2">
-                        {s.points.map((p) => (
-                          <li key={p} className="flex gap-3 text-body text-neutral-700">
-                            <span aria-hidden className="mt-[9px] h-1.5 w-1.5 shrink-0 bg-neutral-500" />
-                            {p}
+                    {s.tags && s.tags.length > 0 && (
+                      <ul className="flex flex-wrap gap-2" aria-label="Includes">
+                        {s.tags.map((t) => (
+                          <li key={t} className="ds-label border border-neutral-400 px-2 py-1 text-label text-neutral-700">
+                            {t}
                           </li>
                         ))}
                       </ul>

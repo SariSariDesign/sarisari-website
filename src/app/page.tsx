@@ -13,6 +13,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesList } from "@/components/ServicesList";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 import { TickNav } from "@/components/TickNav";
+import { UseCases } from "@/components/UseCases";
 import { HangingShop } from "@/components/regulars/HangingShop";
 import { caseStudies } from "@/content/case-studies";
 import {
@@ -23,6 +24,7 @@ import {
   pricing,
   services,
   testimonials,
+  useCases,
 } from "@/content/site";
 import { isExternal } from "@/lib/links";
 
@@ -32,6 +34,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <UseCasesSection />
         <Services />
         <CaseStudies />
         <Testimonials />
@@ -47,49 +50,46 @@ export default function Home() {
 
 function Hero() {
   return (
-    // A "moment": grain on, gridlines off. Fits one viewport at 1440×900.
+    // A "moment": grain on, gridlines off. 60/40 text to prints (7 + 5 of 12 columns).
     <section
       id="hero"
       data-hero
       className="grain flex flex-col overflow-hidden bg-neutral-100 lg:min-h-[calc(100svh-76px)]"
     >
-      <div className="measure relative z-[1] flex flex-1 flex-col justify-center pb-8 pt-12 md:pt-16 lg:py-8">
+      <div className="measure relative z-[1] grid flex-1 grid-cols-4 items-center gap-x-4 pb-8 pt-12 md:grid-cols-8 md:pt-16 lg:grid-cols-12 lg:py-10">
         {/* Load sequence: eyebrow 0ms, headline +80ms, subhead +180ms, CTAs +280ms. */}
-        <div className="hero-seq grid grid-cols-4 gap-x-4 md:grid-cols-8 lg:grid-cols-12">
-          <Eyebrow className="col-span-full">{hero.eyebrow}</Eyebrow>
-          {/* Headline spans all 12 columns above the 60/40 split. */}
+        <div className="hero-seq col-span-full flex flex-col gap-8 lg:col-span-7">
+          <Eyebrow>{hero.eyebrow}</Eyebrow>
           <h1
-            className="col-span-full mt-6 text-balance font-brand text-display-l italic text-neutral-1000"
+            className="text-balance font-brand text-display-l italic text-neutral-1000"
             style={{ "--d": "80ms" } as React.CSSProperties}
           >
             {hero.headline}
           </h1>
-          {/* 60%: subhead + CTAs */}
-          <div
-            className="col-span-full mt-8 flex flex-col gap-8 self-start lg:col-span-7 lg:mt-8"
+          <p
+            className="max-w-[44ch] text-lead text-neutral-700"
             style={{ "--d": "180ms" } as React.CSSProperties}
           >
-            <p className="max-w-[44ch] text-lead text-neutral-700">{hero.subhead}</p>
-            <div className="flex flex-wrap items-center gap-4">
-              {hero.ctas.map((cta) => (
-                <Button
-                  key={cta.label}
-                  href={cta.href}
-                  variant={cta.variant}
-                  external={isExternal(cta.href)}
-                >
-                  {cta.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-          {/* 40%: prints. */}
+            {hero.subhead}
+          </p>
           <div
-            className="relative col-span-full mx-auto mt-10 w-full max-w-[560px] lg:col-span-5 lg:mt-8 lg:max-w-none"
+            className="flex flex-wrap items-center gap-4"
             style={{ "--d": "280ms" } as React.CSSProperties}
           >
-            <HangingShop />
+            {hero.ctas.map((cta) => (
+              <Button
+                key={cta.label}
+                href={cta.href}
+                variant={cta.variant}
+                external={isExternal(cta.href)}
+              >
+                {cta.label}
+              </Button>
+            ))}
           </div>
+        </div>
+        <div className="relative col-span-full mx-auto mt-12 w-full max-w-[560px] lg:col-span-5 lg:mt-0 lg:max-w-none">
+          <HangingShop />
         </div>
       </div>
 
@@ -101,9 +101,26 @@ function Hero() {
   );
 }
 
+function UseCasesSection() {
+  return (
+    <Section
+      id="use-cases"
+      aria-labelledby="use-cases-h"
+      className="bg-neutral-100"
+    >
+      <SectionHeader headingId="use-cases-h" headline={useCases.headline} />
+      <UseCases />
+    </Section>
+  );
+}
+
 function Services() {
   return (
-    <Section id="services" aria-labelledby="services-h" className="bg-neutral-200">
+    <Section
+      id="services"
+      aria-labelledby="services-h"
+      className="bg-neutral-200"
+    >
       <SectionHeader
         headingId="services-h"
         eyebrow={services.eyebrow}
@@ -130,7 +147,10 @@ function CaseStudies() {
         eyebrow={caseStudiesSection.eyebrow}
         headline={caseStudiesSection.headline}
       />
-      <Reveal stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-14 md:grid-cols-8 lg:grid-cols-12">
+      <Reveal
+        stagger
+        className="mt-12 grid grid-cols-4 gap-x-4 gap-y-14 md:grid-cols-8 lg:grid-cols-12"
+      >
         {caseStudies.slice(0, 3).map((c, i) => (
           <CaseStudyCard key={c.slug} c={c} featured={i === 0} />
         ))}
@@ -147,10 +167,20 @@ function CaseStudies() {
 function About() {
   return (
     <Section id="about" aria-labelledby="about-h" className="bg-orange-100">
-      <SectionHeader headingId="about-h" eyebrow={about.eyebrow} headline={about.headline} />
-      <Reveal stagger className="mt-16 grid grid-cols-4 gap-x-4 gap-y-8 md:grid-cols-8 lg:grid-cols-12">
+      <SectionHeader
+        headingId="about-h"
+        eyebrow={about.eyebrow}
+        headline={about.headline}
+      />
+      <Reveal
+        stagger
+        className="mt-16 grid grid-cols-4 gap-x-4 gap-y-8 md:grid-cols-8 lg:grid-cols-12"
+      >
         {about.members.map((m) => (
-          <div key={m.name} className="col-span-4 flex flex-col gap-4 lg:col-span-6">
+          <div
+            key={m.name}
+            className="col-span-4 flex flex-col gap-4 lg:col-span-6"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={m.photo}
@@ -159,7 +189,9 @@ function About() {
             />
             <div className="flex flex-col gap-1">
               <h3 className="text-heading-m text-neutral-1000">{m.name}</h3>
-              <span className="ds-label text-label text-neutral-700">{m.role}</span>
+              <span className="ds-label text-label text-neutral-700">
+                {m.role}
+              </span>
               <p className="mt-2 text-body text-neutral-700">{m.bio}</p>
             </div>
           </div>
@@ -171,7 +203,11 @@ function About() {
 
 function Testimonials() {
   return (
-    <Section id="testimonials" aria-labelledby="testimonials-h" className="bg-neutral-100">
+    <Section
+      id="testimonials"
+      aria-labelledby="testimonials-h"
+      className="bg-neutral-100"
+    >
       <SectionHeader
         headingId="testimonials-h"
         eyebrow={testimonials.eyebrow}
@@ -186,8 +222,16 @@ function Testimonials() {
 
 function Pricing() {
   return (
-    <Section id="pricing" aria-labelledby="pricing-h" className="bg-neutral-200">
-      <SectionHeader headingId="pricing-h" eyebrow={pricing.eyebrow} headline={pricing.headline} />
+    <Section
+      id="pricing"
+      aria-labelledby="pricing-h"
+      className="bg-neutral-200"
+    >
+      <SectionHeader
+        headingId="pricing-h"
+        eyebrow={pricing.eyebrow}
+        headline={pricing.headline}
+      />
       <Reveal className="mt-12">
         <RetainerPanel retainer={pricing.retainer} />
       </Reveal>
@@ -197,7 +241,9 @@ function Pricing() {
         </Button>
       </Reveal>
       <Reveal className="mt-16 flex flex-col gap-4">
-        <h3 className="text-heading-m text-neutral-1000">{pricing.offersHeading}</h3>
+        <h3 className="text-heading-m text-neutral-1000">
+          {pricing.offersHeading}
+        </h3>
         <OfferCards offers={pricing.offers} />
       </Reveal>
     </Section>
@@ -208,10 +254,40 @@ function Faq() {
   const items = faq.items.map((f) => ({ label: f.q, body: f.a }));
   return (
     <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-200">
-      <SectionHeader headingId="faq-h" eyebrow={faq.eyebrow} headline={faq.headline} />
-      <Reveal className="mt-12">
-        <Accordion items={items} defaultOpen={0} />
-      </Reveal>
+      <div className="grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
+        {/* Left: header, intro, CTA (sticks while the questions scroll on desktop). */}
+        <div className="col-span-full lg:col-span-5">
+          <div className="flex flex-col gap-8 lg:sticky lg:top-28">
+            <SectionHeader
+              headingId="faq-h"
+              eyebrow={faq.eyebrow}
+              headline={faq.headline}
+              className=""
+            />
+            <Reveal delay={100} className="flex flex-col gap-8">
+              <p className="max-w-[40ch] text-lead text-neutral-700">
+                {faq.intro.before}
+                <a
+                  href={`mailto:${faq.intro.email}`}
+                  className="text-neutral-1000 underline underline-offset-4 transition-colors duration-150 ease-out hover:text-primary-400"
+                >
+                  {faq.intro.email}
+                </a>
+                {faq.intro.after}
+              </p>
+              <div>
+                <Button href={faq.cta.href} external>
+                  {faq.cta.label}
+                </Button>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+        {/* Right: questions. */}
+        <Reveal className="col-span-full lg:col-span-7">
+          <Accordion items={items} defaultOpen={0} />
+        </Reveal>
+      </div>
     </Section>
   );
 }

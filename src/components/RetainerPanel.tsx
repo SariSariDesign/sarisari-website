@@ -1,6 +1,8 @@
 import { Button } from "./Button";
 
 export type Retainer = {
+  /** Anchor the use-case buttons scroll to and highlight. */
+  id?: string;
   /** Tier name shown above the price (e.g. "Grow"); omitted on the homepage. */
   name?: string;
   price: string;
@@ -13,7 +15,7 @@ export type Retainer = {
 /** A retainer offer: price, pitch, and its numbered feature list. */
 export function RetainerPanel({ retainer: r }: { retainer: Retainer }) {
   return (
-    <div className="grid gap-12 border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 md:grid-cols-2 md:p-12">
+    <div id={r.id} className="grid gap-12 border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 md:grid-cols-2 md:p-12">
       <div className="flex flex-col gap-6">
         {r.name && <span className="ds-label text-label text-neutral-700">{r.name}</span>}
         <div className="flex items-baseline gap-2">

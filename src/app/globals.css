@@ -150,7 +150,7 @@
 }
 @media (min-width: 64rem) {
   :root {
-    --fs-display-l: 112px;
+    --fs-display-l: 88px;
     --fs-display-m: 64px;
     --fs-display-s: 56px;
     --fs-heading-l: 32px;
@@ -162,7 +162,7 @@
 }
 @media (min-width: 90rem) {
   :root {
-    --fs-display-l: 144px;
+    --fs-display-l: 104px;
     --fs-display-m: 72px;
     --fs-display-s: 72px;
     --fs-heading-l: 40px;
@@ -487,7 +487,9 @@ body {
   translate: -2px 0;
 }
 .group:hover .nudge-down,
-.group:focus-visible .nudge-down {
+.group:focus-visible .nudge-down,
+.group\/btn:hover .nudge-down,
+.group\/btn:focus-visible .nudge-down {
   translate: 0 2px;
 }
 .group:hover .nudge-ur,
@@ -581,9 +583,27 @@ body {
 [data-hang="fly"] .regular-fly .hang-pin {
   display: block;
 }
-/* The hero copies become invisible measuring slots once the real prints take over. */
-[data-hang="fly"] .hang-static {
+/* Hero prints that drop into the use-case cards become invisible measuring slots once
+   the real prints take over; the others stay and fade (UseCases.tsx). */
+[data-hang="fly"] .hang-static[data-flies] {
   visibility: hidden;
+}
+
+/* Use-case cards: outcome line shows on hover/focus; always visible on touch. */
+@media (hover: hover) {
+  .usecase .usecase-outcome {
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+  .usecase:hover .usecase-outcome,
+  .usecase:focus-within .usecase-outcome {
+    opacity: 1;
+  }
+}
+/* Pricing card picked from a use case: 2px primary outline for ~3.5s. */
+.offer-highlight {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 4px;
 }
 .regular-fly {
   will-change: transform;

@@ -75,55 +75,96 @@ export type Service = {
   body: string;
   /** Image shown when the row is open; null renders the hatch placeholder. */
   media?: string | null;
-  /** Capability bullets shown when open. */
-  points?: string[];
+  /** Keyword tags shown when open (Supply caps). */
+  tags?: string[];
   link?: { label: string; href: string };
 };
 
 export const services = {
   seeAll: { label: "See all services", href: "/services" },
-  eyebrow: "Our Services",
-  headline: "Your product got you here. We build what's next.",
+  eyebrow: "",
+  headline: "Design, research and code under one roof.",
   intro:
-    "Whether you've just launched or you're preparing for the next raise, our team of senior-level product designers is aimed at the numbers that matter most: conversion, retention, activation, and satisfaction.",
+    "Senior designers and developers working on the numbers that matter most: conversion, activation, retention.",
   // Expandable rows: title collapsed; open shows `media` (client work or a placeholder),
-  // the body, and optional `points`. Six rows per the 2026-10-21 feedback. ⚠️ Combined
-  // bodies (UX/UI, Branding & marketing) and Digital products are drafted, pending sign-off.
+  // a one-line body and keyword tags.
   cards: [
     {
       n: "01",
       title: "Digital products",
       media: "/work/nutrisnap.webp",
-      body: "From idea to launch: strategy, design, and build under one roof, aimed at the metric your next round depends on.",
+      body: "From idea to a launched product, aimed at the metric your next round depends on.",
+      tags: ["Product strategy", "Product discovery", "MVP design", "Prototyping", "AI product UX", "Launch"],
     },
     {
       n: "02",
       title: "UX/UI design",
       media: "/work/funding-solutions.webp",
-      body: "Flows and wireframes for every state, and screens that make a two-year-old product look like the company you've become.",
+      body: "Flows and screens that make your product easy to start, and look like the company you've become.",
+      tags: ["User flows", "Wireframes", "UI design", "Onboarding & activation", "Mobile & responsive", "Accessibility (WCAG)"],
     },
     {
       n: "03",
       title: "Design systems",
-      body: "A component library and tokens your team assembles from, so new features stop being redesigns.",
+      body: "A component library your developers build from, so new features ship faster and stay consistent.",
+      tags: ["Component libraries", "Design tokens", "Figma libraries", "Annotated dev handoff"],
     },
     {
       n: "04",
       title: "User testing & research",
-      body: "We put your flows in front of real users and come back with the reason they stall, not a deck of opinions.",
+      body: "We don't rely on just best practices or AI-generated personas. We watch real users try your product and show you where they stall and why.",
+      tags: ["Usability testing", "User interviews", "Competitor analysis", "Funnel & analytics review", "Activation audits"],
     },
     {
       n: "05",
       title: "Full-stack development",
       media: "/work/kenchan-ramen.webp",
-      body: "We build it ourselves. What we design is what goes live, on your stack.", // ⚠️ confirm full-stack wording
+      body: "We build what we design, on your stack, so it goes live the way it was designed.",
+      tags: ["Web apps", "Front-end & back-end", "Shopify", "AI features & integrations", "APIs & databases", "Dev guidance"],
     },
     {
       n: "06",
       title: "Branding & marketing support",
-      body: "Type, color, and voice that grow with the product, plus landing pages and launch assets that match it.",
+      body: "A brand, site and pitch deck that make an early company look as credible as its product.",
+      tags: ["Brand identity", "Websites", "Landing pages", "Pitch decks & investor collateral", "Launch assets"],
     },
   ] satisfies Service[],
+};
+
+/**
+ * Use cases: four problems, each pointing at one offer. The image is a hero print that
+ * drops into the card on scroll (`print` = index in `work.regulars`). `offer` is the id of
+ * the pricing card the button scrolls to and highlights.
+ * ⚠️ Card images should become variants so they don't repeat the case study images.
+ */
+export const useCases = {
+  headline: "How can we help?",
+  cards: [
+    {
+      print: 2, // Disco
+      problem: "Users sign up, then disappear",
+      outcome: "Find where they leave and fix that first.",
+      offer: { id: "offer-audit", label: "Activation Audit" },
+    },
+    {
+      print: 4, // NutriSnap
+      problem: "It looks like every other AI-built app",
+      outcome: "Give it a look and flow that's yours.",
+      offer: { id: "offer-diagnostic", label: "Activation Diagnostic" },
+    },
+    {
+      print: 1, // Funding Solutions
+      problem: "You're launching something new",
+      outcome: "Brand, product and site, designed and built together.",
+      offer: { id: "offer-build", label: "Activation Build" },
+    },
+    {
+      print: 0, // Kenchan
+      problem: "Your roadmap is stuck waiting on a design hire",
+      outcome: "A senior team that starts in two weeks.",
+      offer: { id: "offer-scale", label: "Scale" },
+    },
+  ],
 };
 
 /** A portfolio piece in the hero clutter and the Our Regulars gallery wall. */
@@ -292,6 +333,7 @@ export const pricing = {
   headline: "No guesswork. One price.", // ⚠️ revisit: two retainer tiers now
   compare: { label: "Compare retainers", href: "/services/retainers" },
   retainer: {
+    id: "offer-scale",
     price: "$16,000",
     period: "/ month",
     description:
@@ -319,18 +361,21 @@ export const pricing = {
   // Lighter cards under the retainer hero. Prices per the 2026-10-20 sync.
   offers: [
     {
+      id: "offer-audit",
       name: "Audit",
       price: "$1,500",
       body: "You give us the flow; we find where customers are leaking. You get a scorecard and a teardown of that flow with prioritized recommendations. Best if you've been guessing why users leave and want clarity.",
       cta: { label: "Try it for free", href: SCORECARD_URL },
     },
     {
+      id: "offer-diagnostic",
       name: "Diagnostic",
       price: "$6,000",
       body: "We find the highest-impact fix, whether that's activation, conversion, or retention, and deliver a redesigned prototype you can implement. Best if you know where the leak is and want the fix.",
       cta: { label: "See the diagnostic", href: DIAGNOSTIC_URL },
     },
     {
+      id: "offer-build",
       name: "Build",
       price: "Let's talk",
       body: "Looking for something more? Got something big in the works?",
@@ -342,6 +387,8 @@ export const pricing = {
 export const faq = {
   eyebrow: "",
   headline: "Questions for us?",
+  intro: { before: "Can't find your answer? Book a call or email us at ", email: "hello@sarisari.design", after: " to learn more." },
+  cta: { label: "Book a call", href: BOOKING_URL },
   items: [
     {
       q: "How soon can you start?",

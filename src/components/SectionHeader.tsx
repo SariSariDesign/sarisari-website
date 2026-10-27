@@ -7,14 +7,17 @@ export function SectionHeader({
   headline,
   intro,
   headingId,
+  className = "cols-8",
 }: {
   eyebrow?: string;
   headline: string;
   intro?: string;
   headingId?: string;
+  /** Width; defaults to 8 of 12 columns. */
+  className?: string;
 }) {
   return (
-    <Reveal delay={100} className="cols-8 flex flex-col gap-4">
+    <Reveal delay={100} className={`flex flex-col gap-4 ${className}`}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2
         id={headingId}
