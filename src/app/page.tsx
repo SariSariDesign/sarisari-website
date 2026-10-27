@@ -21,6 +21,7 @@ import {
   faq,
   hero,
   pricing,
+  process,
   services,
   testimonials,
   why,
@@ -36,7 +37,9 @@ export default function Home() {
         <Hero />
         <Regulars />
         <Services />
+        <Process />
         <CaseStudies />
+        <Why />
         <Pricing />
         <About />
         <Testimonials />
@@ -111,6 +114,11 @@ function Services() {
       <Reveal>
         <ServicesList items={services.cards} />
       </Reveal>
+      <Reveal className="mt-10">
+        <Button href={services.seeAll.href} variant="ghost">
+          {services.seeAll.label}
+        </Button>
+      </Reveal>
     </Section>
   );
 }
@@ -142,8 +150,55 @@ function CaseStudies() {
         headline={caseStudiesSection.headline}
       />
       <Reveal className="mt-12 grid gap-x-8 gap-y-14 md:grid-cols-2">
-        {caseStudies.map((c, i) => (
+        {caseStudies.slice(0, 3).map((c, i) => (
           <CaseStudyCard key={c.slug} c={c} featured={i === 0} />
+        ))}
+      </Reveal>
+      <Reveal className="mt-10">
+        <Button href={caseStudiesSection.seeAll.href} variant="ghost">
+          {caseStudiesSection.seeAll.label}
+        </Button>
+      </Reveal>
+    </Section>
+  );
+}
+
+/** How we work: four phases of the double diamond, each with its timing. */
+function Process() {
+  return (
+    <Section id="process" aria-labelledby="process-h" className="bg-neutral-100">
+      <SectionHeader
+        headingId="process-h"
+        eyebrow={process.eyebrow}
+        headline={process.headline}
+        intro={process.intro}
+      />
+      <Reveal className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        {process.steps.map((s) => (
+          <div key={s.n} className="flex flex-col gap-3 border-t border-neutral-400 pt-6">
+            <span className="ds-label text-label-s text-neutral-700">
+              {s.n} · {s.when}
+            </span>
+            <h3 className="font-brand text-h2 leading-[1.1] text-neutral-1000">{s.title}</h3>
+            <p className="text-body-s text-neutral-700">{s.body}</p>
+          </div>
+        ))}
+      </Reveal>
+    </Section>
+  );
+}
+
+/** Why Sari Sari: the four alternatives a buyer is weighing us against. */
+function Why() {
+  return (
+    <Section id="uvp" aria-labelledby="uvp-h" className="bg-neutral-200">
+      <SectionHeader headingId="uvp-h" eyebrow={why.eyebrow} headline={why.headline} />
+      <Reveal className="mt-16 grid gap-x-12 gap-y-10 md:grid-cols-2">
+        {why.items.map((w) => (
+          <div key={w.title} className="flex flex-col gap-3">
+            <h3 className="text-title-l font-medium text-neutral-1000">{w.title}</h3>
+            <p className="text-body-m text-neutral-700">{w.body}</p>
+          </div>
         ))}
       </Reveal>
     </Section>
@@ -206,11 +261,7 @@ function Pricing() {
 }
 
 function Faq() {
-  // The former "Why Sari Sari?" comparisons now live as FAQ entries (see site.ts `why`).
-  const items = [
-    ...faq.items.map((f) => ({ label: f.q, body: f.a })),
-    ...why.items.map((w) => ({ label: w.title, body: w.body })),
-  ];
+  const items = faq.items.map((f) => ({ label: f.q, body: f.a }));
   return (
     <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-200">
       <SectionHeader headingId="faq-h" eyebrow={faq.eyebrow} headline={faq.headline} />
