@@ -17,6 +17,10 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
+### Environment
+
+- `ATTIO_API_KEY`: Attio access token with `record_permission:read-write` and `note:read-write` scopes. Needed by `/api/contact` (the Say Hello form). Set it in `.env.local` locally and in Vercel (Preview + Production).
+
 | Script | What it does |
 |---|---|
 | `npm run dev` | Local dev server |
