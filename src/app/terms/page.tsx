@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FooterCta } from "@/components/FooterCta";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = { title: "Terms & Conditions — Sari Sari Design" };
+export const metadata: Metadata = { title: "Terms & Conditions" };
 
 // ⚠️ Placeholder — no T&Cs exist on the live site; legal copy needed before launch.
 export default function Terms() {

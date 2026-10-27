@@ -6,11 +6,13 @@ import { Reveal } from "@/components/Reveal";
 import { RetainerPanel } from "@/components/RetainerPanel";
 import { Section } from "@/components/Section";
 import { retainers } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Retainers — Sari Sari Design",
+export const metadata: Metadata = pageMetadata({
+  title: "Retainers",
   description: retainers.intro,
-};
+  path: "/services/retainers",
+});
 
 /** Grow vs Scale, one RetainerPanel per tier. */
 export default function RetainersPage() {

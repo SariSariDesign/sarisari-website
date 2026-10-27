@@ -39,7 +39,7 @@ test.describe("/services", () => {
   test("overview links to both offer pages", async ({ page }) => {
     await page.goto("/services");
     await expect(page.getByRole("link", { name: /compare retainers/i })).toHaveAttribute("href", "/services/retainers");
-    await expect(page.getByRole("link", { name: /see the diagnostic/i })).toHaveAttribute(
+    await expect(page.getByRole("link", { name: /learn about the diagnostic/i })).toHaveAttribute(
       "href",
       "/services/activation-diagnostic",
     );
@@ -64,4 +64,34 @@ test.describe("/services", () => {
     );
     await expectNoSeriousA11yViolations(page);
   });
+});
+
+test.describe("/contact", () => {
+  test("embeds Calendly and submits the form", async ({ page }) => {
+    await page.route("**/api/contact", (route) => route.fulfill({ json: { ok: true } }));
+    await page.goto("/contact");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.locator('iframe[title="Book a call with Sari Sari"]')).toHaveAttribute("src", /calendly\.com/);
+    await page.getByLabel("Name").fill("Ada Lovelace");
+    await page.getByLabel("Email").fill("ada@example.com");
+    await page.getByLabel("Message").fill("Hello");
+    await page.getByRole("button", { name: "Send" }).click();
+    await expect(page.getByRole("status")).toContainText(/thanks/i);
+  });
+
+  test("is accessible", async ({ page }) => {
+    await page.goto("/contact");
+    await expectNoSeriousA11yViolations(page);
+  });
+});
+
+test("nav reaches every sitemap route, and anchors work from a sub-page", async ({ page, isMobile }) => {
+  test.skip(isMobile, "desktop nav");
+  await page.goto("/services");
+  const nav = page.getByRole("banner");
+  await nav.getByRole("link", { name: "Work", exact: true }).click();
+  await expect(page).toHaveURL(/\/work$/);
+  await nav.getByRole("link", { name: "Process", exact: true }).click();
+  await expect(page).toHaveURL(/\/#process$/);
+  await expect(page.locator("#process")).toBeInViewport();
 });
