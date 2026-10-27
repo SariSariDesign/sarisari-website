@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BOOKING_URL, diagnostic, faq, nav, retainers, servicesPage } from "./site";
+import { BOOKING_URL, diagnostic, faq, nav, pricing, retainers, servicesPage } from "./site";
 
 describe("nav", () => {
   it("follows the sitemap order", () => {
@@ -15,10 +15,15 @@ describe("nav", () => {
 });
 
 describe("services content", () => {
+  it("links the homepage pricing section to the retainer comparison", () => {
+    expect(pricing.compare.href).toBe("/services/retainers");
+  });
+
   it("pulls its FAQ subset from the main FAQ", () => {
     const qs = faq.items.map((f) => f.q);
     for (const item of servicesPage.faqItems()) expect(qs).toContain(item.label);
     expect(servicesPage.faqItems().length).toBeGreaterThan(0);
+    expect(servicesPage.faqItems().length).toBe(servicesPage.faqQuestions.length);
   });
 
   it("offers Grow and Scale retainers, Scale at the current price", () => {

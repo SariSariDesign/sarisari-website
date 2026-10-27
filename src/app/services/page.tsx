@@ -24,6 +24,7 @@ export default function ServicesPage() {
       <main>
         <Section className="bg-neutral-200">
           <PageHeader eyebrow={servicesPage.eyebrow} title={servicesPage.title} intro={servicesPage.intro} />
+          <h2 className="sr-only">{servicesPage.listHeading}</h2>
           <Reveal>
             <ServicesList items={services.cards} />
           </Reveal>

@@ -39,7 +39,7 @@ test.describe("/services", () => {
   test("overview links to both offer pages", async ({ page }) => {
     await page.goto("/services");
     await expect(page.getByRole("link", { name: /compare retainers/i })).toHaveAttribute("href", "/services/retainers");
-    await expect(page.getByRole("link", { name: /see the diagnostic/i })).toHaveAttribute(
+    await expect(page.getByRole("link", { name: /learn about the diagnostic/i })).toHaveAttribute(
       "href",
       "/services/activation-diagnostic",
     );

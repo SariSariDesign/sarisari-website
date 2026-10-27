@@ -163,8 +163,8 @@ export const work = {
       caseStudy: "funding-solutions",
     },
     { client: "Disco", image: null, aspect: "4/3", caseStudy: "disco" },
-    { client: "Lendzi", image: null, aspect: "3/2" },
-    { client: "NutriSnap", image: "/work/nutrisnap.webp", aspect: "6/7" },
+    { client: "Lendzi", image: null, aspect: "3/2", caseStudy: "lendzi" },
+    { client: "NutriSnap", image: "/work/nutrisnap.webp", aspect: "6/7", caseStudy: "nutrisnap" },
     { client: "Portfolio piece", image: null, aspect: "1/1" }, // ⚠️ sixth piece TBD
   ] satisfies PortfolioPiece[],
 };
@@ -295,7 +295,8 @@ export const testimonials = {
 
 export const pricing = {
   eyebrow: "",
-  headline: "No guesswork. One price.",
+  headline: "No guesswork. One price.", // ⚠️ revisit: two retainer tiers now
+  compare: { label: "Compare retainers", href: "/services/retainers" },
   retainer: {
     price: "$16,000",
     period: "/ month",
@@ -409,6 +410,7 @@ export const servicesPage = {
   eyebrow: "Services",
   title: services.headline,
   intro: services.intro,
+  listHeading: "What we do",
   offersHeading: "Two ways to work with us",
   offers: [
     {
@@ -421,7 +423,7 @@ export const servicesPage = {
       name: "Activation Diagnostic",
       price: "From $1,500",
       body: "Find where customers leak, then get the redesigned fix. Start with a free scorecard.",
-      cta: { label: "See the diagnostic", href: "/services/activation-diagnostic" },
+      cta: { label: "Learn about the diagnostic", href: "/services/activation-diagnostic" },
     },
   ],
   faqHeading: "Questions about working with us",

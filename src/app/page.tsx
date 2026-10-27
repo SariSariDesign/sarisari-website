@@ -252,6 +252,11 @@ function Pricing() {
       <Reveal className="mt-12">
         <RetainerPanel retainer={pricing.retainer} />
       </Reveal>
+      <Reveal className="mt-8">
+        <Button href={pricing.compare.href} variant="ghost">
+          {pricing.compare.label}
+        </Button>
+      </Reveal>
       <Reveal className="mt-16 flex flex-col gap-6">
         <h3 className="text-title-l font-medium text-neutral-1000">{pricing.offersHeading}</h3>
         <OfferCards offers={pricing.offers} />
