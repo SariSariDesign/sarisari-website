@@ -147,7 +147,7 @@ export const work = {
   eyebrow: "",
   headline: "Our Recent Clients",
   // Six pieces hang in the hero like stock in a sari-sari store window and fall onto this
-  // gallery wall on scroll: the visual hook before Services. ⚠️ GenWell (unbranded),
+  // gallery wall on scroll: the visual hook before Services. ⚠️ Disco (unbranded),
   // Lendzi and the sixth piece still need images.
   regulars: [
     {
@@ -162,7 +162,7 @@ export const work = {
       aspect: "4/3",
       caseStudy: "funding-solutions",
     },
-    { client: "GenWell", image: null, aspect: "4/3", caseStudy: "genwell" },
+    { client: "Disco", image: null, aspect: "4/3", caseStudy: "disco" },
     { client: "Lendzi", image: null, aspect: "3/2" },
     { client: "NutriSnap", image: "/work/nutrisnap.webp", aspect: "6/7" },
     { client: "Portfolio piece", image: null, aspect: "1/1" }, // ⚠️ sixth piece TBD
@@ -289,7 +289,7 @@ export const testimonials = {
     { quote: null, name: "Nora", role: null, company: "", photo: null },
     { quote: null, name: "NutriSnap", role: null, company: "", photo: null },
     { quote: null, name: "Nirvana", role: null, company: "", photo: null },
-    { quote: null, name: "GenWell", role: null, company: "", photo: null },
+    { quote: null, name: "Disco", role: null, company: "", photo: null },
   ] satisfies Testimonial[],
 };
 
