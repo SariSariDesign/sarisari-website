@@ -237,7 +237,7 @@ export const caseStudiesSection = {
   ],
 };
 
-/** Point of view: the belief statement panel and three pinned principles. */
+/** Process section (homepage): the belief statement and three pinned principles. */
 export const pointOfView = {
   line1: "AI makes building easy.",
   // `underline` is the word that gets the hand-drawn underline.

@@ -11,8 +11,7 @@ import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesList } from "@/components/ServicesList";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
-import { Principles } from "@/components/Principles";
-import { StatementPanel } from "@/components/StatementPanel";
+import { Process } from "@/components/Process";
 import { TickNav } from "@/components/TickNav";
 import { UseCases } from "@/components/UseCases";
 import { WorkTile } from "@/components/WorkTile";
@@ -38,8 +37,7 @@ export default function Home() {
         <UseCasesSection />
         <Services />
         <CaseStudies />
-        <StatementPanel />
-        <Principles />
+        <Process />
         <Testimonials />
         <Pricing />
         <About />
@@ -145,11 +143,20 @@ function Services() {
 function CaseStudies() {
   return (
     <Section id="work" aria-labelledby="work-h" className="bg-neutral-100">
-      <SectionHeader
-        headingId="work-h"
-        eyebrow={caseStudiesSection.eyebrow}
-        headline={caseStudiesSection.headline}
-      />
+      {/* Title left, "See all work" right. */}
+      <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-6">
+        <SectionHeader
+          headingId="work-h"
+          eyebrow={caseStudiesSection.eyebrow}
+          headline={caseStudiesSection.headline}
+          className=""
+        />
+        <Reveal delay={100}>
+          <Button href={caseStudiesSection.seeAll.href} variant="ghost">
+            {caseStudiesSection.seeAll.label}
+          </Button>
+        </Reveal>
+      </div>
       <Reveal
         as="ul"
         stagger
@@ -158,11 +165,6 @@ function CaseStudies() {
         {caseStudiesSection.tiles.map((t) => (
           <WorkTile key={t.slug} t={t} />
         ))}
-      </Reveal>
-      <Reveal className="mt-12">
-        <Button href={caseStudiesSection.seeAll.href} variant="ghost">
-          {caseStudiesSection.seeAll.label}
-        </Button>
       </Reveal>
     </Section>
   );

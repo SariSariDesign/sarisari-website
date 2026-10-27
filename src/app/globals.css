@@ -612,29 +612,28 @@ body {
   background: color-mix(in srgb, var(--tile) 80%, black);
 }
 
-/* Statement panel underline: draws left to right once the panel is centered. */
+/* Process: statement + principles. Static by default (mobile, reduced motion); from
+   768px up the section is ~2.6 screens tall and the stage sticks below the nav. */
+.process-stage {
+  padding-block: clamp(80px, 10vw, 160px);
+}
+.process[data-pinned="true"] {
+  height: 260svh;
+}
+.process[data-pinned="true"] .process-stage {
+  position: sticky;
+  top: 76px;
+  height: calc(100svh - 76px);
+  padding-block: clamp(40px, 6vw, 72px);
+}
+/* Underline under "clear": draws left to right once the section is centered. */
 .statement-underline path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   transition: stroke-dashoffset 800ms ease-out;
 }
-.statement.drawn .statement-underline path {
+.process.drawn .statement-underline path {
   stroke-dashoffset: 0;
-}
-
-/* Principles: static by default (mobile, reduced motion); pinned from 768px up. The
-   section is ~2.6 screens tall and the stage sticks below the nav while it scrolls. */
-.principles-stage {
-  padding-block: clamp(80px, 10vw, 160px);
-}
-.principles[data-pinned="true"] {
-  height: 260svh;
-}
-.principles[data-pinned="true"] .principles-stage {
-  position: sticky;
-  top: 76px;
-  height: calc(100svh - 76px);
-  padding-block: 0;
 }
 
 /* Pricing card picked from a use case: 2px primary outline for ~3.5s. */
