@@ -1,16 +1,17 @@
+import { disco } from "./disco";
 import { fundingSolutions } from "./funding-solutions";
-import { genwell } from "./genwell";
 import { kenchanRamen } from "./kenchan-ramen";
+import { lendzi } from "./lendzi";
+import { nutrisnap } from "./nutrisnap";
 import type { CaseStudy } from "./types";
 
 export type { CaseStudy, CaseStudyBlock } from "./types";
 
 /**
- * Case studies in homepage order. To add one (e.g. NutriSnap, Lendzi): copy
- * `funding-solutions.ts`, fill in `card` (and `page` when it's ready to publish), then
- * add it to this list.
+ * Case studies in display order. To add one, follow the steps in `_template.ts`
+ * (which is deliberately not in this list).
  */
-export const caseStudies: CaseStudy[] = [kenchanRamen, fundingSolutions, genwell];
+export const caseStudies: CaseStudy[] = [kenchanRamen, fundingSolutions, lendzi, disco, nutrisnap];
 
 export const publishedCaseStudies = caseStudies.filter((c) => c.status === "published");
 

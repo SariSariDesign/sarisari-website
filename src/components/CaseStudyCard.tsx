@@ -6,7 +6,16 @@ import { Placeholder } from "./Placeholder";
  * A case study as a big photo that is itself the link (Friendly-style): hovering zooms
  * the photo and raises a "go to page" badge at its foot. The first card runs full width.
  */
-export function CaseStudyCard({ c, featured }: { c: CaseStudy; featured: boolean }) {
+export function CaseStudyCard({
+  c,
+  featured,
+  headingLevel = "h3",
+}: {
+  c: CaseStudy;
+  featured: boolean;
+  headingLevel?: "h2" | "h3";
+}) {
+  const H = headingLevel;
   const href = caseStudyHref(c);
   const image = (featured && c.page?.heroImage) || c.card.image;
   const photo = (
@@ -49,9 +58,9 @@ export function CaseStudyCard({ c, featured }: { c: CaseStudy; featured: boolean
         photo
       )}
       <div className="mt-6 flex flex-col gap-2">
-        <h3 className="font-brand text-[clamp(30px,2.6vw,40px)] leading-[1.1] text-neutral-1000">
+        <H className="font-brand text-[clamp(30px,2.6vw,40px)] leading-[1.1] text-neutral-1000">
           {c.client}
-        </h3>
+        </H>
         <p className="max-w-[60ch] text-body-m text-neutral-700">
           {c.card.outcome ?? "Case study coming soon."}
         </p>
