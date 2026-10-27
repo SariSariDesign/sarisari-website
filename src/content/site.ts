@@ -25,11 +25,11 @@ export const terms = {
 
 export const nav = {
   links: [
-    { label: "Services", href: "/#services" },
-    { label: "Work", href: "/#work" },
-    { label: "Pricing", href: "/#pricing" },
+    { label: "Home", href: "/" },
+    { label: "Work", href: "/work" },
+    { label: "Services", href: "/services" },
+    { label: "Process", href: "/#process" },
     { label: "About", href: "/#about" },
-    { label: "FAQ", href: "/#faq" },
   ],
   cta: { label: "Book a Call", href: BOOKING_URL },
 };
@@ -87,6 +87,7 @@ export type Service = {
 };
 
 export const services = {
+  seeAll: { label: "See all services", href: "/services" },
   eyebrow: "Our Services",
   headline: "Your product got you here. We build what's next.",
   intro:
@@ -170,6 +171,7 @@ export const work = {
 
 /** Homepage Case Studies section copy; the studies themselves live in `content/case-studies`. */
 export const caseStudiesSection = {
+  seeAll: { label: "See all work", href: "/work" },
   eyebrow: "",
   headline: "Our Recent Projects",
 };
