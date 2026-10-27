@@ -8,6 +8,8 @@ import { SectionHeader } from "./SectionHeader";
 const PIN_QUERY =
   "(min-width: 768px) and (prefers-reduced-motion: no-preference)";
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
+/** Vertical scroll per pixel of sideways travel (>1 = slower). */
+const PACE = 1.6;
 
 /**
  * "Ask our regulars." One-row carousel: 3 cards visible on desktop, 2 on tablet, 1 + peek
@@ -49,7 +51,7 @@ export function TestimonialCarousel({
     const applyPin = () => {
       raf = 0;
       const top = sec.getBoundingClientRect().top - 76; // nav height
-      const p = travel ? clamp01(-top / travel) : 0;
+      const p = travel ? clamp01(-top / (travel * PACE)) : 0;
       el.style.transform = `translate3d(${-p * travel}px, 0, 0)`;
       setAtStart(p <= 0.001);
       setAtEnd(p >= 0.999);
@@ -108,7 +110,7 @@ export function TestimonialCarousel({
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const behavior = reduce ? "auto" : "smooth";
-    if (pinned) window.scrollBy({ top: dir * step(), behavior });
+    if (pinned) window.scrollBy({ top: dir * step() * PACE, behavior });
     else track.current?.scrollBy({ left: dir * step(), behavior });
   };
 
@@ -119,7 +121,7 @@ export function TestimonialCarousel({
       aria-labelledby="testimonials-h"
       className="relative bg-neutral-100"
       style={
-        pinned ? { height: `calc(100svh - 76px + ${overflow}px)` } : undefined
+        pinned ? { height: `calc(100svh - 76px + ${Math.round(overflow * PACE)}px)` } : undefined
       }
     >
       <Gridlines />

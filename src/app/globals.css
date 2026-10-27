@@ -267,7 +267,7 @@ main > section,
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-block: clamp(40px, 6vw, 72px);
+  padding-block: clamp(72px, 9vw, 136px);
 }
 .section-hug {
   padding-block: clamp(80px, 10vw, 160px);
@@ -332,7 +332,7 @@ body {
   pointer-events: none;
   opacity: 0.14;
   mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3' intercept='-1'/%3E%3CfeFuncG type='linear' slope='3' intercept='-1'/%3E%3CfeFuncB type='linear' slope='3' intercept='-1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* FAQ accordion: answers open/close over 250ms (grid-template-rows 0fr ↔ 1fr). */
@@ -353,7 +353,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-400);
 }
 .gridlines div {
   position: relative;
@@ -369,7 +369,7 @@ body {
 /* Solid edges read darker than the dashes at the same color, so they use the next
    lighter step to match visually. */
 .gridlines .edge {
-  background: var(--color-neutral-400);
+  background: var(--color-neutral-300);
 }
 /* Outer edges sit 8px outside the content box. */
 .gridlines .edge.l {
@@ -632,13 +632,13 @@ body {
   padding-block: clamp(80px, 10vw, 160px);
 }
 .process[data-pinned="true"] {
-  height: 260svh;
+  height: 340svh;
 }
 .process[data-pinned="true"] .process-stage {
   position: sticky;
   top: 76px;
   height: calc(100svh - 76px);
-  padding-block: clamp(40px, 6vw, 72px);
+  padding-block: clamp(72px, 9vw, 136px);
 }
 /* Underline under "clear": draws left to right once the section is centered. */
 .statement-underline path {

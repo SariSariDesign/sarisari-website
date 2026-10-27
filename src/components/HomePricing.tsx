@@ -23,25 +23,19 @@ export function HomePricing() {
           className="grid gap-12 rounded bg-primary-400 p-8 text-neutral-100 md:p-14 lg:grid-cols-2"
         >
           <div className="flex flex-col gap-4">
-            <span className="ds-label text-label text-primary-200">
-              {scale.kicker}
-            </span>
+            <span className="ds-label text-label text-primary-100">{scale.kicker}</span>
             <h3 className="text-heading-m text-neutral-100">{scale.name}</h3>
-            <span className="font-brand text-display-s text-neutral-100">
-              {scale.price}
-            </span>
-            <p className="text-lead text-primary-100">{scale.description}</p>
-            <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-4">
-              <Button
-                href={scale.cta.href}
-                variant="white"
-                external={isExternal(scale.cta.href)}
-              >
+            <div className="flex items-baseline gap-2">
+              <span className="font-brand text-display-s text-neutral-100">{scale.price}</span>
+              <span className="text-lead text-primary-100">{scale.period}</span>
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-4">
+              <Button href={scale.cta.href} variant="white" external={isExternal(scale.cta.href)}>
                 {scale.cta.label}
               </Button>
               <Link
                 href={scale.grow.href}
-                className="group ds-label inline-flex items-center gap-2 text-label text-neutral-100 underline-offset-4 hover:underline"
+                className="group ds-label inline-flex items-center gap-2 text-label text-neutral-100 underline underline-offset-4"
               >
                 {scale.grow.label}
                 <span aria-hidden className="line-icon nudge-x inline-block">
@@ -50,18 +44,24 @@ export function HomePricing() {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col gap-4">
-            <ul className="flex flex-col">
-              {scale.bullets.map((b) => (
-                <li
-                  key={b}
-                  className="border-b border-primary-300 py-4 text-body text-neutral-100 first:pt-0"
-                >
-                  {b}
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <p className="text-lead text-neutral-100">{scale.description}</p>
+              <p className="text-body-s text-primary-100">{scale.bestFor}</p>
+            </div>
+            <ol className="flex flex-col">
+              {scale.features.map((f, i) => (
+                <li key={f.title} className="flex gap-6 border-t border-primary-300 py-4">
+                  <span className="ds-label w-6 shrink-0 pt-1 text-label text-primary-100">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex flex-col gap-1">
+                    <span className="text-heading-m text-neutral-100">{f.title}</span>
+                    {f.body && <span className="text-body-s text-primary-100">{f.body}</span>}
+                  </span>
                 </li>
               ))}
-            </ul>
-            <p className="text-body-s text-primary-100">{scale.bestFor}</p>
+            </ol>
           </div>
         </div>
       </Reveal>

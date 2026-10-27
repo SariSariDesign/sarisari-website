@@ -10,7 +10,7 @@ const easeOut = (t: number) => 1 - (1 - t) ** 3;
 /**
  * Process: the belief statement and the three principles in one pinned "moment" (grain
  * on, gridlines off). From 768px up with motion allowed, the stage sticks below the nav
- * while the section scrolls ~2.6 screens: the statement stays at the top of the screen and
+ * while the section scrolls ~3.4 screens: the statement stays at the top of the screen and
  * P1, P2, P3 rise into their columns at the bottom, driven by scroll (ease-out, no bounce).
  * Once P3 is in, everything scrolls away together. The hand-drawn underline under "clear"
  * draws once (800ms) when the stage is centered in the viewport. Below 768px or under

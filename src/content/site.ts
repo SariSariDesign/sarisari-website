@@ -399,20 +399,23 @@ export const homePricing = {
   headline: "Ready to get started?",
   scale: {
     id: "offer-scale",
-    kicker: "Ongoing · 3-month minimum",
+    kicker: "Ongoing · Cancel anytime",
     name: "Scale",
-    price: "$16K/mo",
-    description: "Ongoing design and development on an open roadmap. You set the direction.",
-    bullets: [
-      "One senior team for design and code",
-      "We join your standups, reviews and user tests",
-      "Starts within two weeks",
-      "3-month minimum, then 30 days notice",
-    ],
+    price: "$16,000",
+    period: "/ month",
+    description: "Ongoing design and development on an open roadmap.",
     bestFor: "Best for: high-velocity teams that need flexible, ongoing design and engineering.",
+    features: [
+      { title: "One senior team for design and code.", body: "Design and ship at the speed your startup actually moves." },
+      { title: "We join your standups, reviews and user tests.", body: "Anything from design workshops to test parties." },
+      { title: "We shape the roadmap together.", body: "You decide on the direction." },
+      { title: "Starts within two weeks." },
+      { title: "Cancel anytime.", body: "30 days notice, no fees." },
+    ] as { title: string; body?: string }[],
     grow: { label: "Design only? Grow, $8K/mo", href: "/services/retainers" },
     cta: { label: "Book a call", href: BOOKING_URL },
   },
+
   offers: [
     {
       id: "offer-audit",
