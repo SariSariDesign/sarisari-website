@@ -34,3 +34,34 @@ test.describe("/work", () => {
     await expectNoSeriousA11yViolations(page);
   });
 });
+
+test.describe("/services", () => {
+  test("overview links to both offer pages", async ({ page }) => {
+    await page.goto("/services");
+    await expect(page.getByRole("link", { name: /compare retainers/i })).toHaveAttribute("href", "/services/retainers");
+    await expect(page.getByRole("link", { name: /see the diagnostic/i })).toHaveAttribute(
+      "href",
+      "/services/activation-diagnostic",
+    );
+    await expectNoSeriousA11yViolations(page);
+  });
+
+  test("retainers shows Grow and Scale", async ({ page }) => {
+    await page.goto("/services/retainers");
+    await expect(page.getByText("Grow", { exact: true })).toBeVisible();
+    await expect(page.getByText("$16,000")).toBeVisible();
+    await expectNoSeriousA11yViolations(page);
+  });
+
+  test("diagnostic shows Audit + Diagnostic, links to the app, and hides Build", async ({ page }) => {
+    await page.goto("/services/activation-diagnostic");
+    await expect(page.getByText("$1,500")).toBeVisible();
+    await expect(page.getByText("$6,000")).toBeVisible();
+    await expect(page.getByText("Let's talk")).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /open the diagnostic/i })).toHaveAttribute(
+      "href",
+      /activation-diagnostic\.sarisari\.design/,
+    );
+    await expectNoSeriousA11yViolations(page);
+  });
+});

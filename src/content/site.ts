@@ -402,3 +402,69 @@ export const workIndex = {
   title: "Product design that moved a number.", // ⚠️ drafted
   intro: "Every study names the metric we were hired to move and what happened to it.", // ⚠️ drafted
 };
+
+/** /services overview: services list, two offer cards, a pricing summary, and an FAQ subset. */
+export const servicesPage = {
+  eyebrow: "Services",
+  title: services.headline,
+  intro: services.intro,
+  offersHeading: "Two ways to work with us",
+  offers: [
+    {
+      name: "Retainers",
+      price: "From ⚠️ $X,000/mo", // ⚠️ set once Grow is priced
+      body: "An embedded senior product team. Grow while you find fit; Scale when you're ready to move fast.",
+      cta: { label: "Compare retainers", href: "/services/retainers" },
+    },
+    {
+      name: "Activation Diagnostic",
+      price: "From $1,500",
+      body: "Find where customers leak, then get the redesigned fix. Start with a free scorecard.",
+      cta: { label: "See the diagnostic", href: "/services/activation-diagnostic" },
+    },
+  ],
+  faqHeading: "Questions about working with us",
+  faqQuestions: [
+    "How soon can you start?",
+    "What if it isn't working?",
+    "Can we pause the retainer?",
+    "What do we need ready before starting?",
+  ],
+  faqItems() {
+    return faq.items
+      .filter((f) => this.faqQuestions.includes(f.q))
+      .map((f) => ({ label: f.q, body: f.a }));
+  },
+};
+
+/** /services/retainers: Grow vs Scale. Scale is the existing retainer. */
+export const retainers = {
+  eyebrow: "Retainers",
+  title: "Grow vs. Scale",
+  intro: "Same senior team, same rituals. The difference is how much we take on each month.", // ⚠️ drafted
+  tiers: [
+    {
+      name: "Grow",
+      price: "⚠️ $X,000", // ⚠️ price pending
+      period: "/ month",
+      description: "⚠️ For teams finding fit: one focus area at a time, design-led.", // ⚠️ drafted
+      cta: { label: "Book an intro call", href: BOOKING_URL },
+      features: [
+        { title: "⚠️ Feature one" },
+        { title: "⚠️ Feature two" },
+        { title: "⚠️ Feature three" },
+      ] as { title: string; body?: string }[],
+    },
+    { name: "Scale", ...pricing.retainer },
+  ],
+};
+
+/** /services/activation-diagnostic: overview that sends people to the diagnostic app. */
+export const diagnostic = {
+  eyebrow: "Activation Diagnostic",
+  title: "Find the leak. Get the fix.",
+  intro:
+    "Most products lose people between sign-up and the first moment of value. We find exactly where, and redesign it.", // ⚠️ drafted
+  tiers: pricing.offers.filter((o) => o.name !== "Build"),
+  cta: { label: "Open the diagnostic", href: DIAGNOSTIC_URL },
+};
