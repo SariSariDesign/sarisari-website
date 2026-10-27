@@ -17,7 +17,7 @@ export function Placeholder({ className = "", label, tone = "hatch", rounded = t
   return (
     <div
       className={`relative flex items-center justify-center overflow-hidden ${
-        rounded ? "rounded-2xl" : ""
+        ""
       } ${isHatch ? "" : solid[tone]} ${className}`}
       role="img"
       aria-label={label ?? "Image coming soon"}

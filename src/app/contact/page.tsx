@@ -30,7 +30,7 @@ export default function ContactPage() {
               src={contact.bookingEmbed}
               title="Book a call with Sari Sari"
               loading="lazy"
-              className="h-[720px] w-full rounded-2xl border border-neutral-300 bg-white"
+              className="h-[720px] w-full border border-neutral-300 bg-white"
             />
             <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="text-body-s text-primary-400 underline">
               Calendar not loading? Open it in Calendly.

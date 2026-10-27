@@ -205,63 +205,209 @@ body {
   text-transform: uppercase;
 }
 
-/* Film-grain overlay used on saturated sections (blue/green) — stands in for the
-   Figma "Noise & Texture" raster until the original is exported. */
-.noise::after {
+/* ── Grid (Batch 1) ──
+   Content measure is 1200px with 16px side padding and 16px gutters. Columns: 4 below
+   768px, 8 at 768–1023px, 12 at ≥1024px (Tailwind md/lg). The left padding widens to
+   clear the tick nav: 64px on tablet; on desktop the outer margin + padding never drops
+   below 64px. `.measure` is shared by sections, gridlines, footer and the marquee so
+   everything sits on the same columns. */
+.measure {
+  width: 100%;
+  max-width: calc(1200px + 32px);
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+@media (min-width: 48rem) {
+  .measure {
+    padding-left: 64px;
+  }
+}
+@media (min-width: 64rem) {
+  .measure {
+    padding-left: clamp(16px, calc(64px - (100vw - 1232px) / 2), 64px);
+  }
+}
+/* Editorial text block: 8 of 12 columns on desktop, full width below. */
+@media (min-width: 64rem) {
+  .cols-8 {
+    max-width: calc((100% - 176px) * 8 / 12 + 112px);
+  }
+}
+
+/* Film grain (moments only: hero, statement panel, closing band). Grayscale fractal
+   noise multiplied over the surface at 10%. Never on cards or controls. */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 2;
   pointer-events: none;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Decorative dotted column grid (7 vertical dotted lines / 6 columns), pulled from the
-   comp's `gridlines` frame. Rendered per-section by <Section>; every section shares the
-   same 1200px measure + padding, so the dotted lines line up across section boundaries
-   and read as one grid running the whole page. */
+/* Gridlines (Stripe-style): solid 1px at the outer edges of the 1200px measure, dashed
+   (4px dash / 5px gap) on column boundaries — every 3 columns at 12-col, every 2 at
+   8-col, center only at 4-col. Lines draw top-down once when the section enters view
+   (Gridlines.tsx adds `.in`). Hidden on the hero, statement panel and closing band. */
 .gridlines {
   position: absolute;
   inset: 0;
-  max-width: 1200px;
-  margin-inline: auto;
-  padding-inline: 1.5rem; /* matches the container's px-6 */
   pointer-events: none;
-  display: flex;
-  justify-content: space-between;
-  color: var(--color-neutral-300);
+  color: var(--color-neutral-400);
 }
+.gridlines div {
+  position: relative;
+  height: 100%;
+}
+.gridlines i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform-origin: top;
+}
+.gridlines .edge {
+  background: currentColor;
+}
+.gridlines .edge.l {
+  left: 0;
+}
+.gridlines .edge.r {
+  right: 0;
+}
+.gridlines .dash {
+  background-image: repeating-linear-gradient(to bottom, currentColor 0 4px, transparent 4px 9px);
+}
+/* 4 cols: center only. */
+.gridlines .d1,
+.gridlines .d3 {
+  display: none;
+}
+.gridlines .d2 {
+  left: 50%;
+}
+/* 8 cols: every 2 columns (gutter centers). */
 @media (min-width: 48rem) {
-  .gridlines {
-    padding-inline: 2rem; /* matches md:px-8 */
+  .gridlines .d1,
+  .gridlines .d3 {
+    display: block;
+  }
+  .gridlines .d1 {
+    left: calc((100% - 112px) * 2 / 8 + 24px);
+  }
+  .gridlines .d2 {
+    left: calc((100% - 112px) * 4 / 8 + 56px);
+  }
+  .gridlines .d3 {
+    left: calc((100% - 112px) * 6 / 8 + 88px);
   }
 }
-.gridlines > i {
-  width: 1px;
-  /* Vertical dotted line: 3px dot, 6px gap. */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    currentColor 0 3px,
-    transparent 3px 9px
-  );
+/* 12 cols: every 3 columns. */
+@media (min-width: 64rem) {
+  .gridlines .d1 {
+    left: calc((100% - 176px) * 3 / 12 + 40px);
+  }
+  .gridlines .d2 {
+    left: calc((100% - 176px) * 6 / 12 + 88px);
+  }
+  .gridlines .d3 {
+    left: calc((100% - 176px) * 9 / 12 + 136px);
+  }
+}
+.js .gridlines i {
+  transform: scaleY(0);
+  transition: transform 600ms ease-out;
+}
+.js .gridlines.in i {
+  transform: none;
 }
 
-/* ---- Motion (new comp) ---- */
-
-/* Scroll-reveal: elements start hidden and are revealed once by the <Reveal> wrapper,
-   which adds `.in` when the element scrolls into view. Gated on the `.js` class (set
-   before paint in layout.tsx) so content stays visible if JS never runs — progressive
-   enhancement, and no invisible content for crawlers or on script failure. */
+/* ── Motion: "stock the shelf" ──
+   Triggered once at 80% of the viewport (Reveal.tsx). Order inside a section:
+   gridlines draw (0ms) → header rises (100ms) → items fill left to right from 200ms,
+   60ms apart, stagger capped at 300ms. Nothing waits past 600ms. Gated on `.js` (set
+   before paint in layout.tsx) so content stays visible without JS. */
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(12px);
   transition:
-    opacity 600ms ease,
-    transform 600ms ease;
+    opacity 400ms ease-out,
+    transform 400ms ease-out;
+  transition-delay: var(--delay, 0ms);
+}
+.js [data-reveal][data-variant="fade"] {
+  transform: none;
 }
 .js [data-reveal].in {
   opacity: 1;
   transform: none;
+}
+/* Staggered groups: the wrapper stays put, its children fill in. */
+.js [data-reveal][data-stagger] {
+  opacity: 1;
+  transform: none;
+}
+.js [data-reveal][data-stagger] > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 400ms ease-out,
+    transform 400ms ease-out;
+  transition-delay: calc(200ms + min(var(--i, 0) * 60ms, 300ms));
+}
+.js [data-reveal][data-stagger].in > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero on load: eyebrow 0ms, headline +80ms, subhead +180ms, CTAs +280ms. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.js .hero-seq > * {
+  animation: rise-in 400ms ease-out both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Line icons: 2px monoline, square caps. Inside a reveal they draw once on enter
+   (400ms); hover nudges them 2px in their direction (150ms). */
+.line-icon path {
+  transition: stroke-dashoffset 400ms ease-out;
+}
+.js [data-reveal] .line-icon path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.js [data-reveal].in .line-icon path {
+  stroke-dashoffset: 0;
+}
+.line-icon {
+  transition: translate 150ms ease-out;
+}
+.group:hover .nudge-x,
+.group:focus-visible .nudge-x {
+  translate: 2px 0;
+}
+.group:hover .nudge-back,
+.group:focus-visible .nudge-back {
+  translate: -2px 0;
+}
+.group:hover .nudge-down,
+.group:focus-visible .nudge-down {
+  translate: 0 2px;
+}
+.group:hover .nudge-ur,
+.group:focus-visible .nudge-ur {
+  translate: 2px -2px;
 }
 
 /* Logo marquee — the track is a duplicated (2×) strip translated by -50% so the loop is
@@ -369,9 +515,24 @@ body {
   .services-drawer {
     transition: none;
   }
-  .js [data-reveal] {
+  .js [data-reveal],
+  .js [data-reveal][data-stagger] > * {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+  .js .gridlines i {
+    transform: none;
+    transition: none;
+  }
+  .js .hero-seq > * {
+    animation: none;
+  }
+  .js [data-reveal] .line-icon path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .line-icon {
     transition: none;
   }
   .marquee-track,

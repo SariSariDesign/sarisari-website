@@ -6,7 +6,7 @@ import { contact } from "@/content/site";
 type State = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
 
 const input =
-  "w-full rounded-lg border border-neutral-400 bg-white px-4 py-3 text-body-m text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
+  "w-full border border-neutral-400 bg-white px-4 py-3 text-body-m text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
 
 /** Server-side caps in /api/contact; mirrored here so the browser stops at the same limit. */
 const MAX = { name: 200, email: 254, company: 200, message: 5000 } as const;
@@ -82,7 +82,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={state.kind === "sending"}
-          className="ds-label rounded-full bg-primary-100 px-8 py-4 text-label-m text-primary-400 hover:bg-primary-200 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
+          className="ds-label bg-primary-100 px-8 py-4 text-label-m text-primary-400 hover:bg-primary-200 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
         >
           {state.kind === "sending" ? f.sending : f.submit}
         </button>

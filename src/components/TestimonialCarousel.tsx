@@ -48,13 +48,13 @@ export function TestimonialCarousel({ items }: { items: Testimonial[] }) {
         ref={track}
         // Focusable so keyboard users can scroll it with the arrow keys.
         tabIndex={0}
-        className="carousel-track flex snap-x snap-mandatory gap-6 overflow-x-auto rounded-lg pb-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
+        className="carousel-track flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
         aria-label="Testimonials"
       >
         {items.map((t) => (
           <li
             key={t.name}
-            className="flex w-[85%] shrink-0 snap-start sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+            className="flex w-[85%] shrink-0 snap-start sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
           >
             <TestimonialCard t={t} />
           </li>
@@ -72,19 +72,19 @@ function TestimonialCard({ t }: { t: Testimonial }) {
   if (!t.quote) {
     return (
       <Placeholder
-        className="min-h-[280px] w-full rounded-lg"
+        className="min-h-[280px] w-full"
         rounded={false}
         label={`${t.name} — quote pending`}
       />
     );
   }
   return (
-    <figure className="flex min-h-[280px] w-full flex-col justify-between gap-8 rounded-lg border border-neutral-300 bg-white p-8">
+    <figure className="flex min-h-[280px] w-full flex-col justify-between gap-8 border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000">
       <blockquote className="text-body-m text-neutral-800">“{t.quote}”</blockquote>
       <figcaption className="flex items-center gap-3">
         {t.photo && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={t.photo} alt="" className="h-10 w-10 rounded-full object-cover" />
+          <img src={t.photo} alt="" className="h-10 w-10 object-cover" />
         )}
         <span className="flex flex-col">
           <span className="text-title-s font-medium text-neutral-1000">{t.name}</span>
@@ -114,10 +114,16 @@ function ArrowButton({
       aria-label={label}
       disabled={disabled}
       onClick={onClick}
-      className="flex h-12 w-12 items-center justify-center rounded-full border border-neutral-400 text-neutral-1000 transition-colors hover:border-primary-400 hover:text-primary-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300 disabled:cursor-default disabled:opacity-35 disabled:hover:border-neutral-400 disabled:hover:text-neutral-1000"
+      className="group flex h-12 w-12 items-center justify-center border border-neutral-400 text-neutral-1000 transition-colors duration-150 ease-out hover:border-primary-400 hover:text-primary-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300 disabled:cursor-default disabled:opacity-35 disabled:hover:border-neutral-400 disabled:hover:text-neutral-1000"
     >
-      <svg width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden className={dir < 0 ? "rotate-180" : ""}>
-        <path d="M10 1l7 7-7 7M17 8H1" stroke="currentColor" strokeWidth="1.6" />
+      <svg width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden className={`line-icon ${dir < 0 ? "nudge-back" : "nudge-x"}`}>
+        <path
+          d={dir < 0 ? "M8 1L1 8l7 7M1 8h16" : "M10 1l7 7-7 7M17 8H1"}
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="square"
+          pathLength={1}
+        />
       </svg>
     </button>
   );

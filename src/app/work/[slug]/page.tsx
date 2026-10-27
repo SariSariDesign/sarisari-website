@@ -34,7 +34,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
     <>
       <Nav />
       <main className="bg-neutral-100">
-        <div className="mx-auto max-w-[1200px] px-6 lg:px-4">
+        <div className="measure">
           {/* headline */}
           <header className="flex flex-col gap-6 py-16 md:py-24">
             <h1 className="max-w-[971px] font-brand text-[clamp(36px,5vw,72px)] leading-[1.1] tracking-[-0.014em] text-primary-600">
@@ -49,7 +49,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
             <img
               src={page.heroImage}
               alt=""
-              className="aspect-video w-full rounded-2xl object-cover"
+              className="aspect-video w-full object-cover"
             />
           ) : (
             <Placeholder className="aspect-video w-full" label="Hero image — asset pending" />
@@ -199,7 +199,7 @@ function Figure({
       <div style={{ aspectRatio: `${w}/${h}` }} className="w-full">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt="" className="h-full w-full rounded-2xl object-cover" />
+          <img src={image} alt="" className="h-full w-full object-cover" />
         ) : (
           <Placeholder className="h-full w-full" label="asset pending" />
         )}

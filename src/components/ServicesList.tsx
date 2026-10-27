@@ -30,7 +30,7 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="group flex w-full items-center gap-6 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 md:gap-10 md:py-6"
+                className="group flex w-full items-center gap-4 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 md:gap-10 md:py-6"
               >
                 <span className="ds-label w-10 shrink-0 text-label-m text-neutral-700 md:w-16">
                   {s.n}
@@ -48,8 +48,8 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
               className={`services-drawer grid ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
             >
               <div className="min-h-0 overflow-hidden" inert={!isOpen}>
-                <div className="grid gap-8 pb-8 md:grid-cols-2 md:gap-10 md:pl-[104px]">
-                  <div className="aspect-[4/3] overflow-hidden rounded-2xl">
+                <div className="grid gap-4 pb-8 md:grid-cols-2 md:pl-[104px]">
+                  <div className="aspect-[4/3] overflow-hidden">
                     {s.media ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={s.media} alt="" className="h-full w-full object-cover" />
@@ -57,13 +57,13 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                       <Placeholder className="h-full w-full" label={`${s.title} — media pending`} />
                     )}
                   </div>
-                  <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-4">
                     <p className="text-body-l text-neutral-800">{s.body}</p>
                     {s.points && s.points.length > 0 && (
                       <ul className="flex flex-col gap-2">
                         {s.points.map((p) => (
                           <li key={p} className="flex gap-3 text-body-m text-neutral-700">
-                            <span aria-hidden className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-500" />
+                            <span aria-hidden className="mt-[9px] h-1.5 w-1.5 shrink-0 bg-neutral-500" />
                             {p}
                           </li>
                         ))}

@@ -1,6 +1,6 @@
 ---
 name: Sari Sari Design
-description: Warm editorial serif meets Swiss utility, softened with rounded surfaces, an orange accent, and quiet reveal motion for a senior product studio
+description: Warm editorial serif meets Swiss utility, sharp corners, an orange accent, and quiet reveal motion for a senior product studio
 colors:
   ink: "#403e3c"
   ink-strong: "#1f1d1c"
@@ -54,12 +54,13 @@ typography:
     lineHeight: "20px"
     letterSpacing: "2px"
 rounded:
-  tag: "4px"
-  card: "8px"
-  image: "16px"
-  pill: "999px"
+  tag: "0px"
+  card: "0px"
+  image: "0px"
 spacing:
-  gutter: "24px"
+  gutter: "16px"
+  side-padding: "16px"
+  columns: "12 (≥1024px) / 8 (768–1023px) / 4 (<768px)"
   section-y: "96px"
   section-y-lg: "144px"
   container: "1200px"
@@ -68,7 +69,7 @@ components:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.paper}"
     typography: "{typography.label}"
-    rounded: "{rounded.pill}"
+    rounded: "{rounded.card}"
     padding: "16px 32px"
   button-primary-hover:
     backgroundColor: "{colors.primary-deep}"
@@ -78,13 +79,13 @@ components:
     backgroundColor: "{colors.primary-pale}"
     textColor: "{colors.primary}"
     typography: "{typography.label}"
-    rounded: "{rounded.pill}"
+    rounded: "{rounded.card}"
     padding: "16px 32px"
   button-white:
     backgroundColor: "#ffffff"
     textColor: "{colors.navy}"
     typography: "{typography.label}"
-    rounded: "{rounded.pill}"
+    rounded: "{rounded.card}"
     padding: "16px 32px"
   button-ghost:
     textColor: "{colors.primary}"
@@ -106,7 +107,7 @@ plainspoken — a studio that treats its own site as proof of craft.
 What the redesign changes is the *temperature*. The old system was clinical: strict
 square corners, film grain, exposed gridlines, numbered section rails, and saturated
 full-bleed blue/green bands. The new comp keeps the editorial rigor but softens the
-delivery. Corners round (pills, 8px cards, 16px images). A warm **orange accent**
+delivery. Corners stay sharp (0px everywhere). A warm **orange accent**
 appears functionally — the eyebrow dash, process numerals, the highlighted case
 metric — as a third voice alongside blue. Surfaces breathe across a warm neutral
 rhythm (paper → warm grey → peach) with a deep navy closing band. Structure is now
@@ -124,11 +125,11 @@ now welcome; decoration for its own sake is not.
 - Warm neutral canvas with a section rhythm of paper / warm-grey / peach, closing on a deep navy CTA band and a near-black footer
 - Oversized editorial-serif italic display against a Swiss sans body
 - Uppercase mono/grotesque labels as a persistent "spec sheet" device
-- Rounded surfaces: pill buttons, 8px cards, 16px images, 4px tags
+- Sharp corners everywhere (0px): buttons, cards, images, tags
 - Orange as a functional third accent (eyebrow dash, process numerals, case metric, amber sector tags)
 - Eyebrow-dash section headers (orange dash + uppercase label + serif headline)
 - Quiet motion: scroll-reveal fades and a logo marquee, both off under reduced-motion
-- A faint dotted 6-column grid (7 lines) running the full page as a structural underlay
+- Stripe-style gridlines on the 12-column measure (solid edges, dashed every 3 columns, `neutral-400`), drawn on enter; off on the three moments
 - Largely flat still — separation comes from color, hairline borders, and radius, not heavy shadow
 
 ## Colors
@@ -227,22 +228,18 @@ in italic serif.
 
 ## Layout
 
-Content is held to a centered column, `max-width: 1200px`, with a 24px horizontal
-gutter (`px-6`, opening to `px-8` at `md`). Vertical rhythm is `py-24` (96px) per
-section; the hero and navy CTA band carry extra top/bottom padding. Sections are
-full-bleed for background color but content is constrained to the 1200px measure
-(`Section` component). The one exception is the **hero**, which breaks to a
-**full-width split**: the headline/CTAs are held to the measure on the left while the
-graphic bleeds to the right viewport edge (stacks vertically below `lg`).
+Content sits on the 1200px measure (`.measure`) with 16px side padding and 16px
+gutters. Columns: 12 at ≥1024px, 8 at 768–1023px, 4 below 768px. The left padding
+widens to clear the tick nav (64px on tablet; on desktop the outer margin + padding
+never drops below 64px). Common spans: halves 6+6, thirds 4+4+4, editorial text 8 cols
+(`.cols-8`). Vertical rhythm is `py-24` (96px) per section. The hero sits on the same
+measure.
 
 **Eyebrow-dash headers replace numbered rails; the dotted grid returns.** Every
 section opens with the shared `SectionHeader`: an `Eyebrow` (orange dash + uppercase
 label), a serif `display-s` headline, and an optional body-l intro — all wrapped in a
 `Reveal`. The old absolutely-positioned numbered index rail ("01"…"08") stays retired.
-The **dotted column grid is now a page-wide device**: `<Gridlines>` renders 7 faint
-`neutral-300` dotted verticals (6 columns), aligned to the 1200px measure, inside
-every `Section`, so the grid reads as one continuous underlay down the page. The
-`.noise` film-grain helper stays legacy-only.
+`<Gridlines>` runs inside every `Section` (see Gridlines below); `.grain` is for the three moments only.
 
 **Section background rhythm:** Hero (paper) → Services (warm-grey) → Work (paper) →
 Process (warm-grey) → About (peach) → Pricing (paper) → FAQ (warm-grey) → CTA (navy)
@@ -255,9 +252,8 @@ a single stack below `sm`/`md`; work case rows alternate image side (`flip`) at 
 Still largely flat, but the depth cues changed. **Film grain is gone** from the
 homepage (the dotted column grid returns as a faint structural underlay, not a depth
 cue — see Layout). Separation now comes from:
-- **Rounded surfaces + hairline borders:** service cards and the diagnostic panel are
-  white/`rounded-lg` (8px) with a 1px `neutral-300` border; pricing panels are
-  `rounded-2xl` (16px). Feature rows and process steps use hairline `neutral-400`
+- **Sharp surfaces + hairline borders:** cards and pricing panels are white, 0px
+  radius, with a 1px `neutral-300` border. Feature rows and process steps use hairline `neutral-400`
   dividers.
 - **Color surfaces:** the warm neutral rhythm and the peach/navy bands do the heavy
   separation work.
@@ -273,23 +269,20 @@ ever needed, but color + border + radius is the default.
 
 ## Shapes
 
-**Radius returns.** The strict No-Radius rule is **retired**. The comp uses four
-radius steps, each with a job:
-- **Pill (999px, `rounded-full`):** all buttons, the pricing tab toggles, the
-  Diagnostic "Try us first" tag, and the numbered feature-row badges.
-- **Card (8px, `rounded-lg`):** service cards.
-- **Image (16px, `rounded-2xl`):** image placeholders (case assets, team photos) and
-  the pricing panels.
-- **Tag (4px, `rounded`):** the amber sector tags on work case rows.
+**Sharp corners.** 0px radius everywhere: buttons, cards, images, arrows, nav,
+menus, tags. No pills. Borders stay hairline (1px): `neutral-300` around cards,
+`neutral-400` for dividers. Hover never scales, lifts or adds shadow: cards reveal a
+1px ink border or shift background (150ms ease-out); buttons shift background (150ms);
+arrow icons may nudge 2px.
 
-Borders stay hairline (1px) and low-contrast — `neutral-300` around cards,
-`neutral-400` for dividers, `neutral-300` for accordion rules. Form language is now
-soft-rectilinear: architectural proportions, rounded corners.
+**Grain on moments only.** `.grain` (SVG fractal noise, multiply, 10%) on the hero,
+the belief statement panel and the closing band. Never on cards or controls. These
+three moments also drop the gridlines.
 
 ## Components
 
 ### Button (`Button.tsx`)
-- **Shape:** pill (`rounded-full`), `.ds-label` uppercase text + a trailing
+- **Shape:** sharp (0px), `.ds-label` uppercase text + a trailing
   arrow-right SVG (`gap-2`), `focus-visible` 2px offset outline in `primary-300`.
   `large` = `px-8 py-4`, `medium` = `px-6 py-3`.
 - **Variants:**
@@ -363,25 +356,29 @@ soft-rectilinear: architectural proportions, rounded corners.
   `neutral-1000` in the nav, `neutral-100` in the footer.
 
 ### Gridlines (`Gridlines.tsx`, signature)
-- The page-wide structural underlay: **7 vertical dotted lines** (`neutral-300`, 3px
-  dot / 6px gap) forming 6 columns, aligned to the 1200px measure via a matching
-  `padding-inline`. Rendered inside every `Section` behind content (`aria-hidden`,
-  `pointer-events: none`, `z-0` under `z-[1]` content), so the dotted grid runs
-  continuously down the page. Not drawn on the navy CTA band or the near-black footer,
-  where it would clash.
+- Stripe-style lines on the 1200px measure, `neutral-400`: solid 1px at the outer
+  edges; dashed (4px dash / 5px gap) every 3 columns at 12-col, every 2 at 8-col,
+  center only at 4-col. Each section's lines draw top-down once on enter (scaleY 0→1,
+  600ms ease-out). Rendered inside every `Section` (`aria-hidden`, no pointer events,
+  under `z-[1]` content); cards keep a solid background so lines never run through
+  them. Off on the hero, statement panel and closing band.
 
 ## Motion (new)
 
 Motion is quiet, purposeful, and always disabled under `prefers-reduced-motion:
 reduce`:
-- **Scroll-reveal:** `[data-reveal]` elements start at `opacity: 0` /
-  `translateY(8px)` and transition to visible (600ms ease) when the `Reveal` wrapper
-  adds `.in`. One-time, on enter.
+- **"Stock the shelf" reveal:** triggers once at 80% of the viewport. Gridlines draw,
+  then the eyebrow + heading rise 12px and fade (400ms ease-out, +100ms), then items
+  fill in left to right from +200ms, 60ms apart, capped at 300ms (`<Reveal stagger>`).
+  Statement panels fade only. Nothing waits past 600ms. Hero on load: eyebrow 0ms,
+  headline +80ms, subhead +180ms, CTAs +280ms.
+- **Line icons:** 2px monoline, square caps; stroke draws once on enter (400ms), then
+  nudges 2px on hover (150ms).
 - **Logo marquee:** a continuously scrolling, hover-pausing, edge-faded strip.
 - **Smooth scroll:** `scroll-behavior: smooth` on `html`, also gated behind
   `no-preference`.
 - **Micro-transitions:** 150ms color transitions on buttons, tabs, and nav; the
-  button's trailing arrow nudges right (`translate-x-1`) on hover.
+  button's trailing arrow nudges 2px right on hover.
 
 ## Do's and Don'ts
 
@@ -394,17 +391,15 @@ reduce`:
   amber sector tags — and keep it an accent, never a field.
 - **Do** set every label, eyebrow, nav item, button, tag, and index in `.ds-label`
   uppercase.
-- **Do** use the radius steps consistently: pills for buttons/tabs/tags, 8px cards,
-  16px images/panels, 4px sector tags.
+- **Do** keep every corner sharp (0px) — buttons, cards, images, tags, nav, menus.
 - **Do** keep motion subtle and honor `prefers-reduced-motion`.
-- **Do** run the faint dotted column grid (`Gridlines` — `neutral-300`, dotted, 6
-  columns) as a page-wide underlay behind content, aligned to the 1200px measure; keep
-  it faint and never let it read as foreground.
+- **Do** run the Stripe-style gridlines (`Gridlines`) in every section except the three
+  moments, on the 12/8/4-column measure.
 
 ### Don't:
-- **Don't** reintroduce homepage film grain or numbered section rails — the
-  eyebrow-dash header replaced the rails. (The dotted column grid is sanctioned as a
-  faint underlay; film grain is not.)
+- **Don't** put film grain anywhere but the three moments (hero, statement panel,
+  closing band), and never on cards or controls. Numbered section rails stay retired.
+- **Don't** scale, lift or shadow anything on hover.
 - **Don't** use pure white as a page canvas (raised cards only), gradients, glow, or
   heavy multi-layer drop-shadows.
 - **Don't** turn orange into a full-bleed band or let it compete with blue as a

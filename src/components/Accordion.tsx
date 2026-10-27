@@ -26,7 +26,7 @@ export function Accordion({ items, defaultOpen = 0 }: Props) {
               onClick={() => setOpen(isOpen ? -1 : i)}
               aria-expanded={isOpen}
               aria-controls={isOpen ? `${uid}-${i}` : undefined}
-              className="flex w-full items-center justify-between gap-6 py-6 text-left"
+              className="flex w-full items-center justify-between gap-4 py-6 text-left"
             >
               <span className="text-title-m font-medium text-neutral-1000">{item.label}</span>
               <span aria-hidden className="text-2xl leading-none text-neutral-600">

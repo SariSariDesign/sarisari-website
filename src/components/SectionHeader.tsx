@@ -1,7 +1,7 @@
 import { Eyebrow } from "./Eyebrow";
 import { Reveal } from "./Reveal";
 
-/** Eyebrow + serif headline (+ optional intro), the shared section-header device. */
+/** Eyebrow + serif headline (+ optional intro), the shared section-header device. 8 columns wide. */
 export function SectionHeader({
   eyebrow,
   headline,
@@ -14,7 +14,7 @@ export function SectionHeader({
   headingId?: string;
 }) {
   return (
-    <Reveal className="flex max-w-[760px] flex-col gap-5">
+    <Reveal delay={100} className="cols-8 flex flex-col gap-4">
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2
         id={headingId}
@@ -22,7 +22,7 @@ export function SectionHeader({
       >
         {headline}
       </h2>
-      {intro && <p className="text-body-l text-neutral-700">{intro}</p>}
+      {intro && <p className="text-body-m text-neutral-700">{intro}</p>}
     </Reveal>
   );
 }

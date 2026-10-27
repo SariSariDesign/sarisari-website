@@ -183,7 +183,7 @@ export function Regulars({ items }: { items: PortfolioPiece[] }) {
           <Link
             href={href}
             aria-label={`${r.client} case study`}
-            className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
+            className="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
           >
             {body}
           </Link>

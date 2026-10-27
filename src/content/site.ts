@@ -17,10 +17,10 @@ export const LINKEDIN_URL = "https://www.linkedin.com/company/sarisaridesign"; /
  * flagged ⚠️ until Zach/Patti confirm. Interpolated into pricing terms + FAQ answers.
  */
 export const terms = {
-  minimumEngagement: "3-month", // ⚠️ [MINIMUM_ENGAGEMENT]
-  noticePeriod: "30 days", // ⚠️ [NOTICE_PERIOD]
-  pauseHoldPeriod: "30 days", // ⚠️ [PAUSE_HOLD_PERIOD]
-  startLeadTime: "two weeks", // ⚠️ [START_LEAD_TIME]
+  minimumEngagement: "3-month", // confirmed 2026-10-26
+  noticePeriod: "30 days", // confirmed 2026-10-26
+  pauseHoldPeriod: "30 days", // confirmed 2026-10-26: slot held 30 days, then may be filled; no banked days or prorating
+  startLeadTime: "two weeks", // confirmed 2026-10-26
 };
 
 export const nav = {

@@ -23,7 +23,7 @@ export default function WorkIndex() {
       <main>
         <Section className="bg-neutral-100">
           <PageHeader eyebrow={workIndex.eyebrow} title={workIndex.title} intro={workIndex.intro} />
-          <Reveal className="mt-16 grid gap-x-8 gap-y-14 md:grid-cols-2">
+          <Reveal stagger className="mt-16 grid grid-cols-4 gap-x-4 gap-y-14 md:grid-cols-8 lg:grid-cols-12">
             {caseStudies.map((c, i) => (
               <CaseStudyCard key={c.slug} c={c} featured={i === 0} headingLevel="h2" />
             ))}

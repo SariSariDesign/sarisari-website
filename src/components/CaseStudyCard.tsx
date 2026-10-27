@@ -3,8 +3,9 @@ import { type CaseStudy, caseStudyHref } from "@/content/case-studies";
 import { Placeholder } from "./Placeholder";
 
 /**
- * A case study as a big photo that is itself the link (Friendly-style): hovering zooms
- * the photo and raises a "go to page" badge at its foot. The first card runs full width.
+ * A case study as a big photo that is itself the link. Hover reveals a 1px ink border
+ * (150ms ease-out) and nudges the ↗ icon 2px up-right; no zoom, lift or shadow. The
+ * first card runs full width.
  */
 export function CaseStudyCard({
   c,
@@ -20,37 +21,31 @@ export function CaseStudyCard({
   const image = (featured && c.page?.heroImage) || c.card.image;
   const photo = (
     <div
-      className={`relative overflow-hidden rounded-2xl ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}
+      className={`relative overflow-hidden border border-transparent transition-colors duration-150 ease-out group-hover:border-neutral-1000 group-focus-visible:border-neutral-1000 ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}
     >
       {image ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={image}
-          alt=""
-          className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-        />
+        <img src={image} alt="" className="h-full w-full object-cover" />
       ) : (
         <Placeholder className="h-full w-full" label={`${c.client} — image pending`} />
       )}
       {href && (
         <span
           aria-hidden
-          className="absolute bottom-5 left-5 flex h-12 w-12 translate-y-3 items-center justify-center rounded-full bg-neutral-100 text-neutral-1000 opacity-0 shadow-[0_8px_20px_-10px_rgba(31,29,28,0.5)] transition-[opacity,translate] duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
+          className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center bg-neutral-100 text-neutral-1000"
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M4 12L12 4M5 4h7v7" stroke="currentColor" strokeWidth="1.6" />
-          </svg>
+          <ArrowUpRight />
         </span>
       )}
     </div>
   );
   return (
-    <div className={featured ? "md:col-span-2" : ""}>
+    <div className={featured ? "col-span-full" : "col-span-4 lg:col-span-6"}>
       {href ? (
         <Link
           href={href}
           aria-label={`${c.client} case study`}
-          className="group block cursor-pointer rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
+          className="group block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
         >
           {photo}
         </Link>
@@ -66,5 +61,14 @@ export function CaseStudyCard({
         </p>
       </div>
     </div>
+  );
+}
+
+/** ↗ line icon: 2px monoline, square caps; draws on reveal, nudges 2px up-right on hover. */
+function ArrowUpRight() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="line-icon nudge-ur">
+      <path d="M3 13L13 3M5 3h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="square" pathLength={1} />
+    </svg>
   );
 }

@@ -3,7 +3,7 @@
 export type MarqueeLogo = { name: string; mark: string | null };
 
 /**
- * Full-bleed logo marquee. Each half of the track repeats the logo set `repeat` times so
+ * Logo marquee, contained inside the 1200px measure with faded edges. Each half of the track repeats the logo set `repeat` times so
  * it is always wider than the viewport — the CSS `marquee` keyframe (translateX -50%)
  * then loops with no empty tail popping logos back in. Logos fade in one at a time on
  * load (staggered `--i` delay), hover pauses, reduced-motion disables both (globals.css).
@@ -26,7 +26,7 @@ export function Marquee({
   const strip = [...half, ...half];
   return (
     <div
-      className={`relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] ${className}`}
+      className={`relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] ${className}`}
     >
       <div
         className="marquee-track items-center gap-16 pr-16"
