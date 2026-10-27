@@ -388,6 +388,7 @@ export const footerCta = {
 
 export const footer = {
   links: [
+    { label: "Contact", href: "/contact" },
     { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
     { label: "LinkedIn", href: LINKEDIN_URL },
     { label: "Privacy", href: "/privacy" },
@@ -467,4 +468,21 @@ export const diagnostic = {
     "Most products lose people between sign-up and the first moment of value. We find exactly where, and redesign it.", // ⚠️ drafted
   tiers: pricing.offers.filter((o) => o.name !== "Build"),
   cta: { label: "Open the diagnostic", href: DIAGNOSTIC_URL },
+};
+
+/** /contact: Calendly is the primary path; the Say Hello form is the secondary. */
+export const contact = {
+  eyebrow: "Contact",
+  title: "Let's talk about where growth is stalling.",
+  intro: "Pick a time below, or send a note if you'd rather start by email.", // ⚠️ drafted
+  bookingHeading: "Book a call",
+  bookingEmbed: `${BOOKING_URL}?hide_gdpr_banner=1`,
+  form: {
+    heading: "Say hello",
+    fields: { name: "Name", email: "Email", company: "Company (optional)", message: "Message" },
+    submit: "Send",
+    sending: "Sending…",
+    success: "Thanks — we'll reply within one business day.", // ⚠️ confirm SLA
+    fallbackError: `Something went wrong. Email us at ${CONTACT_EMAIL}.`,
+  },
 };

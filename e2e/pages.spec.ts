@@ -65,3 +65,17 @@ test.describe("/services", () => {
     await expectNoSeriousA11yViolations(page);
   });
 });
+
+test.describe("/contact", () => {
+  test("shows the booking embed and the form", async ({ page }) => {
+    await page.goto("/contact");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.locator('iframe[title="Book a call with Sari Sari"]')).toHaveCount(1);
+    await expect(page.getByLabel("Message")).toBeVisible();
+  });
+
+  test("is accessible", async ({ page }) => {
+    await page.goto("/contact");
+    await expectNoSeriousA11yViolations(page);
+  });
+});
