@@ -8,7 +8,7 @@ test.describe("homepage", () => {
 
   test("renders the hero and every anchored section", async ({ page }) => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      /Design that turns sign.ups into regulars/, // headline uses a non-breaking hyphen
+      "Design that turns users into regulars.",
     );
     for (const id of ["hero", "services", "work", "testimonials", "pricing", "about", "faq"]) {
       await expect(page.locator(`#${id}`)).toBeVisible();

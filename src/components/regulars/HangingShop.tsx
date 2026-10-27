@@ -8,12 +8,12 @@ import { HangHardware, RegularPhoto } from "./RegularPhoto";
  * crowd in behind and between them, left to right like the gallery wall they fall to.
  */
 const HANG = [
-  { left: 4, top: 9, width: 29, sway: "3.4s" },
-  { left: 35, top: 3, width: 27, sway: "2.9s" },
-  { left: 64, top: 12, width: 30, sway: "3.7s" },
-  { left: 13, top: 29, width: 24, sway: "3.1s" },
-  { left: 40, top: 23, width: 19, sway: "3.9s" },
-  { left: 61, top: 33, width: 17, sway: "2.7s" },
+  { left: 4, top: 9, width: 29, delay: "0ms" },
+  { left: 35, top: 3, width: 27, delay: "60ms" },
+  { left: 64, top: 12, width: 30, delay: "120ms" },
+  { left: 13, top: 29, width: 24, delay: "40ms" },
+  { left: 40, top: 23, width: 19, delay: "100ms" },
+  { left: 61, top: 33, width: 17, delay: "160ms" },
 ];
 
 /** Height of the hanging cluster (deepest string + print), in cqw, for vertical centering. */
@@ -26,7 +26,7 @@ function aspectRatio(i: number) {
 
 /**
  * Hero: six client prints hanging straight on strings that fade out as they rise,
- * swaying gently and crowding each other like stock in a sari-sari store window. On desktop
+ * settling once on load and crowding each other like stock in a sari-sari store window. On desktop
  * with motion allowed, these are only measuring slots: `Regulars` hides them
  * (`[data-hang=fly]`) and drops the real Our Regulars prints from exactly these spots
  * into the grid as the page scrolls. Elsewhere (mobile, reduced motion, no JS) they
@@ -60,7 +60,7 @@ export function HangingShop() {
             >
               <div
                 className="hang-sway relative"
-                style={{ "--len": `${h.top}cqw`, animationDuration: h.sway } as React.CSSProperties}
+                style={{ "--len": `${h.top}cqw`, animationDelay: h.delay } as React.CSSProperties}
               >
                 <HangHardware />
                 <RegularPhoto r={r} />

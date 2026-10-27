@@ -448,18 +448,24 @@ body {
   rotate: var(--tilt, 0deg);
   transform-origin: 50% calc(-1 * var(--len, 0px));
 }
-@keyframes hang-sway {
-  from {
-    rotate: calc(var(--tilt, 0deg) - 1.4deg * var(--amp, 1));
+/* Prints settle once on load: a small swing that dies out, then they hang still. */
+@keyframes hang-settle {
+  0% {
+    rotate: calc(var(--tilt, 0deg) + 2.4deg * var(--amp, 1));
   }
-  to {
-    rotate: calc(var(--tilt, 0deg) + 1.4deg * var(--amp, 1));
+  40% {
+    rotate: calc(var(--tilt, 0deg) - 1deg * var(--amp, 1));
+  }
+  75% {
+    rotate: calc(var(--tilt, 0deg) + 0.3deg * var(--amp, 1));
+  }
+  100% {
+    rotate: var(--tilt, 0deg);
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .hang-static .hang-sway,
-  [data-hang="fly"] .regular-fly .hang-sway {
-    animation: hang-sway 3.2s ease-in-out infinite alternate;
+  .hang-static .hang-sway {
+    animation: hang-settle 1.6s ease-out both;
   }
 }
 .hang-string,

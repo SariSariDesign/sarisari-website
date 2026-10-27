@@ -1,6 +1,7 @@
 import { Accordion } from "@/components/Accordion";
 import { Button } from "@/components/Button";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
+import { Eyebrow } from "@/components/Eyebrow";
 import { FooterCta } from "@/components/FooterCta";
 import { Marquee } from "@/components/Marquee";
 import { Nav } from "@/components/Nav";
@@ -45,24 +46,29 @@ export default function Home() {
 }
 
 function Hero() {
-  const active = hero.headlineOptions[hero.activeHeadline];
   return (
     // A "moment": grain on, gridlines off. At lg the hero stops ~150px short of the
     // viewport bottom so the next section peeks in on landing (76px = sticky nav height).
-    <section id="hero" data-hero className="grain overflow-hidden bg-neutral-100 lg:min-h-[max(620px,calc(100svh-76px-150px))]">
+    <section
+      id="hero"
+      data-hero
+      className="grain overflow-hidden bg-neutral-100 lg:min-h-[max(620px,calc(100svh-76px-150px))]"
+    >
       <div className="relative z-[1] flex h-full flex-col">
+        {/* 60/40 text to prints (7 + 5 of 12 columns). */}
         <div className="measure grid min-h-0 flex-1 grid-cols-4 gap-x-4 md:grid-cols-8 lg:grid-cols-12">
-          <div className="col-span-full flex items-center pb-12 pt-16 md:pt-24 lg:col-span-6 lg:py-12">
-            {/* Load sequence: headline +80ms, subhead +180ms, CTAs +280ms (eyebrow, when added, 0ms). */}
+          <div className="col-span-full flex items-center pb-12 pt-16 md:pt-24 lg:col-span-7 lg:py-12">
+            {/* Load sequence: eyebrow 0ms, headline +80ms, subhead +180ms, CTAs +280ms. */}
             <div className="hero-seq flex flex-col gap-8">
+              <Eyebrow>{hero.eyebrow}</Eyebrow>
               <h1
                 className="text-balance font-brand text-[clamp(52px,8vw,var(--text-display-l))] italic leading-[1] tracking-[-0.02em] text-neutral-1000"
                 style={{ "--d": "80ms" } as React.CSSProperties}
               >
-                {active.headline}
+                {hero.headline}
               </h1>
               <p
-                className="max-w-[40ch] text-body-l text-neutral-700"
+                className="max-w-[44ch] text-body-l text-neutral-700"
                 style={{ "--d": "180ms" } as React.CSSProperties}
               >
                 {hero.subhead}
@@ -85,16 +91,13 @@ function Hero() {
             </div>
           </div>
 
-          <div className="relative col-span-full pb-12 lg:col-span-6 lg:pb-0 lg:pt-6">
+          <div className="relative col-span-full pb-12 lg:col-span-5 lg:pb-0 lg:pt-6">
             <HangingShop />
           </div>
         </div>
 
-        {/* Label and logo strip both sit inside the 1200px measure. */}
-        <div className="measure flex flex-col gap-8 pb-16 pt-8 md:pb-24 lg:pb-12 lg:pt-20">
-          <span className="ds-label text-[15px] leading-[18px] tracking-[2px] text-neutral-700">
-            {hero.marquee.label}
-          </span>
+        {/* Client logo strip, inside the 1200px measure. */}
+        <div className="measure pb-16 pt-8 md:pb-24 lg:pb-12 lg:pt-16">
           <Marquee items={hero.marquee.logos} />
         </div>
       </div>

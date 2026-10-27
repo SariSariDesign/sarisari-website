@@ -40,37 +40,31 @@ export const nav = {
  * in the editorial italic serif; option C is a centered two-line pairing.
  */
 export const hero = {
-  headlineOptions: {
-    A: {
-      headline: "Let's build products your people need.",
-      note: "A — the fractional play",
-      centered: false,
-    },
-    B: { headline: "We build products people use.", note: "B — quiet confidence", centered: false },
-    C: {
-      headline: "Products your people need. Experiences they come back to.",
-      note: "C — on-brand pairing",
-      centered: true,
-    },
-    D: {
-      headline: "Design that turns sign\u2011ups into regulars", // non-breaking hyphen
-      note: "D — the regulars play",
-      centered: false,
-    },
-  },
-  activeHeadline: "D" as "A" | "B" | "C" | "D",
-  subhead: "A product design studio that helps you acquire, convert, and retain more customers.",
-  ctas: [{ label: "Let's chat", href: BOOKING_URL, variant: "primary" as const }],
+  eyebrow: "For Seed to Series A founders",
+  headline: "Design that turns users into regulars.",
+  subhead:
+    "Sari Sari is a senior-led design and development studio helping founders launch, fix and grow products people trust.",
+  ctas: [
+    { label: "Book a call", href: BOOKING_URL, variant: "primary" as const },
+    { label: "Get free Scorecard", href: SCORECARD_URL, variant: "secondary" as const },
+  ],
   marquee: {
-    label: "Trusted by 20+ global teams", // ⚠️ substantiate before launch
-    // Real client marks (grey silhouettes in /public/logos, from the activation-diagnostic
-    // set). `mark: null` renders the name as text. ⚠️ confirm/permission logos before launch.
+    // The 13 clients. Grey silhouettes live in /public/logos; `mark: null` renders the
+    // name as a wordmark. ⚠️ confirm logo permissions before launch.
     logos: [
-      { name: "Lendzi", mark: "/logos/lendzi.png" },
-      { name: "SignalVerified", mark: "/logos/signalverified.png" },
+      { name: "Selfbook", mark: "/logos/selfbook.png" },
       { name: "Silk & Sonder", mark: null },
       { name: "Lions & Lambs", mark: "/logos/lionslambs.png" },
-      { name: "Selfbook", mark: "/logos/selfbook.png" },
+      { name: "SWS Gifts", mark: null },
+      { name: "Liberty Call", mark: null },
+      { name: "Funding Solutions", mark: null },
+      { name: "Lendzi", mark: "/logos/lendzi.png" },
+      { name: "Signal Verified", mark: "/logos/signalverified.png" },
+      { name: "NutriSnap", mark: null },
+      { name: "Disco", mark: null },
+      { name: "Nervana", mark: null },
+      { name: "Kenchan", mark: null },
+      { name: "Kocah", mark: null },
     ],
   },
 };
