@@ -170,10 +170,10 @@ export function UseCases() {
         return (
           <li
             key={c.problem}
-            className="usecase group col-span-4 flex flex-col border border-neutral-300 bg-white transition-colors duration-150 ease-out hover:border-neutral-1000 focus-within:border-neutral-1000 lg:col-span-3"
+            className="usecase group col-span-4 flex flex-col rounded border border-neutral-300 bg-white transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-100 focus-within:border-neutral-1000 lg:col-span-3"
           >
             {/* Image on top: the print lands here, centered in a 4:3 frame. */}
-            <div className="relative aspect-[4/3] bg-neutral-200">
+            <div className="relative aspect-[4/3] rounded-t-[3px] bg-neutral-200">
               <div className="absolute inset-5 flex items-center justify-center [container-type:size]">
                 <div
                   ref={(el) => void (cells.current[i] = el)}
@@ -205,7 +205,7 @@ export function UseCases() {
                   type="button"
                   onClick={() => highlight(c.offer.id)}
                   aria-label={`See ${c.offer.label} pricing`}
-                  className="group/btn flex h-12 w-12 items-center justify-center border border-neutral-1000 text-neutral-1000 transition-colors duration-150 ease-out hover:bg-neutral-1000 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
+                  className="group/btn flex h-12 w-12 rounded items-center justify-center border border-neutral-1000 text-neutral-1000 transition-colors duration-150 ease-out hover:bg-neutral-1000 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                 >
                   <svg
                     width="16"

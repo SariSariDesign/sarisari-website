@@ -21,7 +21,7 @@ export function CaseStudyCard({
   const image = (featured && c.page?.heroImage) || c.card.image;
   const photo = (
     <div
-      className={`relative overflow-hidden border border-transparent transition-colors duration-150 ease-out group-hover:border-neutral-1000 group-focus-visible:border-neutral-1000 ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}
+      className={`relative overflow-hidden rounded border border-transparent transition-colors duration-150 ease-out group-hover:border-neutral-1000 group-focus-visible:border-neutral-1000 ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}
     >
       {image ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -32,7 +32,7 @@ export function CaseStudyCard({
       {href && (
         <span
           aria-hidden
-          className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center bg-neutral-100 text-neutral-1000"
+          className="absolute right-4 top-4 flex h-12 w-12 rounded items-center justify-center bg-neutral-100 text-neutral-1000"
         >
           <ArrowUpRight />
         </span>

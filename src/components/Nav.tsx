@@ -46,7 +46,7 @@ export function Nav() {
       <div
         className={`mx-auto flex items-center justify-between border transition-[max-width,padding,background-color,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           compact
-            ? "max-w-[860px] border-neutral-300 bg-neutral-100/90 py-2 pl-6 pr-2 shadow-[0_10px_30px_-18px_rgba(31,29,28,0.45)] backdrop-blur-md"
+            ? "max-w-[860px] rounded border-neutral-300 bg-neutral-100/90 py-2 pl-6 pr-2 shadow-[0_10px_30px_-18px_rgba(31,29,28,0.45)] backdrop-blur-md"
             : "measure border-transparent py-4"
         }`}
       >
@@ -89,7 +89,7 @@ export function Nav() {
       </div>
 
       {open && (
-        <nav className="ds-label mx-auto mt-2 flex max-w-[760px] flex-col gap-4 border border-neutral-300 bg-neutral-100 px-6 py-6 text-label lg:hidden">
+        <nav className="ds-label mx-auto mt-2 flex max-w-[760px] flex-col gap-4 rounded border border-neutral-300 bg-neutral-100 px-6 py-6 text-label lg:hidden">
           {nav.links.map((l) => (
             <Link
               key={l.label}

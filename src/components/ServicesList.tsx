@@ -49,7 +49,7 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
             >
               <div className="min-h-0 overflow-hidden" inert={!isOpen}>
                 <div className="grid gap-4 pb-8 md:grid-cols-2 md:pl-[104px]">
-                  <div className="aspect-[4/3] overflow-hidden">
+                  <div className="aspect-[4/3] overflow-hidden rounded">
                     {s.media ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={s.media} alt="" className="h-full w-full object-cover" />
@@ -62,7 +62,7 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                     {s.tags && s.tags.length > 0 && (
                       <ul className="flex flex-wrap gap-2" aria-label="Includes">
                         {s.tags.map((t) => (
-                          <li key={t} className="ds-label border border-neutral-400 px-2 py-1 text-label text-neutral-700">
+                          <li key={t} className="ds-label rounded border border-neutral-400 px-2 py-1 text-label text-neutral-700">
                             {t}
                           </li>
                         ))}

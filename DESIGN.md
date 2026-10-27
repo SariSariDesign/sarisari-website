@@ -1,6 +1,6 @@
 ---
 name: Sari Sari Design
-description: Warm editorial serif meets Swiss utility, sharp corners, an orange accent, and quiet reveal motion for a senior product studio
+description: Warm editorial serif meets Swiss utility, 4px corners, an orange accent, and quiet reveal motion for a senior product studio
 colors:
   ink: "#403e3c"
   ink-strong: "#1f1d1c"
@@ -54,9 +54,9 @@ typography:
     lineHeight: "20px"
     letterSpacing: "2px"
 rounded:
-  tag: "0px"
-  card: "0px"
-  image: "0px"
+  tag: "4px"
+  card: "4px"
+  image: "4px"
 spacing:
   gutter: "16px"
   side-padding: "16px"
@@ -107,7 +107,7 @@ plainspoken — a studio that treats its own site as proof of craft.
 What the redesign changes is the *temperature*. The old system was clinical: strict
 square corners, film grain, exposed gridlines, numbered section rails, and saturated
 full-bleed blue/green bands. The new comp keeps the editorial rigor but softens the
-delivery. Corners stay sharp (0px everywhere). A warm **orange accent**
+delivery. Corners are a quiet 4px everywhere. A warm **orange accent**
 appears functionally — the eyebrow dash, process numerals, the highlighted case
 metric — as a third voice alongside blue. Surfaces breathe across a warm neutral
 rhythm (paper → warm grey → peach) with a deep navy closing band. Structure is now
@@ -125,7 +125,7 @@ now welcome; decoration for its own sake is not.
 - Warm neutral canvas with a section rhythm of paper / warm-grey / peach, closing on a deep navy CTA band and a near-black footer
 - Oversized editorial-serif italic display against a Swiss sans body
 - Uppercase mono/grotesque labels as a persistent "spec sheet" device
-- Sharp corners everywhere (0px): buttons, cards, images, tags
+- 4px corners everywhere: buttons, cards, images, tags
 - Orange as a functional third accent (eyebrow dash, process numerals, case metric, amber sector tags)
 - Eyebrow-dash section headers (orange dash + uppercase label + serif headline)
 - Quiet motion: scroll-reveal fades and a logo marquee, both off under reduced-motion
@@ -269,8 +269,8 @@ ever needed, but color + border + radius is the default.
 
 ## Shapes
 
-**Sharp corners.** 0px radius everywhere: buttons, cards, images, arrows, nav,
-menus, tags. No pills. Borders stay hairline (1px): `neutral-300` around cards,
+**Soft-square corners.** 4px radius everywhere (`rounded`): buttons, cards, images,
+arrows, nav, menus, tags. No pills. Borders stay hairline (1px): `neutral-300` around cards,
 `neutral-400` for dividers. Hover never scales, lifts or adds shadow: cards reveal a
 1px ink border or shift background (150ms ease-out); buttons shift background (150ms);
 arrow icons may nudge 2px.
@@ -282,7 +282,7 @@ three moments also drop the gridlines.
 ## Components
 
 ### Button (`Button.tsx`)
-- **Shape:** sharp (0px), `.ds-label` uppercase text + a trailing
+- **Shape:** 4px radius, `.ds-label` uppercase text + a trailing
   arrow-right SVG (`gap-2`), `focus-visible` 2px offset outline in `primary-300`.
   `large` = `px-8 py-4`, `medium` = `px-6 py-3`.
 - **Variants:**
@@ -391,7 +391,7 @@ reduce`:
   amber sector tags — and keep it an accent, never a field.
 - **Do** set every label, eyebrow, nav item, button, tag, and index in `.ds-label`
   uppercase.
-- **Do** keep every corner sharp (0px) — buttons, cards, images, tags, nav, menus.
+- **Do** use the one 4px radius on every corner — buttons, cards, images, tags, nav, menus.
 - **Do** keep motion subtle and honor `prefers-reduced-motion`.
 - **Do** run the Stripe-style gridlines (`Gridlines`) in every section except the three
   moments, on the 12/8/4-column measure.

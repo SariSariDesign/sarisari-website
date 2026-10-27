@@ -15,7 +15,7 @@ export type Retainer = {
 /** A retainer offer: price, pitch, and its numbered feature list. */
 export function RetainerPanel({ retainer: r }: { retainer: Retainer }) {
   return (
-    <div id={r.id} className="grid gap-12 border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 md:grid-cols-2 md:p-12">
+    <div id={r.id} className="grid gap-12 rounded border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 md:grid-cols-2 md:p-12">
       <div className="flex flex-col gap-6">
         {r.name && <span className="ds-label text-label text-neutral-700">{r.name}</span>}
         <div className="flex items-baseline gap-2">
@@ -43,7 +43,7 @@ export function RetainerPanel({ retainer: r }: { retainer: Retainer }) {
 function FeatureRow({ n, title, body }: { n: string; title: string; body?: string }) {
   return (
     <div className="flex gap-4 border-b border-neutral-400 pb-6 last:border-b-0 last:pb-0">
-      <span className="ds-label flex h-8 w-8 shrink-0 items-center justify-center border border-neutral-400 text-label text-neutral-700">
+      <span className="ds-label flex h-8 w-8 shrink-0 items-center justify-center rounded border border-neutral-400 text-label text-neutral-700">
         {n}
       </span>
       <div className="flex flex-col gap-1">

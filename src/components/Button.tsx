@@ -30,12 +30,12 @@ export function Button({
   const shape =
     variant === "ghost"
       ? ""
-      : `${size === "large" ? "px-8 py-4" : "px-6 py-3"}`;
+      : `rounded ${size === "large" ? "px-8 py-4" : "px-6 py-3"}`;
   const skin = {
     primary: "bg-primary-400 text-neutral-100 hover:bg-primary-500 active:bg-primary-600",
     secondary: "bg-primary-100 text-primary-400 hover:bg-primary-200",
     white: "bg-white text-primary-600 hover:bg-primary-100",
-    "outline-light": "border border-neutral-100 text-neutral-100 hover:bg-neutral-100/10",
+    "outline-light": "border border-neutral-100 text-neutral-100 hover:border-neutral-1000 hover:bg-neutral-1000",
     ghost: "text-primary-400 hover:text-primary-500",
   }[variant];
 

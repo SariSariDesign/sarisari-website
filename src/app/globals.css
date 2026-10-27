@@ -330,15 +330,9 @@ body {
   inset: 0;
   z-index: 0; /* under the content (z-[1]) so it never sits on controls */
   pointer-events: none;
-  opacity: 0.1;
+  opacity: 0.14;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* On near-black, multiply can't darken any further; lighten instead. */
-.grain-dark::after {
-  mix-blend-mode: screen;
-  opacity: 0.08;
 }
 
 /* FAQ accordion: answers open/close over 250ms (grid-template-rows 0fr ↔ 1fr). */
@@ -359,7 +353,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  color: var(--color-neutral-400);
+  color: var(--color-neutral-500);
 }
 .gridlines div {
   position: relative;
@@ -375,7 +369,7 @@ body {
 /* Solid edges read darker than the dashes at the same color, so they use the next
    lighter step to match visually. */
 .gridlines .edge {
-  background: var(--color-neutral-300);
+  background: var(--color-neutral-400);
 }
 /* Outer edges sit 8px outside the content box. */
 .gridlines .edge.l {
@@ -425,7 +419,7 @@ body {
 }
 .js .gridlines i {
   transform: scaleY(0);
-  transition: transform 600ms ease-out;
+  transition: transform 800ms ease-out;
 }
 .js .gridlines.in i {
   transform: none;
@@ -438,10 +432,10 @@ body {
    before paint in layout.tsx) so content stays visible without JS. */
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(24px);
   transition:
-    opacity 400ms ease-out,
-    transform 400ms ease-out;
+    opacity 500ms ease-out,
+    transform 500ms ease-out;
   transition-delay: var(--delay, 0ms);
 }
 .js [data-reveal][data-variant="fade"] {
@@ -458,11 +452,12 @@ body {
 }
 .js [data-reveal][data-stagger] > * {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(24px);
   transition:
-    opacity 400ms ease-out,
-    transform 400ms ease-out;
-  transition-delay: calc(200ms + min(var(--i, 0) * 60ms, 300ms));
+    opacity 500ms ease-out,
+    transform 500ms ease-out;
+  /* Starts at +200ms, 80ms apart, capped at 400ms, so nothing waits past 600ms. */
+  transition-delay: calc(200ms + min(var(--i, 0) * 80ms, 400ms));
 }
 .js [data-reveal][data-stagger].in > * {
   opacity: 1;
@@ -473,11 +468,11 @@ body {
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(24px);
   }
 }
 .js .hero-seq > * {
-  animation: rise-in 400ms ease-out both;
+  animation: rise-in 500ms ease-out both;
   animation-delay: var(--d, 0ms);
 }
 
@@ -621,11 +616,14 @@ body {
 /* Work tiles: brand color behind the image; hover deepens it (no zoom). */
 .work-frame {
   background: var(--tile);
-  transition: background-color 150ms ease-out;
+  transition:
+    background-color 150ms ease-out,
+    border-color 150ms ease-out;
 }
 .group:hover .work-frame,
 .group:focus-visible .work-frame {
   background: color-mix(in srgb, var(--tile) 80%, black);
+  border-color: var(--color-neutral-1000);
 }
 
 /* Process: statement + principles. Static by default (mobile, reduced motion); from

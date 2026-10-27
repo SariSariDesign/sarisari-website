@@ -49,7 +49,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
             <img
               src={page.heroImage}
               alt=""
-              className="aspect-video w-full object-cover"
+              className="aspect-video w-full rounded object-cover"
             />
           ) : (
             <Placeholder className="aspect-video w-full" label="Hero image — asset pending" />
@@ -199,7 +199,7 @@ function Figure({
       <div style={{ aspectRatio: `${w}/${h}` }} className="w-full">
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt="" className="h-full w-full object-cover" />
+          <img src={image} alt="" className="h-full w-full rounded object-cover" />
         ) : (
           <Placeholder className="h-full w-full" label="asset pending" />
         )}

@@ -3,13 +3,13 @@ import { footer, footerCta } from "@/content/site";
 import { Button } from "./Button";
 import { Wordmark } from "./Wordmark";
 
-/** Closing near-black CTA band (grain, display-l) + the footer. Shared across all pages. */
+/** Closing blue (primary-400) CTA band (grain, display-l) + the footer. Shared across all pages. */
 export function FooterCta() {
   return (
     <>
       <section
         aria-labelledby="cta-h"
-        className="grain grain-dark snap-start bg-neutral-1000 text-neutral-100"
+        className="grain snap-start bg-primary-400 text-neutral-100"
         data-dark-band
       >
         <div className="measure relative z-[1] py-28 md:py-36">
@@ -20,7 +20,7 @@ export function FooterCta() {
             >
               {footerCta.headline}
             </h2>
-            <p className="max-w-[48ch] text-lead text-neutral-400">
+            <p className="max-w-[48ch] text-lead text-primary-100">
               {footerCta.subhead}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-4">

@@ -45,7 +45,7 @@ export function WorkTile({ t }: { t: Tile }) {
   const body = (
     <>
       <div
-        className={`work-frame relative flex items-center justify-center overflow-hidden p-[8%] ${l.frame}`}
+        className={`work-frame relative flex rounded border border-transparent items-center justify-center overflow-hidden p-[8%] ${l.frame}`}
         style={{ "--tile": t.color } as React.CSSProperties}
       >
         {image ? (
@@ -64,7 +64,7 @@ export function WorkTile({ t }: { t: Tile }) {
         {href && (
           <span
             aria-hidden
-            className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center bg-neutral-100 text-neutral-1000"
+            className="absolute right-3 top-3 flex h-11 w-11 rounded items-center justify-center bg-neutral-100 text-neutral-1000"
           >
             <svg
               width="16"
@@ -95,7 +95,7 @@ export function WorkTile({ t }: { t: Tile }) {
           {t.tags.map((tag) => (
             <li
               key={tag}
-              className="ds-label border border-neutral-1000 px-2 py-1 text-label text-neutral-1000"
+              className="ds-label rounded border border-neutral-1000 px-2 py-1 text-label text-neutral-1000"
             >
               {tag}
             </li>

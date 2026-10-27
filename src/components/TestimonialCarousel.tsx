@@ -181,14 +181,14 @@ export function TestimonialCarousel({
 
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <figure className="flex min-h-[320px] w-full flex-col justify-between gap-8 border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000">
+    <figure className="flex min-h-[320px] w-full flex-col justify-between gap-8 rounded border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-100">
       <blockquote className="text-body text-neutral-800">
         “{t.quote}”
       </blockquote>
       <figcaption className="flex items-center gap-3">
         {t.photo && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={t.photo} alt="" className="h-10 w-10 object-cover" />
+          <img src={t.photo} alt="" className="h-10 w-10 rounded object-cover" />
         )}
         <span className="flex flex-col gap-1">
           <span className="ds-label text-label text-neutral-1000">
@@ -220,7 +220,7 @@ function ArrowButton({
       aria-label={label}
       disabled={disabled}
       onClick={onClick}
-      className="group flex h-12 w-12 items-center justify-center border border-neutral-1000 text-neutral-1000 transition-colors duration-150 ease-out hover:bg-neutral-1000 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-neutral-1000"
+      className="group flex h-12 w-12 items-center justify-center rounded border border-neutral-1000 text-neutral-1000 transition-colors duration-150 ease-out hover:bg-neutral-1000 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-neutral-1000"
     >
       <svg
         width="18"

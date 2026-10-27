@@ -10,7 +10,7 @@ import { Placeholder } from "../Placeholder";
 export function RegularPhoto({ r }: { r: Pick<PortfolioPiece, "client" | "image" | "aspect"> }) {
   return (
     <div
-      className="regular-print relative w-full overflow-hidden bg-neutral-200 shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
+      className="regular-print relative w-full overflow-hidden rounded bg-neutral-200 shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
       style={{ aspectRatio: r.aspect }}
     >
       {r.image ? (

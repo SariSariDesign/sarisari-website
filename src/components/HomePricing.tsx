@@ -20,7 +20,7 @@ export function HomePricing() {
       <Reveal>
         <div
           id={scale.id}
-          className="grid gap-12 bg-primary-400 p-8 text-neutral-100 md:p-14 lg:grid-cols-2"
+          className="grid gap-12 rounded bg-primary-400 p-8 text-neutral-100 md:p-14 lg:grid-cols-2"
         >
           <div className="flex flex-col gap-4">
             <span className="ds-label text-label text-primary-200">
@@ -80,7 +80,7 @@ export function HomePricing() {
             <li
               key={o.id}
               id={o.id}
-              className="col-span-4 flex flex-col gap-4 border border-neutral-300 bg-white p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 md:col-span-8 md:p-10 lg:col-span-4"
+              className="col-span-4 flex flex-col gap-4 rounded border border-neutral-300 bg-white p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-100 md:col-span-8 md:p-10 lg:col-span-4"
             >
               <span className="ds-label text-label text-neutral-700">
                 {o.kicker}
@@ -113,11 +113,11 @@ export function HomePricing() {
       <Reveal>
         <div
           id="offer-scorecard"
-          className="flex flex-col gap-4 border border-dashed border-neutral-600 bg-neutral-100 p-6 md:p-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
+          className="flex flex-col gap-4 rounded border border-dashed border-neutral-600 bg-neutral-100 p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 md:p-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
         >
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <span className="ds-label bg-success-200 px-2 py-1 text-label text-success-600">
+              <span className="ds-label rounded bg-success-200 px-2 py-1 text-label text-success-600">
                 {scorecard.badge}
               </span>
               <span className="ds-label text-label text-neutral-700">

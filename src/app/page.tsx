@@ -189,7 +189,7 @@ function About() {
             <img
               src={m.photo}
               alt={`${m.name}, ${m.role}`}
-              className="aspect-square w-full object-cover"
+              className="aspect-square w-full rounded object-cover"
             />
             <div className="flex flex-col gap-2">
               <h3 className="text-heading-m text-neutral-1000">{m.name}</h3>
@@ -200,9 +200,6 @@ function About() {
             </div>
           </div>
         ))}
-      </Reveal>
-      <Reveal className="mt-10">
-        <p className="ds-label text-label text-neutral-700">{about.location}</p>
       </Reveal>
     </Section>
   );
@@ -236,7 +233,7 @@ function Faq() {
     <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-200">
       <div className="grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
         {/* Left: header, intro, CTA (sticks while the questions scroll on desktop). */}
-        <div className="col-span-full lg:col-span-5">
+        <div className="col-span-full lg:col-span-4">
           <div className="flex flex-col gap-8 lg:sticky lg:top-28">
             <SectionHeader
               headingId="faq-h"
@@ -264,7 +261,7 @@ function Faq() {
           </div>
         </div>
         {/* Right: questions. */}
-        <Reveal className="col-span-full lg:col-span-7">
+        <Reveal className="col-span-full lg:col-span-7 lg:col-start-6">
           <Accordion items={items} defaultOpen={0} />
         </Reveal>
       </div>

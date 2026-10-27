@@ -317,18 +317,17 @@ export const why = {
 export const about = {
   eyebrow: "",
   headline: "Who you'll work with",
-  location: "Los Angeles & San Diego · Pacific Time",
   members: [
     {
       name: "Zach Chaco",
       role: "CEO & Co-Founder",
-      bio: "Runs every engagement. Previously Meta, Disney.",
+      bio: "Previously Meta, Disney.",
       photo: "/team/zach-chaco.jpg",
     },
     {
       name: "Patricia Capiral",
       role: "Head of Design & Co-Founder",
-      bio: "Directs every project. Previously Selfbook, Silk & Sonder, Guess.",
+      bio: "Previously Selfbook, Silk & Sonder, Guess.",
       photo: "/team/patricia-capiral.jpg",
     },
   ],
@@ -515,8 +514,8 @@ export const pricing = {
 };
 
 export const faq = {
-  eyebrow: "FAQ",
-  headline: "Before you book",
+  eyebrow: "",
+  headline: "Questions?",
   intro: { before: "Can't find your answer? Book a call or email us at ", email: "hello@sarisari.design", after: " to learn more." },
   cta: { label: "Book a call", href: BOOKING_URL },
   items: [
