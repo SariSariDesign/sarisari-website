@@ -4,6 +4,7 @@ import { FooterCta } from "@/components/FooterCta";
 import { Nav } from "@/components/Nav";
 import { Placeholder } from "@/components/Placeholder";
 import { type CaseStudyBlock, getCaseStudy, publishedCaseStudies } from "@/content/case-studies";
+import { pageMetadata } from "@/lib/metadata";
 
 type Params = { slug: string };
 
@@ -20,8 +21,9 @@ const load = (slug: string) => {
 };
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
-  const page = load((await params).slug);
-  return page ? { title: `${page.title} — Sari Sari Design`, description: page.intro } : {};
+  const { slug } = await params;
+  const page = load(slug);
+  return page ? pageMetadata({ title: page.title, description: page.intro, path: `/work/${slug}` }) : {};
 }
 
 /** Case-study template: renders any published entry in `src/content/case-studies`. */

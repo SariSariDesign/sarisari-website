@@ -9,11 +9,13 @@ import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesList } from "@/components/ServicesList";
 import { services, servicesPage } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Services — Sari Sari Design",
+export const metadata: Metadata = pageMetadata({
+  title: "Services",
   description: servicesPage.intro,
-};
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (

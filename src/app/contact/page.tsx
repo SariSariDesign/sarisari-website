@@ -6,8 +6,13 @@ import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
 import { BOOKING_URL, contact } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = { title: "Contact — Sari Sari Design", description: contact.intro };
+export const metadata: Metadata = pageMetadata({
+  title: "Contact",
+  description: contact.intro,
+  path: "/contact",
+});
 
 /** Primary: book a call (Calendly inline). Ghost: Say Hello form → Attio. */
 export default function ContactPage() {

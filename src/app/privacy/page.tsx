@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FooterCta } from "@/components/FooterCta";
 import { Nav } from "@/components/Nav";
 
-export const metadata: Metadata = { title: "Privacy Policy — Sari Sari Design" };
+export const metadata: Metadata = { title: "Privacy Policy" };
 
 // ⚠️ Placeholder — no privacy policy exists on the live site; legal copy needed before launch.
 export default function Privacy() {

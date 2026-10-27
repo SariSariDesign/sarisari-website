@@ -7,11 +7,13 @@ import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { caseStudies } from "@/content/case-studies";
 import { workIndex } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Work — Sari Sari Design",
+export const metadata: Metadata = pageMetadata({
+  title: "Work",
   description: workIndex.intro,
-};
+  path: "/work",
+});
 
 /** Case study index: every registered study; coming-soon ones render unlinked. */
 export default function WorkIndex() {

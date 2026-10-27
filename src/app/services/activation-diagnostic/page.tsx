@@ -7,11 +7,13 @@ import { PageHeader } from "@/components/PageHeader";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { diagnostic } from "@/content/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Activation Diagnostic — Sari Sari Design",
+export const metadata: Metadata = pageMetadata({
+  title: "Activation Diagnostic",
   description: diagnostic.intro,
-};
+  path: "/services/activation-diagnostic",
+});
 
 /** Overview of the diagnostic ladder (free scorecard → Audit → Diagnostic); buying happens in the app. */
 export default function ActivationDiagnosticPage() {
