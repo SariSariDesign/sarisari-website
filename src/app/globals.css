@@ -684,9 +684,31 @@ body {
 }
 
 /* Pricing card picked from a use case: 2px primary outline for ~3.5s. */
+/* Pricing cards lift into place when picked from a use case: they rise 8px, cast a
+   soft shadow and get a 2px primary-400 outline for ~3.5s. (The one exception to the
+   no-lift rule: it marks "this is the one you asked about".) */
+#offer-scale,
+#offer-audit,
+#offer-diagnostic,
+#offer-build {
+  transition:
+    transform 300ms ease-out,
+    box-shadow 300ms ease-out,
+    background-color 150ms ease-out,
+    border-color 150ms ease-out;
+}
 .offer-highlight {
+  position: relative;
+  z-index: 1;
+  transform: translateY(-8px);
+  box-shadow: 0 28px 48px -24px rgb(31 29 28 / 0.45);
   outline: 2px solid var(--color-primary-400);
   outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .offer-highlight {
+    transform: none;
+  }
 }
 .regular-fly {
   will-change: transform;

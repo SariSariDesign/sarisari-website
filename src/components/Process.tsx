@@ -130,11 +130,12 @@ export function Process() {
                   className="statement-underline pointer-events-none absolute left-[-14%] top-[-6%] h-[118%] w-[128%] overflow-visible"
                 >
                   <path
-                    d="M150 14 C 118 4, 58 6, 26 24 C 4 37, 6 70, 40 84 C 82 100, 160 96, 196 74 C 222 58, 214 26, 178 14 C 150 5, 104 6, 76 12"
+                    d="M160 15 C 122 4, 54 8, 24 30 C -2 50, 14 80, 60 89 C 106 98, 176 91, 204 67 C 226 47, 206 17, 160 12 C 136 9, 108 10, 86 15"
                     fill="none"
                     stroke="var(--color-primary-300)"
-                    strokeWidth="2"
+                    strokeWidth="3.5"
                     strokeLinecap="round"
+                    strokeLinejoin="round"
                     vectorEffect="non-scaling-stroke"
                     pathLength={1}
                   />

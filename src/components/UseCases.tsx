@@ -180,7 +180,10 @@ export function UseCases() {
         return (
           <li
             key={c.problem}
-            className="usecase group relative col-span-4 flex aspect-[4/5] flex-col rounded border border-transparent transition-colors duration-150 ease-out hover:border-neutral-1000 focus-within:border-neutral-1000 lg:col-span-3 lg:aspect-[3/4]"
+            // The whole card is clickable; the button inside is the keyboard/screen-reader
+            // control and its click bubbles up here.
+            onClick={() => highlight(c.offer.id)}
+            className="usecase group relative col-span-4 flex cursor-pointer aspect-[4/5] flex-col rounded border border-transparent transition-colors duration-150 ease-out hover:border-neutral-1000 focus-within:border-neutral-1000 lg:col-span-3 lg:aspect-[3/4]"
           >
             {/* Cover: the image fills the card, under an ink wash, strongest behind the
                 copy at the top, so the light text stays readable. */}
@@ -223,7 +226,6 @@ export function UseCases() {
               <div className="mt-auto pt-4">
                 <button
                   type="button"
-                  onClick={() => highlight(c.offer.id)}
                   aria-label={`See ${c.offer.label} pricing`}
                   className="group/btn flex h-12 w-12 rounded items-center justify-center border border-neutral-1000 bg-neutral-1000 text-neutral-100 transition-colors duration-150 ease-out hover:border-neutral-100 hover:bg-neutral-100 hover:text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                 >
