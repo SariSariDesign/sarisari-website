@@ -150,7 +150,7 @@ Card images need variants so they don't repeat the case study images.
 
 ### 17. Work: "Freshly stocked"
 **Location:** `CaseStudies()`, `CaseStudyCard`, `caseStudiesSection` + case-study cards in content
-**Feedback:** Headline "Freshly stocked". Three equal tiles (3-up desktop, 2-up tablet, 1-up mobile), no full-width featured card. Each tile: background in the client's brand color, image, client name as an eyebrow above the title, title, project-type tags styled as price labels (Supply caps, 1px ink border, sharp). Whole tile links; ↗ icon top-right. Hover: client color deepens, no zoom.
+**Feedback:** Headline "Freshly stocked" (display-m). Editorial, asymmetric layout snapped to the 12-col grid (Clay pattern): Kenchan square (1:1) in cols 1–6; Funding Solutions portrait (4:5) in cols 7–12, dropped lower (offset ~13vw, 80–200px); NutriSnap wide (16:9) in cols 3–12 below. Tablet: same pattern on 8 cols (4+4, then full). Mobile: one column, no offsets. No client brand colors on the homepage (color is parked for the individual case study pages later, Stripe Press-style); image frames use the neutral surface until real images are in. Below the image, on the page background: client name as eyebrow (label), title (heading-m, max ~28ch), project-type tags styled as price labels (Supply caps, 1px ink border, sharp). Whole tile links; ↗ icon top-right of the image. Hover: thin border reveal on the image or a subtle background shift, no zoom. No full-width featured card.
 - Kenchan Ramen: "Building a bundle feature that drove 37% of digital revenue" · E-commerce · Conversion · Shopify
 - Funding Solutions: "Turning high-stakes loan ops into a self-serve lending pipeline" · Fintech · 0→1 design · B2B tools (no Lendzi details)
 - NutriSnap: "Turning nutrition science into a first session people trust" · Health · Activation · AI-built app (no case study page yet: tile unlinked until it exists)
@@ -161,7 +161,7 @@ Card images need variants so they don't repeat the case study images.
 - Line 1 (roman): "AI makes building easy."
 - Line 2 (italic): "We make it clear: what's wrong, what to fix first, and why."
 - Hand-drawn SVG underline under "clear": 2px `primary-400`, organic stroke, draws left to right (stroke-dashoffset, 800ms ease-out) when the panel's center hits the viewport center. Draws once, positioned relative to the word so it scales.
-Then the principles, pinned: the principles block sticks to the viewport (sticky, 100svh) while the section scrolls ~2.6 screens. P1 scrolls up into place, then P2 under it, then P3, each driven by scroll position (ease-out, no bounce). Once P3 is in, the whole block scrolls away together. Each principle is one full-width row: title (heading-l) in 5 cols, body in 7 cols, 1px ink rule above. Mobile: title above body. Reduced motion: all three shown static, no pin.
+Then the principles, pinned: the principles block sticks to the viewport (sticky, 100svh) while the section scrolls ~2.6 screens. The three principles sit left to right, 4 columns each (P1 left, P2 middle, P3 right). P1 scrolls up into its column, then P2, then P3, each driven by scroll position (ease-out, no bounce). Once P3 is in, the whole block scrolls away together. Each principle: 1px ink rule above, title (heading-l), body below. Below 768px: one column, title above body. Reduced motion: all three shown static, no pin.
 1. **Machine speed, human curation.** Generative tools handle the heavy lifting of production. We provide the vision, direction, and editorial discipline to ensure the final product actually matters.
 2. **Trust at every touchpoint.** Just as sari sari stores run on familiarity and trust, we design the critical micro-moments that turn first-time users into regulars, from fintech to health to e-commerce.
 3. **Evidence over instincts.** We put interactive flows in front of actual users, watch where they hesitate, and fix that first. We test our instincts against real behavior, then build what holds up.
@@ -182,13 +182,22 @@ Steve (NutriSnap) and Steve C. (Lions & Lambs) are pending: hide until approved.
 
 ### 20. Pricing
 **Location:** `pricing` in `site.ts`, `Pricing()`, `RetainerPanel`
-**Feedback:** Layout (≥1024px): left 4 columns hold the headline "Ready to get started?" (display-m) and the free Scorecard card, sticky while you scroll; right 8 columns hold the Scale card, then the three offers as full-width rows (not 3-up cards). Each offer row: kicker + name (heading-m) left, price (display-s) right; description + "Best for" below left (max 60ch), CTA bottom right; 32px padding, 1px rules between rows, 48px gap above the rows. Scale card padding 48px. Below 1024px everything stacks: headline, Scorecard, Scale, offers. Remove "Not ready for a retainer? Start smaller."
-Scale card (solid `primary-400` background, light text, the one accent surface): kicker "Ongoing · 3-month minimum" · "Scale" · "$16K/mo" · "Ongoing design and development on an open roadmap. You set the direction." Bullets: One senior team for design and code · We join your standups, reviews and user tests · Starts within two weeks · 3-month minimum, then 30 days notice. "Best for: high-velocity teams that need flexible, ongoing design and engineering." Link: "Design only? Grow, $8K/mo →". CTA "Book a call".
+**Feedback:** Keep the current layout (Scale card full width, three offer cards 3-up, Scorecard row below). Add white space only: section padding top/bottom clamp 80–160px; 48px between the headline, Scale card, offer row and Scorecard row; Scale card padding 56px (32px mobile) with 48px between its two columns; offer cards and Scorecard padding 40px (24px mobile) with 16px between elements inside. Headline "Ready to get started?" (display-m). Remove "Not ready for a retainer? Start smaller."
+Scale card (solid `primary-400` background, light text, the one accent surface). Keep the current panel's structure: price + description + CTA on the left; numbered rows on the right.
+- Left column, in this order: kicker "Ongoing · Cancel anytime" · "Scale" · price "$16,000" with a smaller "/ month" beside it (if prices are italic, make every price on the page italic) · then one row: CTA "Book a call" (square, not pill) with the smaller-retainer ghost link beside it (wraps under it on narrow screens). Ghost link copy is a placeholder and will change once the smaller retainer is defined: "Design only? Grow, $8K/mo →". Keep the left column light: nothing else goes there.
+- Right column, top to bottom: description "Ongoing design and development on an open roadmap." (lead) · "Best for: high-velocity teams that need flexible, ongoing design and engineering." (body-s) · then the numbered rows, number in Supply (no circle), title (heading-m), optional detail line (body-s), 1px rule between rows:
+  01 One senior team for design and code. — Design and ship at the speed your startup actually moves.
+  02 We join your standups, reviews and user tests. — Anything from design workshops to test parties.
+  03 We shape the roadmap together. — You decide on the direction.
+  04 Starts within two weeks.
+  05 Cancel anytime. — 30 days notice, no fees.
+- Remove: "No long-term contracts", "Design systems built to scale", "We focus on where you're leaking customers", the circle number badges, the pill button, the rounded card.
+- Terms: there is no minimum term on retainers. Set `terms.minimumEngagement` out of `site.ts` (delete it and anything that renders it).
 Offer cards (3-up), each: kicker, name, price, description, best-for line, "Book a call":
 - 7 days · Activation Audit · $1,500 · "Discover where users leave in any single flow. Get a scorecard and teardown of that flow with prioritized recommendations." · "Best for: something's off but you need clarity."
 - 21 days · Activation Diagnostic · $6,000 · "Find the biggest problem in any single flow and see the fix. Get a redesigned prototype, a validation guide and a 90-day roadmap." · "Best for: you want the fix designed and tested before investing in development."
 - 90 days · Activation Build · Let's talk · "Ship one defined project in 90 days. We design and build it, or guide your developers through it." · "Best for: one defined project, like a launch or redesign." · "Diagnostic fee credited if you start within 30 days"
-Scorecard card (left column, dashed border): "Free" badge · kicker "In minutes" · "Activation Scorecard" · "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Free, in minutes." · CTA "Get free Scorecard" (SCORECARD_URL).
+Scorecard row (full width, dashed border): "Free" badge · kicker "In minutes" · "Activation Scorecard" · "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Free, in minutes." · CTA "Get free Scorecard" (SCORECARD_URL).
 Each card needs an id so the use-case buttons can highlight it.
 
 ---
@@ -221,3 +230,24 @@ Accordion open/close: 250ms ease-in-out. Rules span the full grid (F4). Question
 ### 23. Closing CTA
 **Location:** `footerCta` in `site.ts`, `FooterCta.tsx`
 **Feedback:** Full-width near-black (`neutral-1000`) band with grain, headline at display-l. Scroll snaps to the band start (F2). Headline: "Tell us what you're building, or where it's stuck." Subhead: "Thirty minutes. We'll tell you what we'd change first, and whether we're the right team to do it." CTAs: "Book a call" (light) + "Get free Scorecard" (outline).
+
+---
+
+## Dial-up · Tactility + motion (Oct 27, run after Batch 7)
+All of Batch 1's tactile + motion items are built, but at values too quiet to notice. Same system, turned up, still inside the style guide.
+
+### D1. Gridlines more visible
+**Location:** `.gridlines` in `globals.css`
+**Feedback:** Dashes `neutral-500` (was 400), outer edges `neutral-400` (was 300). Draw-in 800ms ease-out (was 600ms).
+
+### D2. Grain a touch stronger
+**Location:** `.grain::after` in `globals.css`
+**Feedback:** Opacity 0.14 (was 0.10). The guide allows 8–16%. Moments only, as before.
+
+### D3. Reveal motion you can see
+**Location:** `[data-reveal]` rules in `globals.css`, `Reveal.tsx`
+**Feedback:** Rise 24px (was 12px; 24px is the style guide's value), 500ms ease-out, items 80ms apart, stagger cap 400ms. Statement panels still fade only. Nothing waits past 600ms.
+
+### D4. Hover you can feel
+**Location:** `Button.tsx`, use-case cards, offer cards, work tiles
+**Feedback:** Cards and work images: 1px `neutral-1000` border appears + background shifts one step darker (`neutral-100` → `neutral-200`), 150ms ease-out. Buttons: primary shifts `primary-400` → `primary-500`; outline buttons fill with ink and text flips to light. Arrow icons nudge 2px. Still no scale, lift or shadow.
