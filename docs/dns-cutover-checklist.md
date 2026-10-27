@@ -9,7 +9,7 @@ To run together in a follow-up session. **Nothing here happens automatically.**
 - [ ] Real assets placed (or consciously shipping placeholders — see `docs/asset-inventory.md`)
 - [ ] Contact email confirmed (`hello@sarisari.design` is a guess) + LinkedIn/Instagram URLs in `src/content/site.ts`
 - [ ] Terms/Privacy legal copy added (current pages are stubs)
-- [ ] Analytics decision: live site runs Intellimize; new site ships with none — add Vercel Analytics or GA4 if wanted
+- [x] Analytics: GA4 (`G-YJY2GEH1BC`) + Microsoft Clarity (`z4frv41yxz`), production deploys only (`src/components/Analytics.tsx`)
 - [ ] `vercel deploy --prod` on the `sari-sari-website` project and verify production URL
 
 ## Cutover

@@ -11,6 +11,8 @@ export const DIAGNOSTIC_URL = "https://activation-diagnostic.sarisari.design/";
 export const SCORECARD_URL = "https://activation-diagnostic.sarisari.design/preview";
 export const CONTACT_EMAIL = "hello@sarisari.design"; // ⚠️ confirm address
 export const LINKEDIN_URL = "https://www.linkedin.com/company/sarisaridesign"; // ⚠️ confirm URL
+export const GA_MEASUREMENT_ID = "G-YJY2GEH1BC";
+export const CLARITY_PROJECT_ID = "z4frv41yxz";
 
 /**
  * Engagement terms — the comp shipped these as [BRACKET] placeholders. Drafted below,

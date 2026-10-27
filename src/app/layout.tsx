@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Instrument_Serif, Instrument_Sans, Space_Grotesk } from "next/font/google";
+import { Analytics } from "@/components/Analytics";
 import { AnnotateGate } from "@/components/dev/AnnotateGate";
 import { openGraphBase } from "@/lib/metadata";
 import "./globals.css";
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         {/* Deployed builds get Agentation only on opt-in (Vercel previews or ?annotate). */}
         {DevTools ? <DevTools /> : <AnnotateGate />}
+        <Analytics />
       </body>
     </html>
   );
