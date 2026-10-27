@@ -150,25 +150,29 @@ export function TestimonialCarousel({
               />
             </div>
           </div>
-          <ul
-            ref={track}
-            tabIndex={pinned ? -1 : 0}
-            aria-label="Testimonials"
-            className={`carousel-track mt-12 flex gap-4 will-change-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 ${
-              pinned
-                ? "overflow-visible"
-                : "snap-x snap-mandatory overflow-x-auto"
-            }`}
-          >
-            {items.map((t) => (
-              <li
-                key={t.name}
-                className="flex w-[85%] shrink-0 snap-start md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
-              >
-                <TestimonialCard t={t} />
-              </li>
-            ))}
-          </ul>
+          {/* Clip at the left gridline (8px outside the content) so cards leave the screen
+              there instead of sliding under the tick nav; they still enter from the right. */}
+          <div className={pinned ? "[clip-path:inset(0_-100vw_0_-8px)]" : ""}>
+            <ul
+              ref={track}
+              tabIndex={pinned ? -1 : 0}
+              aria-label="Testimonials"
+              className={`carousel-track mt-12 flex gap-4 will-change-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 ${
+                pinned
+                  ? "overflow-visible"
+                  : "snap-x snap-mandatory overflow-x-auto"
+              }`}
+            >
+              {items.map((t) => (
+                <li
+                  key={t.name}
+                  className="flex w-[85%] shrink-0 snap-start md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
+                >
+                  <TestimonialCard t={t} />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

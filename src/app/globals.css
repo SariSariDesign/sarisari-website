@@ -328,11 +328,27 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 0; /* under the content (z-[1]) so it never sits on controls */
   pointer-events: none;
   opacity: 0.1;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* On near-black, multiply can't darken any further; lighten instead. */
+.grain-dark::after {
+  mix-blend-mode: screen;
+  opacity: 0.08;
+}
+
+/* FAQ accordion: answers open/close over 250ms (grid-template-rows 0fr ↔ 1fr). */
+.accordion-panel {
+  transition: grid-template-rows 250ms ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .accordion-panel {
+    transition: none;
+  }
 }
 
 /* Gridlines (Stripe-style): solid 1px at the outer edges of the 1200px measure, dashed

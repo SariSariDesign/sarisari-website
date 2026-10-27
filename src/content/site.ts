@@ -316,18 +316,19 @@ export const why = {
 
 export const about = {
   eyebrow: "",
-  headline: "Your team",
+  headline: "Who you'll work with",
+  location: "Los Angeles & San Diego · Pacific Time",
   members: [
     {
       name: "Zach Chaco",
-      role: "Chief Executive Officer",
-      bio: "Producer, previously Meta and Disney.",
+      role: "CEO & Co-Founder",
+      bio: "Runs every engagement. Previously Meta, Disney.",
       photo: "/team/zach-chaco.jpg",
     },
     {
       name: "Patricia Capiral",
-      role: "Chief Creative Officer",
-      bio: "15+ years of product and brand design.",
+      role: "Head of Design & Co-Founder",
+      bio: "Directs every project. Previously Selfbook, Silk & Sonder, Guess.",
       photo: "/team/patricia-capiral.jpg",
     },
   ],
@@ -446,6 +447,7 @@ export const homePricing = {
       cta: { label: "Book a call", href: BOOKING_URL },
     },
   ],
+  offersHeading: "Not ready for a retainer? Start smaller.",
   scorecard: {
     badge: "Free",
     kicker: "In minutes",
@@ -513,47 +515,64 @@ export const pricing = {
 };
 
 export const faq = {
-  eyebrow: "",
-  headline: "Questions for us?",
+  eyebrow: "FAQ",
+  headline: "Before you book",
   intro: { before: "Can't find your answer? Book a call or email us at ", email: "hello@sarisari.design", after: " to learn more." },
   cta: { label: "Book a call", href: BOOKING_URL },
   items: [
     {
       q: "How soon can you start?",
-      a: `Usually within ${terms.startLeadTime} of a signed agreement, and the diagnostic can start faster than a retainer. We hold a limited number of clients at once, so we'll give you the real date on the call.`,
+      a: `Usually within ${terms.startLeadTime} of a signed agreement. The Audit and Diagnostic can start sooner. We keep a limited number of clients, so we'll confirm your date on the call.`,
+    },
+    {
+      q: "How do you work with our developers?",
+      a: "Two ways. We design and hand your developers annotated files they can build from, and stay on hand while they build. Or our developers build it with you, on your stack.",
+    },
+    {
+      q: "What's the difference between Build and Grow/Scale?",
+      a: "Build is one defined project on a set 90-day timeline. Grow and Scale are ongoing, with an open roadmap you steer month to month. Grow is design; Scale is design and engineering.",
+    },
+    {
+      q: "Does the Diagnostic fee count toward Build?",
+      a: "Yes. Sign Build within 30 days of your Diagnostic delivery and the fee is credited toward it.",
+    },
+    {
+      q: "Why you instead of AI tools, a freelancer or a hire?",
+      a: `We use AI tools every day to move faster, and we're accountable for what to build and what to cut. A freelancer gives you one person's hours; a senior hire takes months to find. We're a senior design and development team that can start in ${terms.startLeadTime}.`,
+    },
+    {
+      q: "What do we need ready before starting?",
+      a: "A decision-maker who can join a weekly review, access to your analytics and users, and one owner on your side for approvals. We handle the rest of setup in week one.",
+    },
+    {
+      q: "Who owns the files and IP?",
+      a: "You do, once each invoice is paid. Design files, code and research live in accounts you control, and they stay yours if we stop working together.",
     },
     {
       q: "What if it isn't working?",
       a: `You give ${terms.noticePeriod} notice and stop paying, with no wind-down fees or penalties. We'd rather part cleanly than hold a client who isn't getting value.`,
     },
     {
-      q: "Who owns the IP and the files?",
-      a: "You do, from the first invoice. Design files, code, research recordings. Everything lives in accounts you control, and it stays yours if we stop working together.",
-    },
-    {
       q: "Can we pause the retainer?",
-      a: `Yes, with ${terms.noticePeriod} notice. Pausing holds your slot for ${terms.pauseHoldPeriod}; after that we may fill it and you'd rejoin when one opens.`,
+      a: `Pause anytime. We hold your slot for ${terms.pauseHoldPeriod}. After that we may fill it, and you'd restart when one opens.`,
     },
     {
-      q: "What happens when we hire an in-house design lead?",
-      a: "We help you hire them and hand over cleanly: files, systems, context. We'd rather be the bridge to your in-house team than the reason you never build one.",
-    },
-    {
-      q: "What do we need ready before starting?",
-      a: "A decision-maker who can join a weekly review, access to your analytics and customers, and one owner on your side for approvals. That's it, we handle the rest of the setup in week one.",
+      q: "What happens when we hire our own designer?",
+      a: "We hand over everything: files, design system and context, so your new designer starts where we left off.",
     },
     {
       q: "Do you only work with health and wellness companies?",
-      a: "No. Much of our work has been there, because trust and retention are everything in that category, and those are the problems we're best at. Any growth-stage consumer software company with the same pressures is a fit.",
+      a: "No. A lot of our work is in health, fintech and e-commerce, where users have to trust a product before they come back. We work with founders in any industry.",
     },
   ],
 };
 
 export const footerCta = {
-  headline: "Hand the product experience to someone senior.",
+  headline: "Tell us what you're building, or where it's stuck.",
   subhead:
-    "Thirty minutes on where growth is stalling. We'll tell you what we'd change first, and whether we're the right team to do it.",
-  cta: { label: "Book an intro call", href: BOOKING_URL },
+    "Thirty minutes. We'll tell you what we'd change first, and whether we're the right team to do it.",
+  cta: { label: "Book a call", href: BOOKING_URL },
+  secondary: { label: "Get free Scorecard", href: SCORECARD_URL },
 };
 
 export const footer = {

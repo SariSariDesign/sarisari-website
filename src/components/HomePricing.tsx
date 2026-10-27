@@ -11,7 +11,7 @@ import { SectionHeader } from "./SectionHeader";
  * Every card carries an id so the use-case buttons can scroll to and highlight it.
  */
 export function HomePricing() {
-  const { headline, scale, offers, scorecard } = homePricing;
+  const { headline, scale, offers, offersHeading, scorecard } = homePricing;
   return (
     <div className="flex flex-col gap-12">
       <SectionHeader headingId="pricing-h" headline={headline} />
@@ -66,43 +66,48 @@ export function HomePricing() {
         </div>
       </Reveal>
 
-      {/* Offers, 3-up */}
-      <Reveal
-        as="ul"
-        stagger
-        className="grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12"
-      >
-        {offers.map((o) => (
-          <li
-            key={o.id}
-            id={o.id}
-            className="col-span-4 flex flex-col gap-4 border border-neutral-300 bg-white p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 md:col-span-8 md:p-10 lg:col-span-4"
-          >
-            <span className="ds-label text-label text-neutral-700">
-              {o.kicker}
-            </span>
-            <h3 className="text-heading-m text-neutral-1000">{o.name}</h3>
-            <span className="font-brand text-display-s text-neutral-1000">
-              {o.price}
-            </span>
-            <p className="text-body text-neutral-700">{o.description}</p>
-            <p className="text-body-s text-neutral-700">{o.bestFor}</p>
-            {"note" in o && o.note && (
-              <p className="text-body-s text-neutral-1000">{o.note}</p>
-            )}
-            <div className="mt-auto pt-2">
-              <Button
-                href={o.cta.href}
-                variant="secondary"
-                size="medium"
-                external={isExternal(o.cta.href)}
-              >
-                {o.cta.label}
-              </Button>
-            </div>
-          </li>
-        ))}
-      </Reveal>
+      {/* Offers, 3-up, under their heading */}
+      <div className="flex flex-col gap-6">
+        <Reveal>
+          <h3 className="text-heading-l text-neutral-1000">{offersHeading}</h3>
+        </Reveal>
+        <Reveal
+          as="ul"
+          stagger
+          className="grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12"
+        >
+          {offers.map((o) => (
+            <li
+              key={o.id}
+              id={o.id}
+              className="col-span-4 flex flex-col gap-4 border border-neutral-300 bg-white p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 md:col-span-8 md:p-10 lg:col-span-4"
+            >
+              <span className="ds-label text-label text-neutral-700">
+                {o.kicker}
+              </span>
+              <h4 className="text-heading-m text-neutral-1000">{o.name}</h4>
+              <span className="font-brand text-display-s text-neutral-1000">
+                {o.price}
+              </span>
+              <p className="text-body text-neutral-700">{o.description}</p>
+              <p className="text-body-s text-neutral-700">{o.bestFor}</p>
+              {"note" in o && o.note && (
+                <p className="text-body-s text-neutral-1000">{o.note}</p>
+              )}
+              <div className="mt-auto pt-2">
+                <Button
+                  href={o.cta.href}
+                  variant="secondary"
+                  size="medium"
+                  external={isExternal(o.cta.href)}
+                >
+                  {o.cta.label}
+                </Button>
+              </div>
+            </li>
+          ))}
+        </Reveal>
+      </div>
 
       {/* Free Scorecard row */}
       <Reveal>

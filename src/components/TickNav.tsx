@@ -31,6 +31,18 @@ export function TickNav() {
   const [sections, setSections] = useState(SECTIONS);
   const [current, setCurrent] = useState(0);
   const [hover, setHover] = useState<number | null>(null);
+  // Over the near-black closing band the ink ticks would vanish, so they flip to paper.
+  const [onDark, setOnDark] = useState(false);
+  useEffect(() => {
+    const band = document.querySelector("[data-dark-band]");
+    if (!band || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setOnDark(e.isIntersecting), {
+      rootMargin: "-50% 0px -50% 0px",
+    });
+    io.observe(band);
+    return () => io.disconnect();
+  }, []);
+  const ink = onDark ? "text-neutral-100" : "text-neutral-1000";
 
   // Pinned sections (Process, Testimonials) set their height after hydration, which moves
   // everything below them. Re-land a #hash jump once that layout has settled.
@@ -84,7 +96,7 @@ export function TickNav() {
       >
         {/* 768–1599px: current section number only, above the ticks so it never
             crosses into the content column. */}
-        <span aria-hidden className="ds-label mb-2 block text-label text-neutral-1000 min-[1600px]:hidden">
+        <span aria-hidden className={`ds-label mb-2 block text-label transition-colors duration-150 min-[1600px]:hidden ${ink}`}>
           {num(current)}
         </span>
         <ul className="flex flex-col">
@@ -107,13 +119,13 @@ export function TickNav() {
                   <span
                     aria-hidden
                     className={`block h-px transition-[width,background-color] duration-150 ease-out ${
-                      isCurrent ? "bg-neutral-1000" : "bg-neutral-500"
+                      isCurrent ? (onDark ? "bg-neutral-100" : "bg-neutral-1000") : onDark ? "bg-neutral-600" : "bg-neutral-500"
                     }`}
                     style={{ width }}
                   />
                   {/* ≥1600px: section name beside the hovered/current tick */}
                   {showName && (
-                    <span aria-hidden className="ds-label hidden whitespace-nowrap text-label text-neutral-1000 min-[1600px]:inline">
+                    <span aria-hidden className={`ds-label hidden whitespace-nowrap text-label min-[1600px]:inline ${ink}`}>
                       {s.label}
                     </span>
                   )}

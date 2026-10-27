@@ -178,7 +178,7 @@ function About() {
       />
       <Reveal
         stagger
-        className="mt-16 grid grid-cols-4 gap-x-4 gap-y-8 md:grid-cols-8 lg:grid-cols-12"
+        className="mt-12 grid grid-cols-4 gap-x-4 gap-y-8 md:grid-cols-8 lg:grid-cols-12"
       >
         {about.members.map((m) => (
           <div
@@ -189,17 +189,20 @@ function About() {
             <img
               src={m.photo}
               alt={`${m.name}, ${m.role}`}
-              className="aspect-square w-full object-cover grayscale"
+              className="aspect-square w-full object-cover"
             />
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
               <h3 className="text-heading-m text-neutral-1000">{m.name}</h3>
               <span className="ds-label text-label text-neutral-700">
                 {m.role}
               </span>
-              <p className="mt-2 text-body text-neutral-700">{m.bio}</p>
+              <p className="mt-1 text-body text-neutral-700">{m.bio}</p>
             </div>
           </div>
         ))}
+      </Reveal>
+      <Reveal className="mt-10">
+        <p className="ds-label text-label text-neutral-700">{about.location}</p>
       </Reveal>
     </Section>
   );

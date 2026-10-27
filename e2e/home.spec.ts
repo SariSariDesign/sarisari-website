@@ -16,7 +16,7 @@ test.describe("homepage", () => {
   });
 
   test("primary CTAs point at Calendly", async ({ page }) => {
-    const cta = page.getByRole("link", { name: /book an intro call/i }).first();
+    const cta = page.getByRole("link", { name: /book a call/i }).first();
     await expect(cta).toHaveAttribute("href", /calendly\.com\/sarisari/);
   });
 
