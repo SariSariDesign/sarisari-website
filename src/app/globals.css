@@ -89,54 +89,106 @@
   --font-body: "Neue Montreal", var(--font-instrument-sans), "Inter", system-ui, sans-serif;
   --font-code: "Supply", var(--font-space-grotesk), "Space Mono", ui-monospace, monospace;
 
-  /* ---- typescale (size / line-height / tracking from DS variables) ---- */
-  --text-display-l: 120px;
-  --text-display-l--line-height: 120px;
-  --text-display-l--letter-spacing: -2px;
-  --text-display-m: 72px;
-  --text-display-m--line-height: 80px;
-  --text-display-m--letter-spacing: -1px;
-  --text-display-s: 56px;
-  --text-display-s--line-height: 56px;
-  --text-display-s--letter-spacing: 0px;
-  --text-h1: 48px;
-  --text-h1--line-height: 56px;
-  --text-h2: 40px;
-  --text-h2--line-height: 48px;
-  --text-h3: 32px;
-  --text-h3--line-height: 40px;
-  --text-title-l: 24px;
-  --text-title-l--line-height: 32px;
-  --text-title-m: 18px;
-  --text-title-m--line-height: 24px;
-  --text-title-m--letter-spacing: 0.15px;
-  --text-title-s: 14px;
-  --text-title-s--line-height: 20px;
-  --text-title-s--letter-spacing: 0.25px;
-  --text-body-l: 22px;
-  --text-body-l--line-height: 32px;
-  --text-body-l--letter-spacing: 0.25px;
-  --text-body-m: 18px;
-  --text-body-m--line-height: 24px;
-  --text-body-m--letter-spacing: 0.5px;
+  /* ---- typescale (F1) ----
+   * Sizes step at <768 / 768–1023 / 1024–1439 / ≥1440 via the --fs-* variables set on
+   * :root below; each token carries its line height, tracking and weight. Display sizes
+   * are Editorial Old (Ultralight for l/m), the rest Neue Montreal, label is Supply caps.
+   */
+  --text-display-l: var(--fs-display-l);
+  --text-display-l--line-height: 0.96;
+  --text-display-l--letter-spacing: -0.03em;
+  --text-display-l--font-weight: 200;
+  --text-display-m: var(--fs-display-m);
+  --text-display-m--line-height: 1.04;
+  --text-display-m--letter-spacing: -0.02em;
+  --text-display-m--font-weight: 200;
+  --text-display-s: var(--fs-display-s);
+  --text-display-s--line-height: 1;
+  --text-display-s--letter-spacing: -0.02em;
+  --text-display-s--font-weight: 400;
+  --text-heading-l: var(--fs-heading-l);
+  --text-heading-l--line-height: 1.2;
+  --text-heading-l--letter-spacing: -0.01em;
+  --text-heading-l--font-weight: 400;
+  --text-heading-m: var(--fs-heading-m);
+  --text-heading-m--line-height: 1.2;
+  --text-heading-m--letter-spacing: -0.01em;
+  --text-heading-m--font-weight: 400;
+  --text-lead: var(--fs-lead);
+  --text-lead--line-height: 1.4;
+  --text-lead--letter-spacing: 0;
+  --text-body: var(--fs-body);
+  --text-body--line-height: 1.45;
+  --text-body--letter-spacing: 0;
   --text-body-s: 14px;
-  --text-body-s--line-height: 20px;
-  --text-body-s--letter-spacing: 0.75px;
-  --text-label-l: 16px;
-  --text-label-l--line-height: 20px;
-  --text-label-l--letter-spacing: 2px;
-  --text-label-m: 14px;
-  --text-label-m--line-height: 20px;
-  --text-label-m--letter-spacing: 2px;
-  --text-label-s: 10px;
-  --text-label-s--line-height: 12px;
-  --text-label-s--letter-spacing: 1.5px;
+  --text-body-s--line-height: 1.4;
+  --text-body-s--letter-spacing: 0;
+  --text-label: var(--fs-label);
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.04em;
+}
+
+:root {
+  --fs-display-l: 48px;
+  --fs-display-m: 36px;
+  --fs-display-s: 40px;
+  --fs-heading-l: 24px;
+  --fs-heading-m: 20px;
+  --fs-lead: 18px;
+  --fs-body: 16px;
+  --fs-label: 12px;
+}
+@media (min-width: 48rem) {
+  :root {
+    --fs-display-l: 64px;
+    --fs-display-m: 48px;
+    --fs-display-s: 44px;
+    --fs-heading-l: 26px;
+    --fs-heading-m: 22px;
+    --fs-lead: 20px;
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --fs-display-l: 88px;
+    --fs-display-m: 64px;
+    --fs-display-s: 56px;
+    --fs-heading-l: 32px;
+    --fs-heading-m: 24px;
+    --fs-lead: 22px;
+    --fs-body: 18px;
+    --fs-label: 14px;
+  }
+}
+@media (min-width: 90rem) {
+  :root {
+    --fs-display-l: 104px;
+    --fs-display-m: 72px;
+    --fs-display-s: 72px;
+    --fs-heading-l: 40px;
+    --fs-heading-m: 28px;
+    --fs-lead: 24px;
+  }
 }
 
 /*
  * Webfonts — Pangram Pangram faces. Files land in /public/fonts once licensed;
  * font-display: swap keeps the fallback stacks rendering until then.
  */
+@font-face {
+  font-family: "PP Editorial Old";
+  src: url("/fonts/PPEditorialOld-Ultralight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PP Editorial Old";
+  src: url("/fonts/PPEditorialOld-UltralightItalic.woff2") format("woff2");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
 @font-face {
   font-family: "PP Editorial Old";
   src: url("/fonts/PPEditorialOld-Regular.woff2") format("woff2");
@@ -193,10 +245,40 @@
   }
 }
 
+/* Anchored sections land below the sticky nav (76px). */
+section[id] {
+  scroll-margin-top: 76px;
+}
+
+/* F2: scrolling settles at section starts. Proximity, not mandatory, so sections taller
+   than the screen (Services open, Pricing, FAQ) still scroll freely. Off under reduced
+   motion. Sections fill the screen below the nav (`.section-full`). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+}
+main > section,
+.snap-start {
+  scroll-snap-align: start;
+}
+.section-full {
+  min-height: calc(100svh - 76px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(72px, 9vw, 136px);
+}
+.section-hug {
+  padding-block: clamp(80px, 10vw, 160px);
+}
+
 body {
   background: var(--color-neutral-100);
   color: var(--color-neutral-800);
   font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.45;
 }
 
 /* Supply labels are always uppercase in the DS */
@@ -205,63 +287,227 @@ body {
   text-transform: uppercase;
 }
 
-/* Film-grain overlay used on saturated sections (blue/green) — stands in for the
-   Figma "Noise & Texture" raster until the original is exported. */
-.noise::after {
+/* ── Grid (Batch 1) ──
+   Gridlines sit on the 1200px measure; content sits 8px inside them (1184px) with 16px
+   gutters. Columns: 4 below
+   768px, 8 at 768–1023px, 12 at ≥1024px (Tailwind md/lg). The left padding widens to
+   clear the tick nav: 64px on tablet; on desktop the outer margin + padding never drops
+   below 64px. `.measure` is shared by sections, gridlines, footer and the marquee so
+   everything sits on the same columns. */
+.measure {
+  width: 100%;
+  max-width: calc(1200px + 32px);
+  margin-inline: auto;
+  /* 16px page padding + 8px inset, so content sits exactly 8px inside the gridlines. */
+  padding-inline: 24px;
+}
+@media (min-width: 48rem) {
+  .measure {
+    padding-left: 72px; /* gridline at 64px clears the tick nav; content 8px inside it */
+  }
+}
+@media (min-width: 64rem) {
+  .measure {
+    padding-left: clamp(24px, calc(72px - (100vw - 1232px) / 2), 72px);
+  }
+}
+/* Editorial text block: 8 of 12 columns on desktop, full width below. */
+@media (min-width: 64rem) {
+  .cols-8 {
+    max-width: calc((100% - 176px) * 8 / 12 + 112px);
+  }
+}
+
+/* Film grain (moments only: hero, statement panel, closing band). Grayscale fractal
+   noise multiplied over the surface at 10%. Never on cards or controls. */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0; /* under the content (z-[1]) so it never sits on controls */
   pointer-events: none;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3' intercept='-1'/%3E%3CfeFuncG type='linear' slope='3' intercept='-1'/%3E%3CfeFuncB type='linear' slope='3' intercept='-1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Decorative dotted column grid (7 vertical dotted lines / 6 columns), pulled from the
-   comp's `gridlines` frame. Rendered per-section by <Section>; every section shares the
-   same 1200px measure + padding, so the dotted lines line up across section boundaries
-   and read as one grid running the whole page. */
+/* FAQ accordion: answers open/close over 250ms (grid-template-rows 0fr ↔ 1fr). */
+.accordion-panel {
+  transition: grid-template-rows 250ms ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .accordion-panel {
+    transition: none;
+  }
+}
+
+/* Gridlines (Stripe-style): solid 1px at the outer edges of the 1200px measure, dashed
+   (4px dash / 5px gap) on column boundaries — every 3 columns at 12-col, every 2 at
+   8-col, center only at 4-col. Lines draw top-down once when the section enters view
+   (Gridlines.tsx adds `.in`). Hidden on the hero, statement panel and closing band. */
 .gridlines {
   position: absolute;
   inset: 0;
-  max-width: 1200px;
-  margin-inline: auto;
-  padding-inline: 1.5rem; /* matches the container's px-6 */
   pointer-events: none;
-  display: flex;
-  justify-content: space-between;
-  color: var(--color-neutral-300);
+  color: var(--color-neutral-400);
 }
+.gridlines div {
+  position: relative;
+  height: 100%;
+}
+.gridlines i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform-origin: top;
+}
+/* Solid edges read darker than the dashes at the same color, so they use the next
+   lighter step to match visually. */
+.gridlines .edge {
+  background: var(--color-neutral-300);
+}
+/* Outer edges sit 8px outside the content box. */
+.gridlines .edge.l {
+  left: -8px;
+}
+.gridlines .edge.r {
+  right: -8px;
+}
+.gridlines .dash {
+  background-image: repeating-linear-gradient(to bottom, currentColor 0 4px, transparent 4px 9px);
+}
+/* 4 cols: center only. */
+.gridlines .d1,
+.gridlines .d3 {
+  display: none;
+}
+.gridlines .d2 {
+  left: 50%;
+}
+/* 8 cols: every 2 columns (gutter centers). */
 @media (min-width: 48rem) {
-  .gridlines {
-    padding-inline: 2rem; /* matches md:px-8 */
+  .gridlines .d1,
+  .gridlines .d3 {
+    display: block;
+  }
+  .gridlines .d1 {
+    left: calc((100% - 112px) * 2 / 8 + 24px);
+  }
+  .gridlines .d2 {
+    left: calc((100% - 112px) * 4 / 8 + 56px);
+  }
+  .gridlines .d3 {
+    left: calc((100% - 112px) * 6 / 8 + 88px);
   }
 }
-.gridlines > i {
-  width: 1px;
-  /* Vertical dotted line: 3px dot, 6px gap. */
-  background-image: repeating-linear-gradient(
-    to bottom,
-    currentColor 0 3px,
-    transparent 3px 9px
-  );
+/* 12 cols: every 3 columns. */
+@media (min-width: 64rem) {
+  .gridlines .d1 {
+    left: calc((100% - 176px) * 3 / 12 + 40px);
+  }
+  .gridlines .d2 {
+    left: calc((100% - 176px) * 6 / 12 + 88px);
+  }
+  .gridlines .d3 {
+    left: calc((100% - 176px) * 9 / 12 + 136px);
+  }
+}
+.js .gridlines i {
+  transform: scaleY(0);
+  transition: transform 800ms ease-out;
+}
+.js .gridlines.in i {
+  transform: none;
 }
 
-/* ---- Motion (new comp) ---- */
-
-/* Scroll-reveal: elements start hidden and are revealed once by the <Reveal> wrapper,
-   which adds `.in` when the element scrolls into view. Gated on the `.js` class (set
-   before paint in layout.tsx) so content stays visible if JS never runs — progressive
-   enhancement, and no invisible content for crawlers or on script failure. */
+/* ── Motion: "stock the shelf" ──
+   Triggered once at 80% of the viewport (Reveal.tsx). Order inside a section:
+   gridlines draw (0ms) → header rises (100ms) → items fill left to right from 200ms,
+   60ms apart, stagger capped at 300ms. Nothing waits past 600ms. Gated on `.js` (set
+   before paint in layout.tsx) so content stays visible without JS. */
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(24px);
   transition:
-    opacity 600ms ease,
-    transform 600ms ease;
+    opacity 500ms ease-out,
+    transform 500ms ease-out;
+  transition-delay: var(--delay, 0ms);
+}
+.js [data-reveal][data-variant="fade"] {
+  transform: none;
 }
 .js [data-reveal].in {
   opacity: 1;
   transform: none;
+}
+/* Staggered groups: the wrapper stays put, its children fill in. */
+.js [data-reveal][data-stagger] {
+  opacity: 1;
+  transform: none;
+}
+.js [data-reveal][data-stagger] > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 500ms ease-out,
+    transform 500ms ease-out;
+  /* Starts at +200ms, 80ms apart, capped at 400ms, so nothing waits past 600ms. */
+  transition-delay: calc(200ms + min(var(--i, 0) * 80ms, 400ms));
+}
+.js [data-reveal][data-stagger].in > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero on load: eyebrow 0ms, headline +80ms, subhead +180ms, CTAs +280ms. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+.js .hero-seq > * {
+  animation: rise-in 500ms ease-out both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Line icons: 2px monoline, square caps. Inside a reveal they draw once on enter
+   (400ms); hover nudges them 2px in their direction (150ms). */
+.line-icon path {
+  transition: stroke-dashoffset 400ms ease-out;
+}
+.js [data-reveal] .line-icon path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.js [data-reveal].in .line-icon path {
+  stroke-dashoffset: 0;
+}
+.line-icon {
+  transition: translate 150ms ease-out;
+}
+.group:hover .nudge-x,
+.group:focus-visible .nudge-x {
+  translate: 2px 0;
+}
+.group:hover .nudge-back,
+.group:focus-visible .nudge-back {
+  translate: -2px 0;
+}
+.group:hover .nudge-down,
+.group:focus-visible .nudge-down,
+.group\/btn:hover .nudge-down,
+.group\/btn:focus-visible .nudge-down {
+  translate: 0 2px;
+}
+.group:hover .nudge-ur,
+.group:focus-visible .nudge-ur {
+  translate: 2px -2px;
 }
 
 /* Logo marquee — the track is a duplicated (2×) strip translated by -50% so the loop is
@@ -297,18 +543,24 @@ body {
   rotate: var(--tilt, 0deg);
   transform-origin: 50% calc(-1 * var(--len, 0px));
 }
-@keyframes hang-sway {
-  from {
-    rotate: calc(var(--tilt, 0deg) - 1.4deg * var(--amp, 1));
+/* Prints settle once on load: a small swing that dies out, then they hang still. */
+@keyframes hang-settle {
+  0% {
+    rotate: calc(var(--tilt, 0deg) + 2.4deg * var(--amp, 1));
   }
-  to {
-    rotate: calc(var(--tilt, 0deg) + 1.4deg * var(--amp, 1));
+  40% {
+    rotate: calc(var(--tilt, 0deg) - 1deg * var(--amp, 1));
+  }
+  75% {
+    rotate: calc(var(--tilt, 0deg) + 0.3deg * var(--amp, 1));
+  }
+  100% {
+    rotate: var(--tilt, 0deg);
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .hang-static .hang-sway,
-  [data-hang="fly"] .regular-fly .hang-sway {
-    animation: hang-sway 3.2s ease-in-out infinite alternate;
+  .hang-static .hang-sway {
+    animation: hang-settle 1.6s ease-out both;
   }
 }
 .hang-string,
@@ -344,9 +596,119 @@ body {
 [data-hang="fly"] .regular-fly .hang-pin {
   display: block;
 }
-/* The hero copies become invisible measuring slots once the real prints take over. */
-[data-hang="fly"] .hang-static {
+/* Hero prints that drop into the use-case cards become invisible measuring slots once
+   the real prints take over; the others stay and fade (UseCases.tsx). */
+[data-hang="fly"] .hang-static[data-flies] {
   visibility: hidden;
+}
+
+/* Use-case cover wash: ink (neutral-1000), heavy behind the copy at the top and fading
+   out toward the bottom so the image still reads. */
+.usecase-wash {
+  background: linear-gradient(
+    to bottom,
+    rgb(31 29 28 / 0.85) 0%,
+    rgb(31 29 28 / 0.7) 40%,
+    rgb(31 29 28 / 0.25) 72%,
+    rgb(31 29 28 / 0.1) 100%
+  );
+}
+
+/* Use-case prints only exist while flying in; otherwise the card shows its cover. */
+.usecase-print {
+  opacity: 0;
+}
+
+/* Use-case cards: outcome line shows on hover/focus; always visible on touch. */
+@media (hover: hover) {
+  .usecase .usecase-outcome {
+    opacity: 0;
+    transition: opacity 150ms ease-out;
+  }
+  .usecase:hover .usecase-outcome,
+  .usecase:focus-within .usecase-outcome {
+    opacity: 1;
+  }
+}
+/* Work tiles: brand color behind the image; hover deepens it (no zoom). */
+.work-frame {
+  background: var(--tile);
+  transition: border-color 150ms ease-out;
+}
+/* Hover deepens the backdrop: a dark wash between the gradient and the image. */
+.work-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.18);
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+.work-frame > * {
+  position: relative;
+}
+.work-frame > span.absolute {
+  position: absolute;
+}
+.group:hover .work-frame,
+.group:focus-visible .work-frame {
+  border-color: var(--color-neutral-1000);
+}
+.group:hover .work-frame::before,
+.group:focus-visible .work-frame::before {
+  opacity: 1;
+}
+
+/* Process: statement + principles. Static by default (mobile, reduced motion); from
+   768px up the section is ~2.6 screens tall and the stage sticks below the nav. */
+.process-stage {
+  padding-block: clamp(80px, 10vw, 160px);
+}
+.process[data-pinned="true"] {
+  height: 340svh;
+}
+.process[data-pinned="true"] .process-stage {
+  position: sticky;
+  top: 76px;
+  height: calc(100svh - 76px);
+  padding-block: clamp(72px, 9vw, 136px);
+}
+/* Circle around "clear": draws once (800ms) when the section is centered. */
+.statement-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 800ms ease-out;
+}
+.process.drawn .statement-underline path {
+  stroke-dashoffset: 0;
+}
+
+/* Pricing card picked from a use case: 2px primary outline for ~3.5s. */
+/* Pricing cards lift into place when picked from a use case: they rise 8px, cast a
+   soft shadow and get a 2px primary-400 outline for ~3.5s. (The one exception to the
+   no-lift rule: it marks "this is the one you asked about".) */
+#offer-scale,
+#offer-audit,
+#offer-diagnostic,
+#offer-build {
+  transition:
+    transform 300ms ease-out,
+    box-shadow 300ms ease-out,
+    background-color 150ms ease-out,
+    border-color 150ms ease-out;
+}
+.offer-highlight {
+  position: relative;
+  z-index: 1;
+  transform: translateY(-8px);
+  box-shadow: 0 28px 48px -24px rgb(31 29 28 / 0.45);
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .offer-highlight {
+    transform: none;
+  }
 }
 .regular-fly {
   will-change: transform;
@@ -369,9 +731,28 @@ body {
   .services-drawer {
     transition: none;
   }
-  .js [data-reveal] {
+  .js [data-reveal],
+  .js [data-reveal][data-stagger] > * {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+  .js .gridlines i {
+    transform: none;
+    transition: none;
+  }
+  .js .hero-seq > * {
+    animation: none;
+  }
+  .statement-underline path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .js [data-reveal] .line-icon path {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .line-icon {
     transition: none;
   }
   .marquee-track,

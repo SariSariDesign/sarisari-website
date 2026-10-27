@@ -89,9 +89,7 @@ test("nav reaches every sitemap route, and anchors work from a sub-page", async 
   test.skip(isMobile, "desktop nav");
   await page.goto("/services");
   const nav = page.getByRole("banner");
-  await nav.getByRole("link", { name: "Work", exact: true }).click();
-  await expect(page).toHaveURL(/\/work$/);
-  await nav.getByRole("link", { name: "Process", exact: true }).click();
-  await expect(page).toHaveURL(/\/#process$/);
-  await expect(page.locator("#process")).toBeInViewport();
+  await nav.getByRole("link", { name: "Pricing", exact: true }).click();
+  await expect(page).toHaveURL(/\/#pricing$/);
+  await expect(page.locator("#pricing")).toBeInViewport();
 });

@@ -1,4 +1,7 @@
-import { work } from "@/content/site";
+import { useCases, work } from "@/content/site";
+
+/** Slots whose print drops into a use-case card on scroll. */
+const FLIES = useCases.cards.map((c) => c.print);
 import { HangHardware, RegularPhoto } from "./RegularPhoto";
 
 /**
@@ -8,12 +11,13 @@ import { HangHardware, RegularPhoto } from "./RegularPhoto";
  * crowd in behind and between them, left to right like the gallery wall they fall to.
  */
 const HANG = [
-  { left: 4, top: 9, width: 29, sway: "3.4s" },
-  { left: 35, top: 3, width: 27, sway: "2.9s" },
-  { left: 64, top: 12, width: 30, sway: "3.7s" },
-  { left: 13, top: 29, width: 24, sway: "3.1s" },
-  { left: 40, top: 23, width: 19, sway: "3.9s" },
-  { left: 61, top: 33, width: 17, sway: "2.7s" },
+  // Spread down the column in a zigzag so the cluster fills the hero's height.
+  { left: 0, top: 6, width: 46, delay: "0ms" }, // Kenchan 4/3
+  { left: 50, top: 18, width: 46, delay: "60ms" }, // Funding Solutions 4/3
+  { left: 4, top: 50, width: 44, delay: "120ms" }, // Disco 4/3
+  { left: 54, top: 62, width: 42, delay: "40ms" }, // Lendzi 3/2
+  { left: 26, top: 80, width: 34, delay: "100ms" }, // NutriSnap 6/7
+  { left: 66, top: 96, width: 30, delay: "160ms" }, // sixth piece 1/1
 ];
 
 /** Height of the hanging cluster (deepest string + print), in cqw, for vertical centering. */
@@ -26,29 +30,26 @@ function aspectRatio(i: number) {
 
 /**
  * Hero: six client prints hanging straight on strings that fade out as they rise,
- * swaying gently and crowding each other like stock in a sari-sari store window. On desktop
- * with motion allowed, these are only measuring slots: `Regulars` hides them
- * (`[data-hang=fly]`) and drops the real Our Regulars prints from exactly these spots
- * into the grid as the page scrolls. Elsewhere (mobile, reduced motion, no JS) they
- * render as a still illustration.
+ * settling once on load and crowding each other like stock in a sari-sari store window. On
+ * desktop with motion allowed, the four use-case prints are only measuring slots:
+ * `UseCases` hides them (`[data-hang=fly]`) and drops the real prints from these spots
+ * into its cards as the page scrolls; the rest fade. Elsewhere they stay a still picture.
  */
 export function HangingShop() {
   return (
     <div
-      className="relative aspect-[100/58] w-full [container-type:inline-size] lg:aspect-auto lg:h-full"
+      className="relative w-full [container-type:inline-size]"
       aria-hidden
     >
-      {/* The cluster is centered vertically; strings keep their lengths (fading out above). */}
-      <div
-        className="absolute inset-x-0 top-1/2 -translate-y-1/2"
-        style={{ height: `${CLUSTER_H}cqw` }}
-      >
+      {/* Height follows the cluster so prints keep their size; strings fade out above. */}
+      <div className="relative w-full" style={{ height: `${CLUSTER_H}cqw` }}>
         {work.regulars.map((r, i) => {
           const h = HANG[i % HANG.length];
           return (
             <div
               key={r.client}
               data-hang-slot={i}
+              data-flies={FLIES.includes(i) ? "" : undefined}
               className="hang-static absolute"
               style={{
                 left: `${h.left}cqw`,
@@ -60,7 +61,7 @@ export function HangingShop() {
             >
               <div
                 className="hang-sway relative"
-                style={{ "--len": `${h.top}cqw`, animationDuration: h.sway } as React.CSSProperties}
+                style={{ "--len": `${h.top}cqw`, animationDelay: h.delay } as React.CSSProperties}
               >
                 <HangHardware />
                 <RegularPhoto r={r} />

@@ -7,8 +7,8 @@ import { Placeholder } from "./Placeholder";
 
 /**
  * Services as a numbered, single-open list. Each row starts condensed (number + title);
- * opening it reveals a piece of relevant media, the description, optional capability
- * bullets, and an optional link. The drawer animates open via grid-template-rows so the
+ * opening it reveals a piece of relevant media, the description, list of
+ * what's included, and an optional link. The drawer animates open via grid-template-rows so the
  * height transition needs no measuring; it is instant under reduced motion.
  */
 export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; defaultOpen?: number }) {
@@ -30,12 +30,12 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="group flex w-full items-center gap-6 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 md:gap-10 md:py-6"
+                className="group flex w-full items-center gap-4 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 md:gap-10 md:py-6"
               >
-                <span className="ds-label w-10 shrink-0 text-label-m text-neutral-700 md:w-16">
+                <span className="ds-label w-10 shrink-0 text-label text-neutral-700 md:w-16">
                   {s.n}
                 </span>
-                <span className="flex-1 text-[clamp(22px,2.4vw,33px)] font-medium leading-[1.1] tracking-[-0.01em] text-neutral-1000 transition-colors group-hover:text-primary-400">
+                <span className="flex-1 text-heading-l text-neutral-1000 transition-colors group-hover:text-primary-400">
                   {s.title}
                 </span>
                 <PlusMinus open={isOpen} />
@@ -48,8 +48,8 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
               className={`services-drawer grid ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
             >
               <div className="min-h-0 overflow-hidden" inert={!isOpen}>
-                <div className="grid gap-8 pb-8 md:grid-cols-2 md:gap-10 md:pl-[104px]">
-                  <div className="aspect-[4/3] overflow-hidden rounded-2xl">
+                <div className="grid gap-4 pb-8 md:grid-cols-2 md:pl-[104px]">
+                  <div className="aspect-[4/3] overflow-hidden rounded">
                     {s.media ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={s.media} alt="" className="h-full w-full object-cover" />
@@ -57,14 +57,13 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                       <Placeholder className="h-full w-full" label={`${s.title} — media pending`} />
                     )}
                   </div>
-                  <div className="flex flex-col gap-6">
-                    <p className="text-body-l text-neutral-800">{s.body}</p>
-                    {s.points && s.points.length > 0 && (
-                      <ul className="flex flex-col gap-2">
-                        {s.points.map((p) => (
-                          <li key={p} className="flex gap-3 text-body-m text-neutral-700">
-                            <span aria-hidden className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-500" />
-                            {p}
+                  <div className="flex flex-col gap-4">
+                    <p className="text-lead text-neutral-800">{s.body}</p>
+                    {s.tags && s.tags.length > 0 && (
+                      <ul className="grid gap-x-4 gap-y-2 text-body text-neutral-700 sm:grid-cols-2" aria-label="Includes">
+                        {s.tags.map((t) => (
+                          <li key={t} className="border-t border-neutral-300 pt-2">
+                            {t}
                           </li>
                         ))}
                       </ul>

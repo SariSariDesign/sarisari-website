@@ -8,25 +8,28 @@ const items = [
   { label: "Second question", body: "Second answer" },
 ];
 
+// Answers stay in the DOM so they can animate open/closed; `aria-expanded` is the state.
+const expanded = (name: RegExp) => screen.getByRole("button", { name }).getAttribute("aria-expanded");
+
 describe("Accordion", () => {
   it("opens the defaultOpen item on render", () => {
     render(<Accordion items={items} defaultOpen={0} />);
-    expect(screen.getByText("First answer")).toBeInTheDocument();
-    expect(screen.queryByText("Second answer")).not.toBeInTheDocument();
+    expect(expanded(/first question/i)).toBe("true");
+    expect(expanded(/second question/i)).toBe("false");
   });
 
   it("opens one item at a time (single-open)", async () => {
     const user = userEvent.setup();
     render(<Accordion items={items} defaultOpen={0} />);
     await user.click(screen.getByRole("button", { name: /second question/i }));
-    expect(screen.getByText("Second answer")).toBeInTheDocument();
-    expect(screen.queryByText("First answer")).not.toBeInTheDocument();
+    expect(expanded(/second question/i)).toBe("true");
+    expect(expanded(/first question/i)).toBe("false");
   });
 
   it("toggles an open item closed", async () => {
     const user = userEvent.setup();
     render(<Accordion items={items} defaultOpen={0} />);
     await user.click(screen.getByRole("button", { name: /first question/i }));
-    expect(screen.queryByText("First answer")).not.toBeInTheDocument();
+    expect(expanded(/first question/i)).toBe("false");
   });
 });

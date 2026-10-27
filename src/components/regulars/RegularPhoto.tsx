@@ -10,7 +10,7 @@ import { Placeholder } from "../Placeholder";
 export function RegularPhoto({ r }: { r: Pick<PortfolioPiece, "client" | "image" | "aspect"> }) {
   return (
     <div
-      className="regular-print relative w-full overflow-hidden rounded-[2%] bg-neutral-200 shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
+      className="regular-print relative w-full overflow-hidden rounded bg-neutral-200 shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
       style={{ aspectRatio: r.aspect }}
     >
       {r.image ? (
@@ -19,7 +19,7 @@ export function RegularPhoto({ r }: { r: Pick<PortfolioPiece, "client" | "image"
       ) : (
         <div className="relative h-full w-full">
           <Placeholder className="h-full w-full" rounded={false} />
-          <span className="ds-label absolute inset-0 flex items-center justify-center text-center text-[2.6cqw] tracking-[0.2em] text-neutral-700">
+          <span className="ds-label absolute inset-0 flex items-center justify-center text-center text-label text-neutral-700">
             {r.client} — photo pending
           </span>
         </div>

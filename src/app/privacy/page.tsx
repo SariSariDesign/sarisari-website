@@ -9,9 +9,9 @@ export default function Privacy() {
   return (
     <>
       <Nav />
-      <main className="mx-auto min-h-[50vh] max-w-[760px] px-6 py-24">
-        <h1 className="mb-8 font-brand text-h1 text-neutral-900">Privacy Policy</h1>
-        <p className="text-body-m text-neutral-700">
+      <main className="measure min-h-[50vh] py-24 [&>*]:max-w-[760px]">
+        <h1 className="mb-8 font-brand text-display-m text-neutral-900">Privacy Policy</h1>
+        <p className="text-body text-neutral-700">
           Sari Sari llc collects only what the site needs to function. Full policy copy pending —
           contact{" "}
           <a className="text-primary-400 underline" href="mailto:hello@sarisari.design">

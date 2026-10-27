@@ -8,15 +8,15 @@ test.describe("homepage", () => {
 
   test("renders the hero and every anchored section", async ({ page }) => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      /Design that turns sign.ups into regulars/, // headline uses a non-breaking hyphen
+      "Design that turns users into regulars.",
     );
-    for (const id of ["regulars", "services", "process", "work", "uvp", "pricing", "about", "testimonials", "faq"]) {
+    for (const id of ["hero", "services", "work", "testimonials", "pricing", "about", "faq"]) {
       await expect(page.locator(`#${id}`)).toBeVisible();
     }
   });
 
   test("primary CTAs point at Calendly", async ({ page }) => {
-    const cta = page.getByRole("link", { name: /book an intro call/i }).first();
+    const cta = page.getByRole("link", { name: /book a call/i }).first();
     await expect(cta).toHaveAttribute("href", /calendly\.com\/sarisari/);
   });
 
@@ -27,12 +27,12 @@ test.describe("homepage", () => {
     );
   });
 
-  test("pricing shows the retainer hero and three smaller offers", async ({ page }) => {
+  test("pricing shows Scale, three offers and the free Scorecard", async ({ page }) => {
     const pricing = page.locator("#pricing");
     await expect(pricing.getByText("$16,000")).toBeVisible();
     await expect(pricing.getByText("$1,500")).toBeVisible();
     await expect(pricing.getByText("$6,000")).toBeVisible();
-    await expect(pricing.getByRole("link", { name: /try it for free/i })).toHaveAttribute(
+    await expect(pricing.getByRole("link", { name: /get free scorecard/i })).toHaveAttribute(
       "href",
       /activation-diagnostic\.sarisari\.design\/preview/,
     );

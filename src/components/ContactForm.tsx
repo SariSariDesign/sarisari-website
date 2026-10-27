@@ -6,7 +6,7 @@ import { contact } from "@/content/site";
 type State = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
 
 const input =
-  "w-full rounded-lg border border-neutral-400 bg-white px-4 py-3 text-body-m text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
+  "w-full rounded border border-neutral-400 bg-white px-4 py-3 text-body text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
 
 /** Server-side caps in /api/contact; mirrored here so the browser stops at the same limit. */
 const MAX = { name: 200, email: 254, company: 200, message: 5000 } as const;
@@ -42,7 +42,7 @@ export function ContactForm() {
 
   if (state.kind === "sent") {
     return (
-      <p ref={statusRef} tabIndex={-1} role="status" className="text-body-l text-neutral-1000 outline-none">
+      <p ref={statusRef} tabIndex={-1} role="status" className="text-lead text-neutral-1000 outline-none">
         {f.success}
       </p>
     );
@@ -52,7 +52,7 @@ export function ContactForm() {
     <form onSubmit={onSubmit} className="flex max-w-[640px] flex-col gap-5" noValidate>
       {(["name", "email", "company"] as const).map((k) => (
         <label key={k} className="flex flex-col gap-2">
-          <span className="ds-label text-label-s text-neutral-700">{f.fields[k]}</span>
+          <span className="ds-label text-label text-neutral-700">{f.fields[k]}</span>
           <input
             name={k}
             type={k === "email" ? "email" : "text"}
@@ -64,7 +64,7 @@ export function ContactForm() {
         </label>
       ))}
       <label className="flex flex-col gap-2">
-        <span className="ds-label text-label-s text-neutral-700">{f.fields.message}</span>
+        <span className="ds-label text-label text-neutral-700">{f.fields.message}</span>
         <textarea name="message" required rows={5} maxLength={MAX.message} className={input} />
       </label>
       <div aria-hidden className="absolute -left-[9999px]">
@@ -82,7 +82,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={state.kind === "sending"}
-          className="ds-label rounded-full bg-primary-100 px-8 py-4 text-label-m text-primary-400 hover:bg-primary-200 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
+          className="ds-label rounded bg-primary-100 px-8 py-4 text-label text-primary-400 hover:bg-primary-200 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
         >
           {state.kind === "sending" ? f.sending : f.submit}
         </button>

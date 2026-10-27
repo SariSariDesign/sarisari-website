@@ -169,7 +169,7 @@ export function Regulars({ items }: { items: PortfolioPiece[] }) {
           </div>
         </div>
         <div ref={textRef(i)}>
-          <p className="ds-label mt-3 text-label-s text-neutral-700">{r.client}</p>
+          <p className="ds-label mt-3 text-label text-neutral-700">{r.client}</p>
         </div>
       </>
     );
@@ -183,7 +183,7 @@ export function Regulars({ items }: { items: PortfolioPiece[] }) {
           <Link
             href={href}
             aria-label={`${r.client} case study`}
-            className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
+            className="block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300"
           >
             {body}
           </Link>

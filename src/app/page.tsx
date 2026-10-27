@@ -1,31 +1,28 @@
 import { Accordion } from "@/components/Accordion";
 import { Button } from "@/components/Button";
-import { CaseStudyCard } from "@/components/CaseStudyCard";
+import { Eyebrow } from "@/components/Eyebrow";
 import { FooterCta } from "@/components/FooterCta";
-import { Gridlines } from "@/components/Gridlines";
+import { HomePricing } from "@/components/HomePricing";
 import { Marquee } from "@/components/Marquee";
 import { Nav } from "@/components/Nav";
-import { OfferCards } from "@/components/OfferCards";
 import { Reveal } from "@/components/Reveal";
-import { RetainerPanel } from "@/components/RetainerPanel";
 import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesList } from "@/components/ServicesList";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
+import { Process } from "@/components/Process";
+import { TickNav } from "@/components/TickNav";
+import { UseCases } from "@/components/UseCases";
+import { WorkTile } from "@/components/WorkTile";
 import { HangingShop } from "@/components/regulars/HangingShop";
-import { Regulars as RegularsWall } from "@/components/regulars/Regulars";
-import { caseStudies } from "@/content/case-studies";
 import {
   about,
   caseStudiesSection,
   faq,
   hero,
-  pricing,
-  process,
   services,
   testimonials,
-  why,
-  work,
+  useCases,
 } from "@/content/site";
 import { isExternal } from "@/lib/links";
 
@@ -35,76 +32,94 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <Regulars />
+        <UseCasesSection />
         <Services />
-        <Process />
         <CaseStudies />
-        <Why />
+        <Process />
+        <Testimonials />
         <Pricing />
         <About />
-        <Testimonials />
         <Faq />
       </main>
       <FooterCta />
+      <TickNav />
     </>
   );
 }
 
 function Hero() {
-  const active = hero.headlineOptions[hero.activeHeadline];
   return (
-    // At lg the hero stops ~150px short of the viewport bottom so the "Our Regulars"
-    // header peeks in on landing (76px = sticky nav height).
-    <section data-hero className="relative overflow-hidden bg-neutral-100 lg:h-[calc(100svh-76px-150px)] lg:min-h-[620px]">
-      <Gridlines />
-      <div className="relative z-[1] flex h-full flex-col">
-        {/* Full-width split: content left (aligned to the 1200px measure), graphic bleeds right. */}
-        <div className="grid min-h-0 flex-1 lg:grid-cols-2">
-          <div className="flex items-center px-6 pb-12 pt-16 md:px-8 md:pt-24 lg:py-12 lg:pl-[max(2rem,calc((100vw-1200px)/2+1.5rem))] lg:pr-12">
-            <Reveal className="flex max-w-[780px] flex-col gap-8">
-              <h1 className="text-balance font-brand text-[clamp(52px,6.5vw,109px)] italic leading-[1.02] tracking-[-0.02em] text-neutral-1000">
-                {active.headline}
-              </h1>
-              <p className="max-w-[40ch] text-[clamp(22px,1.9vw,29px)] leading-[1.35] tracking-[0.25px] text-neutral-700">
-                {hero.subhead}
-              </p>
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-                {hero.ctas.map((cta) => (
-                  <Button
-                    key={cta.label}
-                    href={cta.href}
-                    variant={cta.variant}
-                    external={isExternal(cta.href)}
-                  >
-                    {cta.label}
-                  </Button>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-
-          <div className="relative px-6 pb-12 md:px-8 lg:p-0 lg:pt-6">
-            <HangingShop />
+    // A "moment": grain on, gridlines off. 60/40 text to prints (7 + 5 of 12 columns).
+    <section
+      id="hero"
+      data-hero
+      className="grain flex flex-col overflow-hidden bg-neutral-100 lg:min-h-[calc(100svh-76px)]"
+    >
+      <div className="measure relative z-[1] grid flex-1 grid-cols-4 items-center gap-x-4 pb-8 pt-12 md:grid-cols-8 md:pt-16 lg:grid-cols-12 lg:py-10">
+        {/* Load sequence: eyebrow 0ms, headline +80ms, subhead +180ms, CTAs +280ms. */}
+        <div className="hero-seq col-span-full flex flex-col gap-8 lg:col-span-7">
+          <Eyebrow>{hero.eyebrow}</Eyebrow>
+          <h1
+            className="text-balance font-brand text-display-l italic text-neutral-1000"
+            style={{ "--d": "80ms" } as React.CSSProperties}
+          >
+            {hero.headline}
+          </h1>
+          <p
+            className="max-w-[44ch] text-lead text-neutral-700"
+            style={{ "--d": "180ms" } as React.CSSProperties}
+          >
+            {hero.subhead}
+          </p>
+          <div
+            className="flex flex-wrap items-center gap-4"
+            style={{ "--d": "280ms" } as React.CSSProperties}
+          >
+            {hero.ctas.map((cta) => (
+              <Button
+                key={cta.label}
+                href={cta.href}
+                variant={cta.variant}
+                external={isExternal(cta.href)}
+              >
+                {cta.label}
+              </Button>
+            ))}
           </div>
         </div>
-
-        {/* Label sits on the 1200px measure; the logo strip runs the full viewport width. */}
-        <div className="flex flex-col gap-8 pb-16 pt-8 md:pb-24 lg:pb-12 lg:pt-20">
-          <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8">
-            <span className="ds-label text-[15px] leading-[18px] tracking-[2px] text-neutral-700">
-              {hero.marquee.label}
-            </span>
-          </div>
-          <Marquee items={hero.marquee.logos} />
+        <div className="relative col-span-full mx-auto mt-12 w-full max-w-[560px] lg:col-span-5 lg:mt-0 lg:max-w-none">
+          <HangingShop />
         </div>
+      </div>
+
+      {/* Client logo strip, inside the measure. */}
+      <div className="measure relative z-[1] pb-8">
+        <Marquee items={hero.marquee.logos} />
       </div>
     </section>
   );
 }
 
+function UseCasesSection() {
+  return (
+    <Section
+      id="use-cases"
+      aria-labelledby="use-cases-h"
+      className="bg-neutral-100"
+    >
+      <SectionHeader headingId="use-cases-h" headline={useCases.headline} />
+      <UseCases />
+    </Section>
+  );
+}
+
 function Services() {
   return (
-    <Section id="services" aria-labelledby="services-h" className="bg-neutral-200">
+    <Section
+      id="services"
+      aria-labelledby="services-h"
+      className="bg-neutral-200"
+    >
       <SectionHeader
         headingId="services-h"
         eyebrow={services.eyebrow}
@@ -123,82 +138,30 @@ function Services() {
   );
 }
 
-/**
- * Our Recent Clients: the gallery wall the hero's hanging prints fall onto (the visual
- * hook). The header sits on the 1200px measure; the wall runs nearly full-bleed.
- */
-function Regulars() {
-  return (
-    <section id="regulars" aria-labelledby="regulars-h" className="relative bg-neutral-100">
-      <Gridlines />
-      <div className="relative z-[1] mx-auto max-w-[1200px] px-6 pt-12 md:px-8 md:pt-16">
-        <SectionHeader headingId="regulars-h" eyebrow={work.eyebrow} headline={work.headline} />
-      </div>
-      <div className="relative z-[1] px-4 pb-24 md:px-8">
-        <RegularsWall items={work.regulars} />
-      </div>
-    </section>
-  );
-}
-
 function CaseStudies() {
   return (
     <Section id="work" aria-labelledby="work-h" className="bg-neutral-100">
-      <SectionHeader
-        headingId="work-h"
-        eyebrow={caseStudiesSection.eyebrow}
-        headline={caseStudiesSection.headline}
-      />
-      <Reveal className="mt-12 grid gap-x-8 gap-y-14 md:grid-cols-2">
-        {caseStudies.slice(0, 3).map((c, i) => (
-          <CaseStudyCard key={c.slug} c={c} featured={i === 0} />
-        ))}
-      </Reveal>
-      <Reveal className="mt-10">
-        <Button href={caseStudiesSection.seeAll.href} variant="ghost">
-          {caseStudiesSection.seeAll.label}
-        </Button>
-      </Reveal>
-    </Section>
-  );
-}
-
-/** How we work: four phases of the double diamond, each with its timing. */
-function Process() {
-  return (
-    <Section id="process" aria-labelledby="process-h" className="bg-neutral-100">
-      <SectionHeader
-        headingId="process-h"
-        eyebrow={process.eyebrow}
-        headline={process.headline}
-        intro={process.intro}
-      />
-      <Reveal className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-        {process.steps.map((s) => (
-          <div key={s.n} className="flex flex-col gap-3 border-t border-neutral-400 pt-6">
-            <span className="ds-label text-label-s text-neutral-700">
-              {s.n} · {s.when}
-            </span>
-            <h3 className="font-brand text-h2 leading-[1.1] text-neutral-1000">{s.title}</h3>
-            <p className="text-body-s text-neutral-700">{s.body}</p>
-          </div>
-        ))}
-      </Reveal>
-    </Section>
-  );
-}
-
-/** Why Sari Sari: the four alternatives a buyer is weighing us against. */
-function Why() {
-  return (
-    <Section id="uvp" aria-labelledby="uvp-h" className="bg-neutral-200">
-      <SectionHeader headingId="uvp-h" eyebrow={why.eyebrow} headline={why.headline} />
-      <Reveal className="mt-16 grid gap-x-12 gap-y-10 md:grid-cols-2">
-        {why.items.map((w) => (
-          <div key={w.title} className="flex flex-col gap-3">
-            <h3 className="text-title-l font-medium text-neutral-1000">{w.title}</h3>
-            <p className="text-body-m text-neutral-700">{w.body}</p>
-          </div>
+      {/* Title left, "See all work" right. */}
+      <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-4">
+        <SectionHeader
+          headingId="work-h"
+          eyebrow={caseStudiesSection.eyebrow}
+          headline={caseStudiesSection.headline}
+          className=""
+        />
+        <Reveal delay={100}>
+          <Button href={caseStudiesSection.seeAll.href} variant="ghost">
+            {caseStudiesSection.seeAll.label}
+          </Button>
+        </Reveal>
+      </div>
+      <Reveal
+        as="ul"
+        stagger
+        className="mt-12 grid grid-cols-4 gap-x-4 gap-y-16 md:grid-cols-8 lg:grid-cols-12"
+      >
+        {caseStudiesSection.tiles.map((t) => (
+          <WorkTile key={t.slug} t={t} />
         ))}
       </Reveal>
     </Section>
@@ -208,20 +171,32 @@ function Why() {
 function About() {
   return (
     <Section id="about" aria-labelledby="about-h" className="bg-orange-100">
-      <SectionHeader headingId="about-h" eyebrow={about.eyebrow} headline={about.headline} />
-      <Reveal className="mt-16 grid gap-8 md:grid-cols-2">
+      <SectionHeader
+        headingId="about-h"
+        eyebrow={about.eyebrow}
+        headline={about.headline}
+      />
+      <Reveal
+        stagger
+        className="mt-12 grid grid-cols-4 gap-x-4 gap-y-8 md:grid-cols-8 lg:grid-cols-12"
+      >
         {about.members.map((m) => (
-          <div key={m.name} className="flex flex-col gap-4">
+          <div
+            key={m.name}
+            className="col-span-4 flex flex-col gap-4 lg:col-span-6"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={m.photo}
               alt={`${m.name}, ${m.role}`}
-              className="aspect-square w-full rounded-2xl object-cover grayscale"
+              className="aspect-square w-full rounded object-cover"
             />
-            <div className="flex flex-col gap-1">
-              <h3 className="text-title-l font-medium text-neutral-1000">{m.name}</h3>
-              <span className="ds-label text-label-s text-neutral-700">{m.role}</span>
-              <p className="mt-2 text-body-m text-neutral-700">{m.bio}</p>
+            <div className="flex flex-col gap-2">
+              <h3 className="text-heading-m text-neutral-1000">{m.name}</h3>
+              <span className="ds-label text-label text-neutral-700">
+                {m.role}
+              </span>
+              <p className="mt-1 text-body text-neutral-700">{m.bio}</p>
             </div>
           </div>
         ))}
@@ -232,35 +207,22 @@ function About() {
 
 function Testimonials() {
   return (
-    <Section id="testimonials" aria-labelledby="testimonials-h" className="bg-neutral-100">
-      <SectionHeader
-        headingId="testimonials-h"
-        eyebrow={testimonials.eyebrow}
-        headline={testimonials.headline}
-      />
-      <Reveal>
-        <TestimonialCarousel items={testimonials.items} />
-      </Reveal>
-    </Section>
+    <TestimonialCarousel
+      headline={testimonials.headline}
+      items={testimonials.items}
+    />
   );
 }
 
 function Pricing() {
   return (
-    <Section id="pricing" aria-labelledby="pricing-h" className="bg-neutral-200">
-      <SectionHeader headingId="pricing-h" eyebrow={pricing.eyebrow} headline={pricing.headline} />
-      <Reveal className="mt-12">
-        <RetainerPanel retainer={pricing.retainer} />
-      </Reveal>
-      <Reveal className="mt-8">
-        <Button href={pricing.compare.href} variant="ghost">
-          {pricing.compare.label}
-        </Button>
-      </Reveal>
-      <Reveal className="mt-16 flex flex-col gap-6">
-        <h3 className="text-title-l font-medium text-neutral-1000">{pricing.offersHeading}</h3>
-        <OfferCards offers={pricing.offers} />
-      </Reveal>
+    <Section
+      id="pricing"
+      aria-labelledby="pricing-h"
+      className="bg-neutral-200"
+      hug
+    >
+      <HomePricing />
     </Section>
   );
 }
@@ -269,10 +231,40 @@ function Faq() {
   const items = faq.items.map((f) => ({ label: f.q, body: f.a }));
   return (
     <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-200">
-      <SectionHeader headingId="faq-h" eyebrow={faq.eyebrow} headline={faq.headline} />
-      <Reveal className="mt-12 max-w-[820px]">
-        <Accordion items={items} defaultOpen={0} />
-      </Reveal>
+      <div className="grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
+        {/* Left: header, intro, CTA (sticks while the questions scroll on desktop). */}
+        <div className="col-span-full lg:col-span-4">
+          <div className="flex flex-col gap-8 lg:sticky lg:top-28">
+            <SectionHeader
+              headingId="faq-h"
+              eyebrow={faq.eyebrow}
+              headline={faq.headline}
+              className=""
+            />
+            <Reveal delay={100} className="flex flex-col gap-8">
+              <p className="max-w-[40ch] text-lead text-neutral-700">
+                {faq.intro.before}
+                <a
+                  href={`mailto:${faq.intro.email}`}
+                  className="text-neutral-1000 underline underline-offset-4 transition-colors duration-150 ease-out hover:text-primary-400"
+                >
+                  {faq.intro.email}
+                </a>
+                {faq.intro.after}
+              </p>
+              <div>
+                <Button href={faq.cta.href} external>
+                  {faq.cta.label}
+                </Button>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+        {/* Right: questions. */}
+        <Reveal className="col-span-full lg:col-span-7 lg:col-start-6">
+          <Accordion items={items} defaultOpen={0} />
+        </Reveal>
+      </div>
     </Section>
   );
 }

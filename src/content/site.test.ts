@@ -4,11 +4,11 @@ import { BOOKING_URL, diagnostic, faq, nav, pricing, retainers, servicesPage } f
 describe("nav", () => {
   it("follows the sitemap order", () => {
     expect(nav.links.map((l) => [l.label, l.href])).toEqual([
-      ["Home", "/"],
-      ["Work", "/work"],
-      ["Services", "/services"],
-      ["Process", "/#process"],
+      ["Services", "/#services"],
+      ["Work", "/#work"],
+      ["Pricing", "/#pricing"],
       ["About", "/#about"],
+      ["FAQ", "/#faq"],
     ]);
     expect(nav.cta.href).toBe(BOOKING_URL);
   });

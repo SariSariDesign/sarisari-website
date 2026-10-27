@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-type Variant = "primary" | "secondary" | "white" | "ghost";
+type Variant = "primary" | "secondary" | "white" | "outline-light" | "ghost";
 type Size = "large" | "medium";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 };
 
 /**
- * DS button (new comp): pill-shaped, Space-Grotesk uppercase label + trailing arrow.
+ * DS button: sharp corners, Supply uppercase label + trailing arrow.
  * `ghost` is the text-only inline link ("View case study →").
  */
 export function Button({
@@ -26,15 +26,16 @@ export function Button({
   className = "",
 }: Props) {
   const base =
-    "group ds-label inline-flex items-center gap-2 text-label-m transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
+    "group ds-label inline-flex items-center gap-2 text-label transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
   const shape =
     variant === "ghost"
       ? ""
-      : `rounded-full ${size === "large" ? "px-8 py-4" : "px-6 py-3"}`;
+      : `rounded ${size === "large" ? "px-8 py-4" : "px-6 py-3"}`;
   const skin = {
     primary: "bg-primary-400 text-neutral-100 hover:bg-primary-500 active:bg-primary-600",
     secondary: "bg-primary-100 text-primary-400 hover:bg-primary-200",
     white: "bg-white text-primary-600 hover:bg-primary-100",
+    "outline-light": "border border-neutral-100 text-neutral-100 hover:border-neutral-1000 hover:bg-neutral-1000",
     ghost: "text-primary-400 hover:text-primary-500",
   }[variant];
 
@@ -58,9 +59,9 @@ function Arrow() {
       viewBox="0 0 18 16"
       fill="none"
       aria-hidden
-      className="transition-transform duration-150 ease-out group-hover:translate-x-1"
+      className="line-icon nudge-x"
     >
-      <path d="M10 1l7 7-7 7M17 8H1" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M10 1l7 7-7 7M17 8H1" stroke="currentColor" strokeWidth="2" strokeLinecap="square" pathLength={1} />
     </svg>
   );
 }
