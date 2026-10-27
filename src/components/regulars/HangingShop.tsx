@@ -11,14 +11,13 @@ import { HangHardware, RegularPhoto } from "./RegularPhoto";
  * crowd in behind and between them, left to right like the gallery wall they fall to.
  */
 const HANG = [
-  // Front row (case studies), staggered up and down across the width.
-  { left: 0, top: 8, width: 40, delay: "0ms" }, // Kenchan 4/3
-  { left: 31, top: 22, width: 38, delay: "60ms" }, // Funding Solutions 4/3
-  { left: 60, top: 4, width: 40, delay: "120ms" }, // Disco 4/3
-  // Back row, lower and slightly overlapping the front.
-  { left: 6, top: 36, width: 34, delay: "40ms" }, // Lendzi 3/2
-  { left: 41, top: 40, width: 26, delay: "100ms" }, // NutriSnap 6/7
-  { left: 70, top: 34, width: 29, delay: "160ms" }, // sixth piece 1/1
+  // Spread down the column in a zigzag so the cluster fills the hero's height.
+  { left: 0, top: 6, width: 46, delay: "0ms" }, // Kenchan 4/3
+  { left: 50, top: 18, width: 46, delay: "60ms" }, // Funding Solutions 4/3
+  { left: 4, top: 50, width: 44, delay: "120ms" }, // Disco 4/3
+  { left: 54, top: 62, width: 42, delay: "40ms" }, // Lendzi 3/2
+  { left: 26, top: 80, width: 34, delay: "100ms" }, // NutriSnap 6/7
+  { left: 66, top: 96, width: 30, delay: "160ms" }, // sixth piece 1/1
 ];
 
 /** Height of the hanging cluster (deepest string + print), in cqw, for vertical centering. */

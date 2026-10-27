@@ -356,8 +356,10 @@ body {
   width: 1px;
   transform-origin: top;
 }
+/* Solid edges read darker than the dashes at the same color, so they use the next
+   lighter step to match visually. */
 .gridlines .edge {
-  background: currentColor;
+  background: var(--color-neutral-300);
 }
 /* Outer edges sit 8px outside the content box. */
 .gridlines .edge.l {
