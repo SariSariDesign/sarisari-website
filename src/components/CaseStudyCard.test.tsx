@@ -21,4 +21,11 @@ describe("CaseStudyCard", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
     expect(screen.getByText("Case study coming soon.")).toBeInTheDocument();
   });
+
+  it("renders the client name as an h3 by default and honors headingLevel", () => {
+    const { rerender } = render(<CaseStudyCard c={base} featured={false} />);
+    expect(screen.getByRole("heading", { level: 3, name: "Acme" })).toBeInTheDocument();
+    rerender(<CaseStudyCard c={base} featured={false} headingLevel="h2" />);
+    expect(screen.getByRole("heading", { level: 2, name: "Acme" })).toBeInTheDocument();
+  });
 });

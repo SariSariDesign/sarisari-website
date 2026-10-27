@@ -395,3 +395,10 @@ export const footer = {
   ],
   copyright: "© 2026 Sari Sari LLC",
 };
+
+/** /work index copy. */
+export const workIndex = {
+  eyebrow: "Work",
+  title: "Product design that moved a number.", // ⚠️ drafted
+  intro: "Every study names the metric we were hired to move and what happened to it.", // ⚠️ drafted
+};
