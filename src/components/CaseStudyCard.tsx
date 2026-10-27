@@ -53,10 +53,10 @@ export function CaseStudyCard({
         photo
       )}
       <div className="mt-6 flex flex-col gap-2">
-        <H className="font-brand text-[clamp(30px,2.6vw,40px)] leading-[1.1] text-neutral-1000">
+        <H className="text-heading-m text-neutral-1000">
           {c.client}
         </H>
-        <p className="max-w-[60ch] text-body-m text-neutral-700">
+        <p className="max-w-[60ch] text-body text-neutral-700">
           {c.card.outcome ?? "Case study coming soon."}
         </p>
       </div>

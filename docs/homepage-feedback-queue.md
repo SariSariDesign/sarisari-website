@@ -5,6 +5,47 @@ Source of truth: SSD Website UX Strategy doc + wireframe v17 (approved copy).
 Work one batch at a time: implement → `npm run dev` → check localhost:3000 → commit.
 Copy lives in `src/content/site.ts`; layout in `src/app/page.tsx` + components.
 
+**Rules for every batch (clean code, no breaks):**
+1. Change things at the source: tokens in `globals.css`, shared components (`Section`, `Gridlines`, `Reveal`, `Button`), copy in `site.ts`. Never patch a single element when a shared rule covers it.
+2. No one-off overrides: no `!important`, no arbitrary values when a token exists, no duplicate components.
+3. Delete what's replaced (headline A/B/C/D switcher, `Regulars` wall, Why/Process content, dotted grid). Don't hide it.
+4. Keep tests passing (`npm test`) and `npm run build` clean before showing the local copy.
+5. One commit per batch, so any batch can be rolled back alone.
+6. If an item conflicts with existing code or another item, stop and ask. Don't guess.
+7. Annotate selectors (when given) show WHERE it looks wrong; fix it at the source per rule 1.
+
+---
+
+## Batch 1–3 fixes (Oct 27, paste before Batch 4)
+
+### F1. Type scale (replaces Batch 1 #5)
+**Location:** type tokens in `globals.css`, `SectionHeader`, hero `h1`, `FooterCta`
+**Feedback:** Replace the display/heading/body tokens with this scale. Sizes step at <768 / 768–1023 / 1024–1439 / ≥1440.
+| Token | Use | <768 | 768–1023 | 1024–1439 | ≥1440 | Font · line height · tracking |
+|---|---|---|---|---|---|---|
+| display-l | Hero headline, belief statement, closing headline | 48 | 64 | 112 | 144 | Editorial Old Ultralight · 0.96 · −3% |
+| display-m | Every section heading | 36 | 48 | 64 | 72 | Editorial Old Ultralight · 1.04 · −2% |
+| display-s | Prices, stats | 40 | 44 | 56 | 72 | Editorial Old · 1.0 · −2% |
+| heading-l | Accordion titles, principle titles | 24 | 26 | 32 | 40 | Neue Montreal 400 · 1.2 · −1% |
+| heading-m | Card/tile titles, offer names, team names, FAQ questions | 20 | 22 | 24 | 28 | Neue Montreal 400 · 1.2 · −1% |
+| lead | Hero subhead, section intros, Scale description, closing subhead | 18 | 20 | 22 | 24 | Neue Montreal 400 · 1.4 |
+| body | All other copy | 16 | 16 | 18 | 18 | Neue Montreal 400 · 1.45 |
+| body-s | "Best for" lines, credit note | 14 | 14 | 14 | 14 | Neue Montreal 400 · 1.4 |
+| label | Eyebrows, kickers, tags, buttons, nav, names/roles in attributions | 12 | 12 | 14 | 14 | Supply caps · 1.2 · +4% |
+No display-xl. Delete tokens that no longer map to a role.
+
+### F2. Full-height sections + scroll snap (new foundation)
+**Location:** `Section.tsx`, `globals.css`
+**Feedback:** Every section is at least 100svh tall with its content vertically centered, and scrolling settles at section starts: `html { scroll-snap-type: y proximity }`, each section `scroll-snap-align: start`. Use proximity, not mandatory, so sections taller than the screen (Services open, Pricing, FAQ) still scroll freely. Section padding 40–72px (clamp). Add a `hug` option to `Section`: no min-height, generous padding instead (top/bottom clamp 80–160px). Under `prefers-reduced-motion`, turn snapping off.
+
+### F3. Hero headline (corrects Batch 3 #14)
+**Location:** `Hero()` in `page.tsx`
+**Feedback:** The headline spans the full 12 columns above the 60/40 split, at display-l (2 lines on desktop). Eyebrow sits above it. Subhead + CTAs (60%) and prints (40%) sit below. The hero should fit one viewport at 1440×900.
+
+### F4. Accordion rules span the full grid
+**Location:** `Accordion.tsx` (shared by Services and FAQ)
+**Feedback:** When an item opens, its divider stops short of the grid width. Put the border on the item wrapper, not on the answer/content block, so every rule runs 100% of the content grid, open or closed. Keep answer text capped at ~68ch.
+
 ---
 
 ## Batch 1 · Foundations (everything else sits on these)
@@ -84,7 +125,7 @@ Copy lives in `src/content/site.ts`; layout in `src/app/page.tsx` + components.
 
 ### 15. Use cases section (new)
 **Location:** new section after Hero
-**Feedback:** Header "How can we help?". Four cards in a row (2-up tablet, 1-up mobile): image on top (not behind text), problem line, outcome line that shows on hover/focus (always visible on touch), and a square icon button (down arrow) that scrolls to Pricing and highlights ONE offer card with a 2px `primary-400` outline for ~3.5s. Card hover: 1px ink border reveal.
+**Feedback:** Uses the `hug` section option (F2): height hugs the content, generous top/bottom padding. Header "How can we help?" (display-m). Four cards in a row (2-up tablet, 1-up mobile): image on top (not behind text), problem line, outcome line that shows on hover/focus (always visible on touch), and a square icon button (down arrow) that scrolls to Pricing and highlights ONE offer card with a 2px `primary-400` outline for ~3.5s. Card hover: 1px ink border reveal.
 | Card | Image | Problem | Outcome (hover) | Button → |
 |---|---|---|---|---|
 | 1 | Disco | Users sign up, then disappear | Find where they leave and fix that first. | Activation Audit |
@@ -95,7 +136,7 @@ Card images need variants so they don't repeat the case study images.
 
 ### 16. Services copy + keywords
 **Location:** `services` in `site.ts`, `ServicesList.tsx`
-**Feedback:** Remove the eyebrow. Headline: "Design, research and code under one roof." Intro: "Senior designers and developers working on the numbers that matter most: conversion, activation, retention." Each row: one line + keyword tags (Supply). Replace the bullet dots with tags. Images 0 radius.
+**Feedback:** Full-height section (F2). Remove the eyebrow. Headline (display-m, via `SectionHeader`): "Design, research and code under one roof." Intro at lead size. Intro: "Senior designers and developers working on the numbers that matter most: conversion, activation, retention." Each row: title at heading-l, one line at body, keyword tags (Supply label). Rules span the full grid (F4). Replace the bullet dots with tags. Images 0 radius.
 1. Digital products: "From idea to a launched product, aimed at the metric your next round depends on." Tags: Product strategy · Product discovery · MVP design · Prototyping · AI product UX · Launch
 2. UX/UI design: "Flows and screens that make your product easy to start, and look like the company you've become." Tags: User flows · Wireframes · UI design · Onboarding & activation · Mobile & responsive · Accessibility (WCAG)
 3. Design systems: "A component library your developers build from, so new features ship faster and stay consistent." Tags: Component libraries · Design tokens · Figma libraries · Annotated dev handoff
@@ -120,7 +161,7 @@ Card images need variants so they don't repeat the case study images.
 - Line 1 (roman): "AI makes building easy."
 - Line 2 (italic): "We make it clear: what's wrong, what to fix first, and why."
 - Hand-drawn SVG underline under "clear": 2px `primary-400`, organic stroke, draws left to right (stroke-dashoffset, 800ms ease-out) when the panel's center hits the viewport center. Draws once, positioned relative to the word so it scales.
-Then three principles (3-up, 1-up below 1024):
+Then the principles, pinned: the principles block sticks to the viewport (sticky, 100svh) while the section scrolls ~2.6 screens. P1 scrolls up into place, then P2 under it, then P3, each driven by scroll position (ease-out, no bounce). Once P3 is in, the whole block scrolls away together. Each principle is one full-width row: title (heading-l) in 5 cols, body in 7 cols, 1px ink rule above. Mobile: title above body. Reduced motion: all three shown static, no pin.
 1. **Machine speed, human curation.** Generative tools handle the heavy lifting of production. We provide the vision, direction, and editorial discipline to ensure the final product actually matters.
 2. **Trust at every touchpoint.** Just as sari sari stores run on familiarity and trust, we design the critical micro-moments that turn first-time users into regulars, from fintech to health to e-commerce.
 3. **Evidence over instincts.** We put interactive flows in front of actual users, watch where they hesitate, and fix that first. We test our instincts against real behavior, then build what holds up.
@@ -131,7 +172,7 @@ Then three principles (3-up, 1-up below 1024):
 
 ### 19. Testimonials
 **Location:** `testimonials` in `site.ts`, `TestimonialCarousel.tsx`
-**Feedback:** Headline "Ask our regulars." One-row carousel: 3 visible on desktop, 2 tablet, 1 + peek mobile; square arrows top-right. Order and exact text (no IDs):
+**Feedback:** Headline "Ask our regulars." (display-m). One-row carousel: 3 visible on desktop, 2 tablet, 1 + peek mobile; square arrows top-right. **Scroll-driven at ≥768px:** the section pins (sticky, 100svh) and vertical scrolling moves the carousel sideways; the section is exactly as tall as needed for the last card to reach the grid's right edge, then it scrolls away. Arrows scroll the page by one card. Mobile and reduced motion: normal swipe carousel, no pin. Quotes at body size, names at label size. Order and exact text (no IDs):
 1. Eris Hanson-Cooper · Founder & CEO, Disco: "The speed of delivery and the quality of delivery is so excellent. You guys unblocked a huge work stream so quickly and efficiently."
 2. Michael Campbell · CEO, Signal Verified: "The five findings are spot on, and the usability session data makes them hard to argue with... The things I knew felt off but couldn't articulate this clearly. Your diagnostic gave me a clear punch list to work from. Highly recommend giving your process a shot; you have nothing to lose."
 3. Nora Rabah Rodden · Founder, Nervana: "Sari Sari provided a much-needed, research-informed refresh for my live mobile app. They not only helped tear down every single screen, but also suggested helpful recommendations which were simple to test. I am so grateful they spent the time to dive into every detail and ask clarifying questions along the way - I felt they really understood my business and objectives."
@@ -141,13 +182,13 @@ Steve (NutriSnap) and Steve C. (Lions & Lambs) are pending: hide until approved.
 
 ### 20. Pricing
 **Location:** `pricing` in `site.ts`, `Pricing()`, `RetainerPanel`
-**Feedback:** Headline "Ready to get started?" Remove "Not ready for a retainer? Start smaller."
+**Feedback:** Layout (≥1024px): left 4 columns hold the headline "Ready to get started?" (display-m) and the free Scorecard card, sticky while you scroll; right 8 columns hold the Scale card, then the three offers as full-width rows (not 3-up cards). Each offer row: kicker + name (heading-m) left, price (display-s) right; description + "Best for" below left (max 60ch), CTA bottom right; 32px padding, 1px rules between rows, 48px gap above the rows. Scale card padding 48px. Below 1024px everything stacks: headline, Scorecard, Scale, offers. Remove "Not ready for a retainer? Start smaller."
 Scale card (solid `primary-400` background, light text, the one accent surface): kicker "Ongoing · 3-month minimum" · "Scale" · "$16K/mo" · "Ongoing design and development on an open roadmap. You set the direction." Bullets: One senior team for design and code · We join your standups, reviews and user tests · Starts within two weeks · 3-month minimum, then 30 days notice. "Best for: high-velocity teams that need flexible, ongoing design and engineering." Link: "Design only? Grow, $8K/mo →". CTA "Book a call".
 Offer cards (3-up), each: kicker, name, price, description, best-for line, "Book a call":
 - 7 days · Activation Audit · $1,500 · "Discover where users leave in any single flow. Get a scorecard and teardown of that flow with prioritized recommendations." · "Best for: something's off but you need clarity."
 - 21 days · Activation Diagnostic · $6,000 · "Find the biggest problem in any single flow and see the fix. Get a redesigned prototype, a validation guide and a 90-day roadmap." · "Best for: you want the fix designed and tested before investing in development."
 - 90 days · Activation Build · Let's talk · "Ship one defined project in 90 days. We design and build it, or guide your developers through it." · "Best for: one defined project, like a launch or redesign." · "Diagnostic fee credited if you start within 30 days"
-Scorecard row (full width, dashed border): "Free" badge · kicker "In minutes" · "Activation Scorecard" · "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Free, in minutes." · CTA "Get free Scorecard" (SCORECARD_URL).
+Scorecard card (left column, dashed border): "Free" badge · kicker "In minutes" · "Activation Scorecard" · "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Free, in minutes." · CTA "Get free Scorecard" (SCORECARD_URL).
 Each card needs an id so the use-case buttons can highlight it.
 
 ---
@@ -175,8 +216,8 @@ Photos in warm color, not grayscale; 0 radius. Line under: "Los Angeles & San Di
 9. Can we pause the retainer? — Pause anytime. We hold your slot for 30 days. After that we may fill it, and you'd restart when one opens.
 10. What happens when we hire our own designer? — We hand over everything: files, design system and context, so your new designer starts where we left off.
 11. Do you only work with health and wellness companies? — No. A lot of our work is in health, fintech and e-commerce, where users have to trust a product before they come back. We work with founders in any industry.
-Accordion open/close: 250ms ease-in-out.
+Accordion open/close: 250ms ease-in-out. Rules span the full grid (F4). Questions at heading-m, answers at body.
 
 ### 23. Closing CTA
 **Location:** `footerCta` in `site.ts`, `FooterCta.tsx`
-**Feedback:** Full-width near-black (`neutral-1000`) band with grain, display-size headline. Headline: "Tell us what you're building, or where it's stuck." Subhead: "Thirty minutes. We'll tell you what we'd change first, and whether we're the right team to do it." CTAs: "Book a call" (light) + "Get free Scorecard" (outline).
+**Feedback:** Full-width near-black (`neutral-1000`) band with grain, headline at display-l. Scroll snaps to the band start (F2). Headline: "Tell us what you're building, or where it's stuck." Subhead: "Thirty minutes. We'll tell you what we'd change first, and whether we're the right team to do it." CTAs: "Book a call" (light) + "Get free Scorecard" (outline).

@@ -169,7 +169,7 @@ export function Regulars({ items }: { items: PortfolioPiece[] }) {
           </div>
         </div>
         <div ref={textRef(i)}>
-          <p className="ds-label mt-3 text-label-s text-neutral-700">{r.client}</p>
+          <p className="ds-label mt-3 text-label text-neutral-700">{r.client}</p>
         </div>
       </>
     );

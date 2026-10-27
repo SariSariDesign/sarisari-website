@@ -37,7 +37,7 @@ export default function ServicesPage() {
         </Section>
         <Section aria-labelledby="services-faq-h" className="bg-neutral-200">
           <SectionHeader headingId="services-faq-h" headline={servicesPage.faqHeading} />
-          <Reveal className="cols-8 mt-12">
+          <Reveal className="mt-12">
             <Accordion items={servicesPage.faqItems()} defaultOpen={0} />
           </Reveal>
         </Section>

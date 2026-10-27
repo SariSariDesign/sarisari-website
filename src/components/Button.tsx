@@ -26,7 +26,7 @@ export function Button({
   className = "",
 }: Props) {
   const base =
-    "group ds-label inline-flex items-center gap-2 text-label-m transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
+    "group ds-label inline-flex items-center gap-2 text-label transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
   const shape =
     variant === "ghost"
       ? ""

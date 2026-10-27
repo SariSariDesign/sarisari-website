@@ -73,7 +73,7 @@ export function TickNav() {
       >
         {/* 768–1439px: current section number only, above the ticks so it never
             crosses into the content column. */}
-        <span aria-hidden className="ds-label mb-2 block text-label-s text-neutral-1000 min-[1440px]:hidden">
+        <span aria-hidden className="ds-label mb-2 block text-label text-neutral-1000 min-[1440px]:hidden">
           {num(current)}
         </span>
         <ul className="flex flex-col">
@@ -102,7 +102,7 @@ export function TickNav() {
                   />
                   {/* ≥1440px: section name beside the hovered/current tick */}
                   {showName && (
-                    <span aria-hidden className="ds-label hidden whitespace-nowrap text-label-s text-neutral-1000 min-[1440px]:inline">
+                    <span aria-hidden className="ds-label hidden whitespace-nowrap text-label text-neutral-1000 min-[1440px]:inline">
                       {s.label}
                     </span>
                   )}
@@ -118,7 +118,7 @@ export function TickNav() {
         className="fixed inset-x-0 bottom-0 z-40 flex h-11 items-center gap-4 border-t border-neutral-300 bg-neutral-100 px-4 md:hidden"
         aria-hidden
       >
-        <span className="ds-label shrink-0 text-label-s text-neutral-1000">
+        <span className="ds-label shrink-0 text-label text-neutral-1000">
           {num(current)} · {sections[current]?.label}
         </span>
         <span className="flex flex-1 gap-1">

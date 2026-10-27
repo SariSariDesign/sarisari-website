@@ -28,7 +28,7 @@ export function Accordion({ items, defaultOpen = 0 }: Props) {
               aria-controls={isOpen ? `${uid}-${i}` : undefined}
               className="flex w-full items-center justify-between gap-4 py-6 text-left"
             >
-              <span className="text-title-m font-medium text-neutral-1000">{item.label}</span>
+              <span className="text-heading-m text-neutral-1000">{item.label}</span>
               <span aria-hidden className="text-2xl leading-none text-neutral-600">
                 {isOpen ? "−" : "+"}
               </span>
@@ -36,7 +36,7 @@ export function Accordion({ items, defaultOpen = 0 }: Props) {
             {isOpen && (
               <p
                 id={`${uid}-${i}`}
-                className="max-w-[68ch] whitespace-pre-line pb-6 text-body-m text-neutral-700"
+                className="max-w-[68ch] whitespace-pre-line pb-6 text-body text-neutral-700"
               >
                 {item.body}
               </p>

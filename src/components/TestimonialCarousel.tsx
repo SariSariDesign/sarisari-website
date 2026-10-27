@@ -80,15 +80,15 @@ function TestimonialCard({ t }: { t: Testimonial }) {
   }
   return (
     <figure className="flex min-h-[280px] w-full flex-col justify-between gap-8 border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000">
-      <blockquote className="text-body-m text-neutral-800">“{t.quote}”</blockquote>
+      <blockquote className="text-body text-neutral-800">“{t.quote}”</blockquote>
       <figcaption className="flex items-center gap-3">
         {t.photo && (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={t.photo} alt="" className="h-10 w-10 object-cover" />
         )}
         <span className="flex flex-col">
-          <span className="text-title-s font-medium text-neutral-1000">{t.name}</span>
-          <span className="ds-label text-label-s text-neutral-700">
+          <span className="ds-label text-label text-neutral-1000">{t.name}</span>
+          <span className="ds-label text-label text-neutral-700">
             {[t.role, t.company].filter(Boolean).join(", ")}
           </span>
         </span>

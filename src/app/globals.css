@@ -89,54 +89,106 @@
   --font-body: "Neue Montreal", var(--font-instrument-sans), "Inter", system-ui, sans-serif;
   --font-code: "Supply", var(--font-space-grotesk), "Space Mono", ui-monospace, monospace;
 
-  /* ---- typescale (size / line-height / tracking from DS variables) ---- */
-  --text-display-l: 120px;
-  --text-display-l--line-height: 120px;
-  --text-display-l--letter-spacing: -2px;
-  --text-display-m: 72px;
-  --text-display-m--line-height: 80px;
-  --text-display-m--letter-spacing: -1px;
-  --text-display-s: 56px;
-  --text-display-s--line-height: 56px;
-  --text-display-s--letter-spacing: 0px;
-  --text-h1: 48px;
-  --text-h1--line-height: 56px;
-  --text-h2: 40px;
-  --text-h2--line-height: 48px;
-  --text-h3: 32px;
-  --text-h3--line-height: 40px;
-  --text-title-l: 24px;
-  --text-title-l--line-height: 32px;
-  --text-title-m: 18px;
-  --text-title-m--line-height: 24px;
-  --text-title-m--letter-spacing: 0.15px;
-  --text-title-s: 14px;
-  --text-title-s--line-height: 20px;
-  --text-title-s--letter-spacing: 0.25px;
-  --text-body-l: 22px;
-  --text-body-l--line-height: 32px;
-  --text-body-l--letter-spacing: 0.25px;
-  --text-body-m: 18px;
-  --text-body-m--line-height: 24px;
-  --text-body-m--letter-spacing: 0.5px;
+  /* ---- typescale (F1) ----
+   * Sizes step at <768 / 768–1023 / 1024–1439 / ≥1440 via the --fs-* variables set on
+   * :root below; each token carries its line height, tracking and weight. Display sizes
+   * are Editorial Old (Ultralight for l/m), the rest Neue Montreal, label is Supply caps.
+   */
+  --text-display-l: var(--fs-display-l);
+  --text-display-l--line-height: 0.96;
+  --text-display-l--letter-spacing: -0.03em;
+  --text-display-l--font-weight: 200;
+  --text-display-m: var(--fs-display-m);
+  --text-display-m--line-height: 1.04;
+  --text-display-m--letter-spacing: -0.02em;
+  --text-display-m--font-weight: 200;
+  --text-display-s: var(--fs-display-s);
+  --text-display-s--line-height: 1;
+  --text-display-s--letter-spacing: -0.02em;
+  --text-display-s--font-weight: 400;
+  --text-heading-l: var(--fs-heading-l);
+  --text-heading-l--line-height: 1.2;
+  --text-heading-l--letter-spacing: -0.01em;
+  --text-heading-l--font-weight: 400;
+  --text-heading-m: var(--fs-heading-m);
+  --text-heading-m--line-height: 1.2;
+  --text-heading-m--letter-spacing: -0.01em;
+  --text-heading-m--font-weight: 400;
+  --text-lead: var(--fs-lead);
+  --text-lead--line-height: 1.4;
+  --text-lead--letter-spacing: 0;
+  --text-body: var(--fs-body);
+  --text-body--line-height: 1.45;
+  --text-body--letter-spacing: 0;
   --text-body-s: 14px;
-  --text-body-s--line-height: 20px;
-  --text-body-s--letter-spacing: 0.75px;
-  --text-label-l: 16px;
-  --text-label-l--line-height: 20px;
-  --text-label-l--letter-spacing: 2px;
-  --text-label-m: 14px;
-  --text-label-m--line-height: 20px;
-  --text-label-m--letter-spacing: 2px;
-  --text-label-s: 10px;
-  --text-label-s--line-height: 12px;
-  --text-label-s--letter-spacing: 1.5px;
+  --text-body-s--line-height: 1.4;
+  --text-body-s--letter-spacing: 0;
+  --text-label: var(--fs-label);
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.04em;
+}
+
+:root {
+  --fs-display-l: 48px;
+  --fs-display-m: 36px;
+  --fs-display-s: 40px;
+  --fs-heading-l: 24px;
+  --fs-heading-m: 20px;
+  --fs-lead: 18px;
+  --fs-body: 16px;
+  --fs-label: 12px;
+}
+@media (min-width: 48rem) {
+  :root {
+    --fs-display-l: 64px;
+    --fs-display-m: 48px;
+    --fs-display-s: 44px;
+    --fs-heading-l: 26px;
+    --fs-heading-m: 22px;
+    --fs-lead: 20px;
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --fs-display-l: 112px;
+    --fs-display-m: 64px;
+    --fs-display-s: 56px;
+    --fs-heading-l: 32px;
+    --fs-heading-m: 24px;
+    --fs-lead: 22px;
+    --fs-body: 18px;
+    --fs-label: 14px;
+  }
+}
+@media (min-width: 90rem) {
+  :root {
+    --fs-display-l: 144px;
+    --fs-display-m: 72px;
+    --fs-display-s: 72px;
+    --fs-heading-l: 40px;
+    --fs-heading-m: 28px;
+    --fs-lead: 24px;
+  }
 }
 
 /*
  * Webfonts — Pangram Pangram faces. Files land in /public/fonts once licensed;
  * font-display: swap keeps the fallback stacks rendering until then.
  */
+@font-face {
+  font-family: "PP Editorial Old";
+  src: url("/fonts/PPEditorialOld-Ultralight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PP Editorial Old";
+  src: url("/fonts/PPEditorialOld-UltralightItalic.woff2") format("woff2");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
 @font-face {
   font-family: "PP Editorial Old";
   src: url("/fonts/PPEditorialOld-Regular.woff2") format("woff2");
@@ -193,15 +245,40 @@
   }
 }
 
-/* Anchored sections land below the sticky nav. */
+/* Anchored sections land below the sticky nav (76px). */
 section[id] {
   scroll-margin-top: 76px;
+}
+
+/* F2: scrolling settles at section starts. Proximity, not mandatory, so sections taller
+   than the screen (Services open, Pricing, FAQ) still scroll freely. Off under reduced
+   motion. Sections fill the screen below the nav (`.section-full`). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+}
+main > section,
+.snap-start {
+  scroll-snap-align: start;
+}
+.section-full {
+  min-height: calc(100svh - 76px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(40px, 6vw, 72px);
+}
+.section-hug {
+  padding-block: clamp(80px, 10vw, 160px);
 }
 
 body {
   background: var(--color-neutral-100);
   color: var(--color-neutral-800);
   font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.45;
 }
 
 /* Supply labels are always uppercase in the DS */
@@ -211,7 +288,8 @@ body {
 }
 
 /* ── Grid (Batch 1) ──
-   Content measure is 1200px with 16px side padding and 16px gutters. Columns: 4 below
+   Gridlines sit on the 1200px measure; content sits 8px inside them (1184px) with 16px
+   gutters. Columns: 4 below
    768px, 8 at 768–1023px, 12 at ≥1024px (Tailwind md/lg). The left padding widens to
    clear the tick nav: 64px on tablet; on desktop the outer margin + padding never drops
    below 64px. `.measure` is shared by sections, gridlines, footer and the marquee so
@@ -220,16 +298,17 @@ body {
   width: 100%;
   max-width: calc(1200px + 32px);
   margin-inline: auto;
-  padding-inline: 16px;
+  /* 16px page padding + 8px inset, so content sits exactly 8px inside the gridlines. */
+  padding-inline: 24px;
 }
 @media (min-width: 48rem) {
   .measure {
-    padding-left: 64px;
+    padding-left: 72px; /* gridline at 64px clears the tick nav; content 8px inside it */
   }
 }
 @media (min-width: 64rem) {
   .measure {
-    padding-left: clamp(16px, calc(64px - (100vw - 1232px) / 2), 64px);
+    padding-left: clamp(24px, calc(72px - (100vw - 1232px) / 2), 72px);
   }
 }
 /* Editorial text block: 8 of 12 columns on desktop, full width below. */
@@ -280,11 +359,12 @@ body {
 .gridlines .edge {
   background: currentColor;
 }
+/* Outer edges sit 8px outside the content box. */
 .gridlines .edge.l {
-  left: 0;
+  left: -8px;
 }
 .gridlines .edge.r {
-  right: 0;
+  right: -8px;
 }
 .gridlines .dash {
   background-image: repeating-linear-gradient(to bottom, currentColor 0 4px, transparent 4px 9px);

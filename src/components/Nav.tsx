@@ -53,14 +53,14 @@ export function Nav() {
         <Link href="/" aria-label="Sari Sari Design home" className="py-2">
           <Wordmark
             className={`text-neutral-1000 transition-[font-size] duration-300 ${
-              compact ? "text-title-m" : "text-title-l"
+              compact ? "text-[18px]" : "text-[24px]"
             }`}
           />
         </Link>
 
         <nav
           className={`ds-label hidden items-center transition-[gap,font-size] duration-300 lg:flex ${
-            compact ? "gap-6 text-label-m" : "gap-8 text-label-m"
+            compact ? "gap-6 text-label" : "gap-8 text-label"
           }`}
         >
           {nav.links.map((l) => (
@@ -72,7 +72,7 @@ export function Nav() {
             href={nav.cta.href}
             size="medium"
             external
-            className={compact ? "px-4! py-2! text-label-m!" : ""}
+            className={compact ? "px-4! py-2! text-label!" : ""}
           >
             {nav.cta.label}
           </Button>
@@ -80,7 +80,7 @@ export function Nav() {
 
         <button
           type="button"
-          className="ds-label -mr-2 min-h-11 px-2 text-label-m text-neutral-800 lg:hidden"
+          className="ds-label -mr-2 min-h-11 px-2 text-label text-neutral-800 lg:hidden"
           aria-expanded={open}
           onClick={() => setOpen(!open)}
         >
@@ -89,7 +89,7 @@ export function Nav() {
       </div>
 
       {open && (
-        <nav className="ds-label mx-auto mt-2 flex max-w-[760px] flex-col gap-4 border border-neutral-300 bg-neutral-100 px-6 py-6 text-label-m lg:hidden">
+        <nav className="ds-label mx-auto mt-2 flex max-w-[760px] flex-col gap-4 border border-neutral-300 bg-neutral-100 px-6 py-6 text-label lg:hidden">
           {nav.links.map((l) => (
             <Link
               key={l.label}

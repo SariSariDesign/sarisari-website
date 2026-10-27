@@ -8,12 +8,14 @@ import { HangHardware, RegularPhoto } from "./RegularPhoto";
  * crowd in behind and between them, left to right like the gallery wall they fall to.
  */
 const HANG = [
-  { left: 4, top: 9, width: 29, delay: "0ms" },
-  { left: 35, top: 3, width: 27, delay: "60ms" },
-  { left: 64, top: 12, width: 30, delay: "120ms" },
-  { left: 13, top: 29, width: 24, delay: "40ms" },
-  { left: 40, top: 23, width: 19, delay: "100ms" },
-  { left: 61, top: 33, width: 17, delay: "160ms" },
+  // Front row (case studies), staggered up and down across the width.
+  { left: 0, top: 8, width: 40, delay: "0ms" }, // Kenchan 4/3
+  { left: 31, top: 22, width: 38, delay: "60ms" }, // Funding Solutions 4/3
+  { left: 60, top: 4, width: 40, delay: "120ms" }, // Disco 4/3
+  // Back row, lower and slightly overlapping the front.
+  { left: 6, top: 36, width: 34, delay: "40ms" }, // Lendzi 3/2
+  { left: 41, top: 40, width: 26, delay: "100ms" }, // NutriSnap 6/7
+  { left: 70, top: 34, width: 29, delay: "160ms" }, // sixth piece 1/1
 ];
 
 /** Height of the hanging cluster (deepest string + print), in cqw, for vertical centering. */
@@ -35,14 +37,11 @@ function aspectRatio(i: number) {
 export function HangingShop() {
   return (
     <div
-      className="relative aspect-[100/58] w-full [container-type:inline-size] lg:aspect-auto lg:h-full"
+      className="relative w-full [container-type:inline-size]"
       aria-hidden
     >
-      {/* The cluster is centered vertically; strings keep their lengths (fading out above). */}
-      <div
-        className="absolute inset-x-0 top-1/2 -translate-y-1/2"
-        style={{ height: `${CLUSTER_H}cqw` }}
-      >
+      {/* Height follows the cluster so prints keep their size; strings fade out above. */}
+      <div className="relative w-full" style={{ height: `${CLUSTER_H}cqw` }}>
         {work.regulars.map((r, i) => {
           const h = HANG[i % HANG.length];
           return (

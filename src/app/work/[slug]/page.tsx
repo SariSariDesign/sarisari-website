@@ -37,10 +37,10 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
         <div className="measure">
           {/* headline */}
           <header className="flex flex-col gap-6 py-16 md:py-24">
-            <h1 className="max-w-[971px] font-brand text-[clamp(36px,5vw,72px)] leading-[1.1] tracking-[-0.014em] text-primary-600">
+            <h1 className="max-w-[971px] font-brand text-display-m text-primary-600">
               {page.title}
             </h1>
-            <p className="ds-label text-label-l text-neutral-900">{page.byline}</p>
+            <p className="ds-label text-label text-neutral-900">{page.byline}</p>
           </header>
 
           {/* hero image */}
@@ -57,7 +57,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
 
           {/* article */}
           <div className="grid gap-12 py-16 md:py-24 lg:grid-cols-[180px_1fr]">
-            <aside className="ds-label flex flex-row gap-6 text-label-m text-neutral-900 lg:flex-col">
+            <aside className="ds-label flex flex-row gap-6 text-label text-neutral-900 lg:flex-col">
               {page.tags.map((t) => (
                 <span key={t}>{t}</span>
               ))}
@@ -65,7 +65,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
 
             <article className="flex max-w-[760px] flex-col gap-12">
               <HeroStats stats={page.heroStats} />
-              <p className="font-brand text-h3 text-primary-600">{page.intro}</p>
+              <p className="text-heading-l text-primary-600">{page.intro}</p>
               {page.blocks.map((block, i) => (
                 <Block key={i} block={block} />
               ))}
@@ -84,7 +84,7 @@ function HeroStats({ stats }: { stats: { value: string; label: string }[] }) {
       {stats.map((s) => (
         <div key={s.value} className="flex flex-1 flex-col gap-2">
           <span className="font-brand text-display-s text-neutral-900">{s.value}</span>
-          <span className="ds-label text-label-m text-neutral-700">{s.label}</span>
+          <span className="ds-label text-label text-neutral-700">{s.label}</span>
         </div>
       ))}
     </div>
@@ -97,27 +97,27 @@ function Block({ block }: { block: CaseStudyBlock }) {
       return (
         <section className="flex flex-col gap-3">
           {block.label && (
-            <span className="ds-label text-label-m text-neutral-900">{block.label}</span>
+            <span className="ds-label text-label text-neutral-900">{block.label}</span>
           )}
-          <h2 className="text-title-l font-medium text-primary-600">{block.title}</h2>
+          <h2 className="text-heading-m text-primary-600">{block.title}</h2>
           <Paragraphs paragraphs={block.paragraphs} />
         </section>
       );
     case "step":
       return (
         <section className="flex flex-col gap-3">
-          <h3 className="text-title-m font-medium text-primary-600">{block.title}</h3>
+          <h3 className="text-heading-m text-primary-600">{block.title}</h3>
           <Paragraphs paragraphs={block.paragraphs} />
         </section>
       );
     case "quote":
       return (
         <figure className="flex flex-col gap-4 py-4">
-          <blockquote className="font-brand text-display-s text-primary-600">
+          <blockquote className="font-brand text-display-m text-primary-600">
             {block.quote}
           </blockquote>
           <figcaption className="flex flex-col gap-1">
-            <span className="ds-label text-label-m text-neutral-900">{block.name}</span>
+            <span className="ds-label text-label text-neutral-900">{block.name}</span>
             <span className="text-body-s text-neutral-700">{block.role}</span>
           </figcaption>
         </figure>
@@ -130,8 +130,8 @@ function Block({ block }: { block: CaseStudyBlock }) {
               key={s.value}
               className={`flex flex-col gap-2 py-8 ${i > 0 ? "border-t border-neutral-400" : ""}`}
             >
-              <span className="font-brand text-display-m text-primary-600">{s.value}</span>
-              <span className="ds-label text-label-m text-neutral-900">{s.label}</span>
+              <span className="font-brand text-display-s text-primary-600">{s.value}</span>
+              <span className="ds-label text-label text-neutral-900">{s.label}</span>
             </div>
           ))}
         </div>
@@ -139,8 +139,8 @@ function Block({ block }: { block: CaseStudyBlock }) {
         <div className="flex flex-col gap-12 sm:flex-row">
           {block.stats.map((s) => (
             <div key={s.value} className="flex flex-1 flex-col gap-2">
-              <span className="font-brand text-display-m text-primary-600">{s.value}</span>
-              <span className="ds-label text-label-m text-neutral-900">{s.label}</span>
+              <span className="font-brand text-display-s text-primary-600">{s.value}</span>
+              <span className="ds-label text-label text-neutral-900">{s.label}</span>
             </div>
           ))}
         </div>
@@ -159,7 +159,7 @@ function Block({ block }: { block: CaseStudyBlock }) {
     case "split":
       return (
         <section className="flex flex-col gap-4 py-4 md:flex-row md:gap-8">
-          <h2 className="font-brand text-h3 text-primary-600 md:w-[379px]">{block.title}</h2>
+          <h2 className="font-brand text-heading-l text-primary-600 md:w-[379px]">{block.title}</h2>
           <div className="flex flex-1 flex-col gap-3">
             <Paragraphs paragraphs={block.paragraphs} />
           </div>
@@ -174,7 +174,7 @@ function Paragraphs({ paragraphs }: { paragraphs: string[] }) {
   return (
     <>
       {paragraphs.map((p) => (
-        <p key={p.slice(0, 32)} className="whitespace-pre-line text-body-m text-neutral-700">
+        <p key={p.slice(0, 32)} className="whitespace-pre-line text-body text-neutral-700">
           {p}
         </p>
       ))}
@@ -205,7 +205,7 @@ function Figure({
         )}
       </div>
       <figcaption className="flex flex-col gap-1">
-        <span className="ds-label text-label-s text-neutral-900">{caption.split("—")[0]}</span>
+        <span className="ds-label text-label text-neutral-900">{caption.split("—")[0]}</span>
         <span className="text-body-s text-neutral-900">{caption}</span>
       </figcaption>
     </figure>

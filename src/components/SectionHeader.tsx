@@ -18,11 +18,11 @@ export function SectionHeader({
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2
         id={headingId}
-        className="text-balance font-brand text-display-s leading-[1.05] text-neutral-1000"
+        className="text-balance font-brand text-display-m text-neutral-1000"
       >
         {headline}
       </h2>
-      {intro && <p className="text-body-m text-neutral-700">{intro}</p>}
+      {intro && <p className="text-body text-neutral-700">{intro}</p>}
     </Reveal>
   );
 }

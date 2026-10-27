@@ -9,8 +9,8 @@ export function OfferCards({ offers }: { offers: Offer[] }) {
     <ul className={"grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12"}>
       {offers.map((o) => (
         <li key={o.name} className={`col-span-4 flex flex-col gap-4 border border-neutral-300 bg-white p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 ${offers.length >= 3 ? "lg:col-span-4" : ""}`}>
-          <span className="ds-label text-label-s text-neutral-700">{o.name}</span>
-          <span className="font-brand text-h1 italic leading-none text-neutral-1000">{o.price}</span>
+          <span className="ds-label text-label text-neutral-700">{o.name}</span>
+          <span className="font-brand text-display-s italic text-neutral-1000">{o.price}</span>
           <p className="flex-1 text-body-s text-neutral-700">{o.body}</p>
           <div>
             <Button href={o.cta.href} variant="ghost" external={isExternal(o.cta.href)}>

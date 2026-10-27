@@ -32,10 +32,10 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                 onClick={() => setOpen(isOpen ? null : i)}
                 className="group flex w-full items-center gap-4 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-300 md:gap-10 md:py-6"
               >
-                <span className="ds-label w-10 shrink-0 text-label-m text-neutral-700 md:w-16">
+                <span className="ds-label w-10 shrink-0 text-label text-neutral-700 md:w-16">
                   {s.n}
                 </span>
-                <span className="flex-1 text-[clamp(22px,2.4vw,33px)] font-medium leading-[1.1] tracking-[-0.01em] text-neutral-1000 transition-colors group-hover:text-primary-400">
+                <span className="flex-1 text-heading-l text-neutral-1000 transition-colors group-hover:text-primary-400">
                   {s.title}
                 </span>
                 <PlusMinus open={isOpen} />
@@ -58,11 +58,11 @@ export function ServicesList({ items, defaultOpen = 0 }: { items: Service[]; def
                     )}
                   </div>
                   <div className="flex flex-col gap-4">
-                    <p className="text-body-l text-neutral-800">{s.body}</p>
+                    <p className="text-lead text-neutral-800">{s.body}</p>
                     {s.points && s.points.length > 0 && (
                       <ul className="flex flex-col gap-2">
                         {s.points.map((p) => (
-                          <li key={p} className="flex gap-3 text-body-m text-neutral-700">
+                          <li key={p} className="flex gap-3 text-body text-neutral-700">
                             <span aria-hidden className="mt-[9px] h-1.5 w-1.5 shrink-0 bg-neutral-500" />
                             {p}
                           </li>

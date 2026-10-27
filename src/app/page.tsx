@@ -47,59 +47,55 @@ export default function Home() {
 
 function Hero() {
   return (
-    // A "moment": grain on, gridlines off. At lg the hero stops ~150px short of the
-    // viewport bottom so the next section peeks in on landing (76px = sticky nav height).
+    // A "moment": grain on, gridlines off. Fits one viewport at 1440×900.
     <section
       id="hero"
       data-hero
-      className="grain overflow-hidden bg-neutral-100 lg:min-h-[max(620px,calc(100svh-76px-150px))]"
+      className="grain flex flex-col overflow-hidden bg-neutral-100 lg:min-h-[calc(100svh-76px)]"
     >
-      <div className="relative z-[1] flex h-full flex-col">
-        {/* 60/40 text to prints (7 + 5 of 12 columns). */}
-        <div className="measure grid min-h-0 flex-1 grid-cols-4 gap-x-4 md:grid-cols-8 lg:grid-cols-12">
-          <div className="col-span-full flex items-center pb-12 pt-16 md:pt-24 lg:col-span-7 lg:py-12">
-            {/* Load sequence: eyebrow 0ms, headline +80ms, subhead +180ms, CTAs +280ms. */}
-            <div className="hero-seq flex flex-col gap-8">
-              <Eyebrow>{hero.eyebrow}</Eyebrow>
-              <h1
-                className="text-balance font-brand text-[clamp(52px,8vw,var(--text-display-l))] italic leading-[1] tracking-[-0.02em] text-neutral-1000"
-                style={{ "--d": "80ms" } as React.CSSProperties}
-              >
-                {hero.headline}
-              </h1>
-              <p
-                className="max-w-[44ch] text-body-l text-neutral-700"
-                style={{ "--d": "180ms" } as React.CSSProperties}
-              >
-                {hero.subhead}
-              </p>
-              <div
-                className="flex flex-wrap items-center gap-4"
-                style={{ "--d": "280ms" } as React.CSSProperties}
-              >
-                {hero.ctas.map((cta) => (
-                  <Button
-                    key={cta.label}
-                    href={cta.href}
-                    variant={cta.variant}
-                    external={isExternal(cta.href)}
-                  >
-                    {cta.label}
-                  </Button>
-                ))}
-              </div>
+      <div className="measure relative z-[1] flex flex-1 flex-col justify-center pb-8 pt-12 md:pt-16 lg:py-8">
+        {/* Load sequence: eyebrow 0ms, headline +80ms, subhead +180ms, CTAs +280ms. */}
+        <div className="hero-seq grid grid-cols-4 gap-x-4 md:grid-cols-8 lg:grid-cols-12">
+          <Eyebrow className="col-span-full">{hero.eyebrow}</Eyebrow>
+          {/* Headline spans all 12 columns above the 60/40 split. */}
+          <h1
+            className="col-span-full mt-6 text-balance font-brand text-display-l italic text-neutral-1000"
+            style={{ "--d": "80ms" } as React.CSSProperties}
+          >
+            {hero.headline}
+          </h1>
+          {/* 60%: subhead + CTAs */}
+          <div
+            className="col-span-full mt-8 flex flex-col gap-8 self-start lg:col-span-7 lg:mt-8"
+            style={{ "--d": "180ms" } as React.CSSProperties}
+          >
+            <p className="max-w-[44ch] text-lead text-neutral-700">{hero.subhead}</p>
+            <div className="flex flex-wrap items-center gap-4">
+              {hero.ctas.map((cta) => (
+                <Button
+                  key={cta.label}
+                  href={cta.href}
+                  variant={cta.variant}
+                  external={isExternal(cta.href)}
+                >
+                  {cta.label}
+                </Button>
+              ))}
             </div>
           </div>
-
-          <div className="relative col-span-full pb-12 lg:col-span-5 lg:pb-0 lg:pt-6">
+          {/* 40%: prints. */}
+          <div
+            className="relative col-span-full mx-auto mt-10 w-full max-w-[560px] lg:col-span-5 lg:mt-8 lg:max-w-none"
+            style={{ "--d": "280ms" } as React.CSSProperties}
+          >
             <HangingShop />
           </div>
         </div>
+      </div>
 
-        {/* Client logo strip, inside the 1200px measure. */}
-        <div className="measure pb-16 pt-8 md:pb-24 lg:pb-12 lg:pt-16">
-          <Marquee items={hero.marquee.logos} />
-        </div>
+      {/* Client logo strip, inside the measure. */}
+      <div className="measure relative z-[1] pb-8">
+        <Marquee items={hero.marquee.logos} />
       </div>
     </section>
   );
@@ -162,9 +158,9 @@ function About() {
               className="aspect-square w-full object-cover grayscale"
             />
             <div className="flex flex-col gap-1">
-              <h3 className="text-title-l font-medium text-neutral-1000">{m.name}</h3>
-              <span className="ds-label text-label-s text-neutral-700">{m.role}</span>
-              <p className="mt-2 text-body-m text-neutral-700">{m.bio}</p>
+              <h3 className="text-heading-m text-neutral-1000">{m.name}</h3>
+              <span className="ds-label text-label text-neutral-700">{m.role}</span>
+              <p className="mt-2 text-body text-neutral-700">{m.bio}</p>
             </div>
           </div>
         ))}
@@ -201,7 +197,7 @@ function Pricing() {
         </Button>
       </Reveal>
       <Reveal className="mt-16 flex flex-col gap-4">
-        <h3 className="text-title-l font-medium text-neutral-1000">{pricing.offersHeading}</h3>
+        <h3 className="text-heading-m text-neutral-1000">{pricing.offersHeading}</h3>
         <OfferCards offers={pricing.offers} />
       </Reveal>
     </Section>
@@ -213,7 +209,7 @@ function Faq() {
   return (
     <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-200">
       <SectionHeader headingId="faq-h" eyebrow={faq.eyebrow} headline={faq.headline} />
-      <Reveal className="cols-8 mt-12">
+      <Reveal className="mt-12">
         <Accordion items={items} defaultOpen={0} />
       </Reveal>
     </Section>
