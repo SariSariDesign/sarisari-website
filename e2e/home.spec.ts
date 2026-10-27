@@ -10,7 +10,7 @@ test.describe("homepage", () => {
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
       /Design that turns sign.ups into regulars/, // headline uses a non-breaking hyphen
     );
-    for (const id of ["regulars", "services", "process", "work", "uvp", "pricing", "about", "testimonials", "faq"]) {
+    for (const id of ["hero", "services", "work", "testimonials", "pricing", "about", "faq"]) {
       await expect(page.locator(`#${id}`)).toBeVisible();
     }
   });

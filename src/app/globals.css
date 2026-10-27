@@ -193,6 +193,11 @@
   }
 }
 
+/* Anchored sections land below the sticky nav. */
+section[id] {
+  scroll-margin-top: 76px;
+}
+
 body {
   background: var(--color-neutral-100);
   color: var(--color-neutral-800);

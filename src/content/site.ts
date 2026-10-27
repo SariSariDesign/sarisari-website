@@ -25,13 +25,13 @@ export const terms = {
 
 export const nav = {
   links: [
-    { label: "Home", href: "/" },
-    { label: "Work", href: "/work" },
-    { label: "Services", href: "/services" },
-    { label: "Process", href: "/#process" },
+    { label: "Services", href: "/#services" },
+    { label: "Work", href: "/#work" },
+    { label: "Pricing", href: "/#pricing" },
     { label: "About", href: "/#about" },
+    { label: "FAQ", href: "/#faq" },
   ],
-  cta: { label: "Book a Call", href: BOOKING_URL },
+  cta: { label: "Book a call", href: BOOKING_URL },
 };
 
 /**

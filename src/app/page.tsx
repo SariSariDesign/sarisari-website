@@ -2,7 +2,6 @@ import { Accordion } from "@/components/Accordion";
 import { Button } from "@/components/Button";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { FooterCta } from "@/components/FooterCta";
-import { Gridlines } from "@/components/Gridlines";
 import { Marquee } from "@/components/Marquee";
 import { Nav } from "@/components/Nav";
 import { OfferCards } from "@/components/OfferCards";
@@ -12,8 +11,8 @@ import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesList } from "@/components/ServicesList";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
+import { TickNav } from "@/components/TickNav";
 import { HangingShop } from "@/components/regulars/HangingShop";
-import { Regulars as RegularsWall } from "@/components/regulars/Regulars";
 import { caseStudies } from "@/content/case-studies";
 import {
   about,
@@ -21,11 +20,8 @@ import {
   faq,
   hero,
   pricing,
-  process,
   services,
   testimonials,
-  why,
-  work,
 } from "@/content/site";
 import { isExternal } from "@/lib/links";
 
@@ -35,17 +31,15 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <Regulars />
         <Services />
-        <Process />
         <CaseStudies />
-        <Why />
+        <Testimonials />
         <Pricing />
         <About />
-        <Testimonials />
         <Faq />
       </main>
       <FooterCta />
+      <TickNav />
     </>
   );
 }
@@ -55,7 +49,7 @@ function Hero() {
   return (
     // A "moment": grain on, gridlines off. At lg the hero stops ~150px short of the
     // viewport bottom so the next section peeks in on landing (76px = sticky nav height).
-    <section data-hero className="grain overflow-hidden bg-neutral-100 lg:min-h-[max(620px,calc(100svh-76px-150px))]">
+    <section id="hero" data-hero className="grain overflow-hidden bg-neutral-100 lg:min-h-[max(620px,calc(100svh-76px-150px))]">
       <div className="relative z-[1] flex h-full flex-col">
         <div className="measure grid min-h-0 flex-1 grid-cols-4 gap-x-4 md:grid-cols-8 lg:grid-cols-12">
           <div className="col-span-full flex items-center pb-12 pt-16 md:pt-24 lg:col-span-6 lg:py-12">
@@ -129,24 +123,6 @@ function Services() {
   );
 }
 
-/**
- * Our Recent Clients: the gallery wall the hero's hanging prints fall onto (the visual
- * hook). The header sits on the 1200px measure; the wall runs nearly full-bleed.
- */
-function Regulars() {
-  return (
-    <section id="regulars" aria-labelledby="regulars-h" className="relative bg-neutral-100">
-      <Gridlines />
-      <div className="measure relative z-[1] pt-12 md:pt-16">
-        <SectionHeader headingId="regulars-h" eyebrow={work.eyebrow} headline={work.headline} />
-      </div>
-      <div className="relative z-[1] px-4 pb-24 md:px-8">
-        <RegularsWall items={work.regulars} />
-      </div>
-    </section>
-  );
-}
-
 function CaseStudies() {
   return (
     <Section id="work" aria-labelledby="work-h" className="bg-neutral-100">
@@ -164,48 +140,6 @@ function CaseStudies() {
         <Button href={caseStudiesSection.seeAll.href} variant="ghost">
           {caseStudiesSection.seeAll.label}
         </Button>
-      </Reveal>
-    </Section>
-  );
-}
-
-/** How we work: four phases of the double diamond, each with its timing. */
-function Process() {
-  return (
-    <Section id="process" aria-labelledby="process-h" className="bg-neutral-100">
-      <SectionHeader
-        headingId="process-h"
-        eyebrow={process.eyebrow}
-        headline={process.headline}
-        intro={process.intro}
-      />
-      <Reveal stagger className="mt-16 grid grid-cols-4 gap-x-4 gap-y-8 md:grid-cols-8 lg:grid-cols-12">
-        {process.steps.map((s) => (
-          <div key={s.n} className="col-span-4 flex flex-col gap-3 border-t border-neutral-400 pt-6 lg:col-span-3">
-            <span className="ds-label text-label-s text-neutral-700">
-              {s.n} · {s.when}
-            </span>
-            <h3 className="font-brand text-h2 leading-[1.1] text-neutral-1000">{s.title}</h3>
-            <p className="text-body-s text-neutral-700">{s.body}</p>
-          </div>
-        ))}
-      </Reveal>
-    </Section>
-  );
-}
-
-/** Why Sari Sari: the four alternatives a buyer is weighing us against. */
-function Why() {
-  return (
-    <Section id="uvp" aria-labelledby="uvp-h" className="bg-neutral-200">
-      <SectionHeader headingId="uvp-h" eyebrow={why.eyebrow} headline={why.headline} />
-      <Reveal stagger className="mt-16 grid grid-cols-4 gap-x-4 gap-y-10 md:grid-cols-8 lg:grid-cols-12">
-        {why.items.map((w) => (
-          <div key={w.title} className="col-span-4 flex flex-col gap-3 lg:col-span-6">
-            <h3 className="text-title-l font-medium text-neutral-1000">{w.title}</h3>
-            <p className="text-body-m text-neutral-700">{w.body}</p>
-          </div>
-        ))}
       </Reveal>
     </Section>
   );
