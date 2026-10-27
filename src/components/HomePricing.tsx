@@ -45,10 +45,7 @@ export function HomePricing() {
             </div>
           </div>
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <p className="text-lead text-neutral-100">{scale.description}</p>
-              <p className="font-code text-body-s text-primary-100">{scale.bestFor}</p>
-            </div>
+            <p className="ds-label text-label text-primary-100">{scale.bestFor}</p>
             <ol className="flex flex-col">
               {scale.features.map((f, i) => (
                 <li key={f.title} className="flex gap-6 border-t border-primary-300 py-4">
@@ -69,7 +66,7 @@ export function HomePricing() {
       {/* Offers, 3-up, under their heading */}
       <div className="flex flex-col gap-6">
         <Reveal>
-          <h3 className="text-heading-l text-neutral-1000">{offersHeading}</h3>
+          <h3 className="text-heading-m text-neutral-1000">{offersHeading}</h3>
         </Reveal>
         <Reveal
           as="ul"
@@ -90,7 +87,7 @@ export function HomePricing() {
                 {o.price}
               </span>
               <p className="text-body text-neutral-700">{o.description}</p>
-              <p className="font-code text-body-s text-neutral-700">{o.bestFor}</p>
+              <p className="ds-label text-label text-neutral-700">{o.bestFor}</p>
               {"note" in o && o.note && (
                 <p className="text-body-s text-neutral-1000">{o.note}</p>
               )}
@@ -127,6 +124,9 @@ export function HomePricing() {
             <h3 className="text-heading-m text-neutral-1000">
               {scorecard.name}
             </h3>
+            <span className="font-brand text-display-s text-neutral-1000">
+              {scorecard.price}
+            </span>
             <p className="max-w-[60ch] text-body text-neutral-700">
               {scorecard.description}
             </p>

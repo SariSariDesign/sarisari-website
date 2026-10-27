@@ -17,7 +17,6 @@ export const LINKEDIN_URL = "https://www.linkedin.com/company/sarisaridesign"; /
  * flagged ⚠️ until Zach/Patti confirm. Interpolated into pricing terms + FAQ answers.
  */
 export const terms = {
-  minimumEngagement: "3-month", // confirmed 2026-10-26
   noticePeriod: "30 days", // confirmed 2026-10-26
   pauseHoldPeriod: "30 days", // confirmed 2026-10-26: slot held 30 days, then may be filled; no banked days or prorating
   startLeadTime: "two weeks", // confirmed 2026-10-26
@@ -321,13 +320,13 @@ export const about = {
     {
       name: "Zach Chaco",
       role: "CEO & Co-Founder",
-      bio: "Previously Meta, Disney.",
+      bio: "Producer. Previously Meta, Disney.",
       photo: "/team/zach-chaco.jpg",
     },
     {
       name: "Patricia Capiral",
       role: "Head of Design & Co-Founder",
-      bio: "Previously Selfbook, Silk & Sonder.",
+      bio: "Designer. Previously Selfbook, Silk & Sonder.",
       photo: "/team/patricia-capiral.jpg",
     },
   ],
@@ -403,8 +402,7 @@ export const homePricing = {
     name: "Scale",
     price: "$16,000",
     period: "/ month",
-    description: "Ongoing design and development on an open roadmap.",
-    bestFor: "Best for: high-velocity teams that need flexible, ongoing design and engineering.",
+    bestFor: "Best for: high-velocity teams that need flexible, ongoing design and engineering on an open roadmap.",
     features: [
       { title: "One senior team for design and code.", body: "Design and ship at the speed your startup actually moves." },
       { title: "We join your standups, reviews and user tests.", body: "Anything from design workshops to test parties." },
@@ -452,10 +450,11 @@ export const homePricing = {
   offersHeading: "Not ready for a retainer? Start smaller.",
   scorecard: {
     badge: "Free",
-    kicker: "In minutes",
+    kicker: "2 minutes",
     name: "Activation Scorecard",
+    price: "$0",
     description:
-      "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Free, in minutes.",
+      "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Start working on the solution in just a few minutes.",
     cta: { label: "Get free Scorecard", href: SCORECARD_URL },
   },
 };

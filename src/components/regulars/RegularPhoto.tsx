@@ -19,7 +19,7 @@ export function RegularPhoto({ r }: { r: Pick<PortfolioPiece, "client" | "image"
       ) : (
         <div className="relative h-full w-full">
           <Placeholder className="h-full w-full" rounded={false} />
-          <span className="ds-label absolute inset-0 flex items-center justify-center text-center text-[2.6cqw] tracking-[0.2em] text-neutral-700">
+          <span className="ds-label absolute inset-0 flex items-center justify-center text-center text-label text-neutral-700">
             {r.client} — photo pending
           </span>
         </div>

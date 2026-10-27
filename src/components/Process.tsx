@@ -6,6 +6,9 @@ import { pointOfView } from "@/content/site";
 const PIN_QUERY = "(min-width: 768px) and (prefers-reduced-motion: no-preference)";
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 const easeOut = (t: number) => 1 - (1 - t) ** 3;
+/** Pin progress at which the circle draws, and where the principles start rising. */
+const CIRCLE_AT = 0.08;
+const PRINCIPLES_FROM = 0.2;
 
 /**
  * Process: the belief statement and the three principles in one pinned "moment" (grain
@@ -13,7 +16,8 @@ const easeOut = (t: number) => 1 - (1 - t) ** 3;
  * while the section scrolls ~3.4 screens: the statement stays at the top of the screen and
  * P1, P2, P3 rise into their columns at the bottom, driven by scroll (ease-out, no bounce).
  * Once P3 is in, everything scrolls away together. The hand-drawn circle around "clear"
- * draws once (800ms) when the stage is centered in the viewport. Below 768px or under
+ * draws once (800ms), halfway through the statement and before the principles rise
+ * (unpinned: when the section is centered). Below 768px or under
  * reduced motion: statement then principles, stacked and static.
  */
 export function Process() {
@@ -30,7 +34,8 @@ export function Process() {
     }
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        // When pinned, the scroll handler below draws it at the right moment instead.
+        if (entry.isIntersecting && el.dataset.pinned !== "true") {
           el.classList.add("drawn");
           io.disconnect();
         }
@@ -54,9 +59,13 @@ export function Process() {
       const travel = el.offsetHeight - window.innerHeight;
       // 0 when the stage pins; 1 a little before it lets go (the last 15% is a hold).
       const p = clamp01(-rect.top / (travel * 0.85));
+      // First stretch of the pin: the statement alone, and the circle around "clear"
+      // draws halfway through it. The principles only start rising after that.
+      if (p >= CIRCLE_AT) el.classList.add("drawn");
+      const q = clamp01((p - PRINCIPLES_FROM) / (1 - PRINCIPLES_FROM));
       items.current.forEach((li, i) => {
         if (!li) return;
-        const t = easeOut(clamp01(p * 3 - i));
+        const t = easeOut(clamp01(q * 3 - i));
         li.style.transform = `translateY(${(1 - t) * 50}vh)`;
         li.style.opacity = String(clamp01(t * 1.5));
       });

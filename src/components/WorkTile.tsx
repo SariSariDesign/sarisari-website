@@ -95,7 +95,7 @@ export function WorkTile({ t }: { t: Tile }) {
           {t.tags.map((tag) => (
             <li
               key={tag}
-              className="ds-label rounded border border-neutral-1000 px-2 py-1 text-label text-neutral-1000"
+              className="ds-label rounded border border-neutral-400 px-2 py-1 text-label text-neutral-700"
             >
               {tag}
             </li>

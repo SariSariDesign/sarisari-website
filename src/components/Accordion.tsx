@@ -31,12 +31,16 @@ export function Accordion({ items, defaultOpen = 0 }: Props) {
               <span className="text-heading-m text-neutral-1000">
                 {item.label}
               </span>
-              <span
-                aria-hidden
-                className="text-2xl leading-none text-neutral-600"
-              >
-                {isOpen ? "−" : "+"}
-              </span>
+              {/* Drawn +/− (the vertical stroke folds away), same as the Services list. */}
+              <svg width="18" height="18" viewBox="0 0 28 28" aria-hidden className="shrink-0 text-neutral-700">
+                <path d="M2 14h24" stroke="currentColor" strokeWidth="2" />
+                <path
+                  d="M14 2v24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className={`origin-center transition-transform duration-300 ease-out ${isOpen ? "scale-y-0" : "scale-y-100"}`}
+                />
+              </svg>
             </button>
             <div
               id={`${uid}-${i}`}

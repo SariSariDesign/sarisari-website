@@ -43,7 +43,7 @@ export function Marquee({
               // eslint-disable-next-line @next/next/no-img-element
               <img src={logo.mark} alt="" className="h-7 w-auto opacity-60" />
             )}
-            <span className="whitespace-nowrap text-body font-medium text-neutral-700">
+            <span className="whitespace-nowrap text-body text-neutral-700">
               {logo.name}
             </span>
           </span>

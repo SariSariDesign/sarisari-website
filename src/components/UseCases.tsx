@@ -182,8 +182,8 @@ export function UseCases() {
             key={c.problem}
             className="usecase group relative col-span-4 flex aspect-[4/5] flex-col rounded border border-transparent transition-colors duration-150 ease-out hover:border-neutral-1000 focus-within:border-neutral-1000 lg:col-span-3 lg:aspect-[3/4]"
           >
-            {/* Cover: the image fills the card, under a dark wash (25% at the top → 4% at
-                the bottom) so the light text stays readable. */}
+            {/* Cover: the image fills the card, under an ink wash, strongest behind the
+                copy at the top, so the light text stays readable. */}
             <div
               ref={(el) => void (covers.current[i] = el)}
               className="usecase-cover absolute inset-0 overflow-hidden rounded bg-neutral-800"
@@ -192,7 +192,7 @@ export function UseCases() {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={r.image} alt="" className="h-full w-full object-cover" />
               )}
-              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(0_0_0/0.25),rgb(0_0_0/0.04))]" />
+              <div className="absolute inset-0 usecase-wash" />
             </div>
             {/* Landing spot for the falling print (desktop motion only). */}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center [container-type:size]">
@@ -225,7 +225,7 @@ export function UseCases() {
                   type="button"
                   onClick={() => highlight(c.offer.id)}
                   aria-label={`See ${c.offer.label} pricing`}
-                  className="group/btn flex h-12 w-12 rounded items-center justify-center border border-neutral-100 text-neutral-100 transition-colors duration-150 ease-out hover:bg-neutral-100 hover:text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
+                  className="group/btn flex h-12 w-12 rounded items-center justify-center border border-neutral-1000 bg-neutral-1000 text-neutral-100 transition-colors duration-150 ease-out hover:border-neutral-100 hover:bg-neutral-100 hover:text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                 >
                   <svg
                     width="16"

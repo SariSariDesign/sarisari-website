@@ -25,7 +25,7 @@ export function SectionHeader({
       >
         {headline}
       </h2>
-      {intro && <p className="text-body text-neutral-700">{intro}</p>}
+      {intro && <p className="text-lead text-neutral-700">{intro}</p>}
     </Reveal>
   );
 }
