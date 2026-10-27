@@ -211,27 +211,27 @@ export const caseStudiesSection = {
   headline: "Freshly stocked",
   // Editorial layout: Kenchan square, Funding Solutions portrait (dropped lower),
   // NutriSnap wide below. Tiles link only once the case study is published.
-  // ⚠️ Brand colors sampled from the project images; confirm the real ones.
+  // Frame backgrounds are CSS gradients matched to each project image's own backdrop.
   tiles: [
     {
       slug: "kenchan-ramen",
       title: "Building a bundle feature that drove 37% of digital revenue",
       tags: ["E-commerce", "Conversion", "Shopify"],
-      color: "#1e2d74",
+      color: "radial-gradient(120% 90% at 0% 100%, #216eb9 0%, rgba(33,110,185,0) 60%), #20307a",
       layout: "square" as const,
     },
     {
       slug: "funding-solutions",
       title: "Turning high-stakes loan ops into a self-serve lending pipeline",
       tags: ["Fintech", "0→1 design", "B2B tools"],
-      color: "#2a1a52",
+      color: "linear-gradient(110deg, #2b1342 0%, #281c47 30%, #4a5f9a 68%, #7cc0dd 100%)",
       layout: "portrait" as const,
     },
     {
       slug: "nutrisnap",
       title: "Turning nutrition science into a first session people trust",
       tags: ["Health", "Activation", "AI-built app"],
-      color: "#24543c",
+      color: "linear-gradient(160deg, #d2c4b4 0%, #c9b9a8 45%, #98877a 100%)",
       layout: "wide" as const,
     },
   ],
@@ -327,7 +327,7 @@ export const about = {
     {
       name: "Patricia Capiral",
       role: "Head of Design & Co-Founder",
-      bio: "Previously Selfbook, Silk & Sonder, Guess.",
+      bio: "Previously Selfbook, Silk & Sonder.",
       photo: "/team/patricia-capiral.jpg",
     },
   ],

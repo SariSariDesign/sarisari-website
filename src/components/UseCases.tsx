@@ -16,10 +16,12 @@ type Geo = { dx: number; dy: number; s: number; len: number };
 /**
  * "How can we help?": four problem cards, each pointing at one offer.
  *
+ * Each card is the image itself (cover), with the copy over a dark wash.
+ *
  * Motion (desktop, motion allowed): the Disco, NutriSnap, Funding Solutions and Kenchan
  * prints start out hanging in the hero (`HangingShop` slots). As the page scrolls toward
  * this section they lose their clips and drop into cards 1–4, scroll-linked, ease-out, no
- * bounce. The other hero prints fade. Elsewhere (mobile, tablet, reduced motion, no JS)
+ * bounce, then cross-fade into the card's cover image. The other hero prints fade. Elsewhere (mobile, tablet, reduced motion, no JS)
  * the prints simply sit in the cards.
  *
  * The square down-arrow button scrolls to the matching pricing card and outlines it in
@@ -27,6 +29,7 @@ type Geo = { dx: number; dy: number; s: number; len: number };
  */
 export function UseCases() {
   const cells = useRef<(HTMLDivElement | null)[]>([]);
+  const covers = useRef<(HTMLDivElement | null)[]>([]);
   const prints = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -59,11 +62,11 @@ export function UseCases() {
           len: slot.offsetTop,
         };
       });
-      // Fully landed once the cards' top reaches 30% down the viewport.
+      // Fully landed (and handed over to the cover) once the cards' top is 60% down the viewport.
       const first = cells.current[0];
       if (first) {
         const top = first.getBoundingClientRect().top + window.scrollY;
-        end = Math.max(240, top - window.innerHeight * 0.3);
+        end = Math.max(240, top - window.innerHeight * 0.6);
       }
     };
 
@@ -81,6 +84,11 @@ export function UseCases() {
         // Clips and strings go first, then the fall.
         el.style.setProperty("--string", String(1 - clamp01(t / 0.06)));
         el.style.zIndex = t < 1 ? String(30 - i) : "";
+        // Once it has landed, the print hands over to the full-card cover image.
+        const handover = clamp01((t - 0.8) / 0.2);
+        el.style.opacity = String(1 - handover);
+        const cover = covers.current[i];
+        if (cover) cover.style.opacity = String(handover);
       });
       const fade = String(1 - clamp01(v / 0.35));
       others().forEach((el) => (el.style.opacity = fade));
@@ -109,7 +117,9 @@ export function UseCases() {
         if (!el) return;
         el.style.transform = "";
         el.style.zIndex = "";
+        el.style.opacity = "";
       });
+      covers.current.forEach((el) => el && (el.style.opacity = ""));
       others().forEach((el) => (el.style.opacity = ""));
     };
 
@@ -170,34 +180,44 @@ export function UseCases() {
         return (
           <li
             key={c.problem}
-            className="usecase group col-span-4 flex flex-col rounded border border-neutral-300 bg-white transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-100 focus-within:border-neutral-1000 lg:col-span-3"
+            className="usecase group relative col-span-4 flex aspect-[4/5] flex-col rounded border border-transparent transition-colors duration-150 ease-out hover:border-neutral-1000 focus-within:border-neutral-1000 lg:col-span-3 lg:aspect-[3/4]"
           >
-            {/* Image on top: the print lands here, centered in a 4:3 frame. */}
-            <div className="relative aspect-[4/3] rounded-t-[3px] bg-neutral-200">
-              <div className="absolute inset-5 flex items-center justify-center [container-type:size]">
+            {/* Cover: the image fills the card, under a dark wash (25% at the top → 4% at
+                the bottom) so the light text stays readable. */}
+            <div
+              ref={(el) => void (covers.current[i] = el)}
+              className="usecase-cover absolute inset-0 overflow-hidden rounded bg-neutral-800"
+            >
+              {r.image && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={r.image} alt="" className="h-full w-full object-cover" />
+              )}
+              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(0_0_0/0.25),rgb(0_0_0/0.04))]" />
+            </div>
+            {/* Landing spot for the falling print (desktop motion only). */}
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center [container-type:size]">
+              <div
+                ref={(el) => void (cells.current[i] = el)}
+                className="relative"
+                style={{
+                  aspectRatio: r.aspect,
+                  width: `min(100cqw, 100cqh * ${ratio(r.aspect)})`,
+                }}
+              >
                 <div
-                  ref={(el) => void (cells.current[i] = el)}
-                  className="relative"
-                  style={{
-                    aspectRatio: r.aspect,
-                    width: `min(100cqw, 100cqh * ${ratio(r.aspect)})`,
-                  }}
+                  ref={(el) => void (prints.current[i] = el)}
+                  className="usecase-print regular-fly absolute inset-0 origin-top"
                 >
-                  <div
-                    ref={(el) => void (prints.current[i] = el)}
-                    className="regular-fly absolute inset-0 origin-top"
-                  >
-                    <div className="hang-sway relative">
-                      <HangHardware />
-                      <RegularPhoto r={r} />
-                    </div>
+                  <div className="hang-sway relative">
+                    <HangHardware />
+                    <RegularPhoto r={r} />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex flex-1 flex-col gap-3 p-6">
-              <h3 className="text-heading-m text-neutral-1000">{c.problem}</h3>
-              <p className="usecase-outcome text-body text-neutral-700">
+            <div className="relative flex flex-1 flex-col gap-3 p-6">
+              <h3 className="text-heading-m text-neutral-100">{c.problem}</h3>
+              <p className="usecase-outcome text-body text-neutral-200">
                 {c.outcome}
               </p>
               <div className="mt-auto pt-4">
@@ -205,7 +225,7 @@ export function UseCases() {
                   type="button"
                   onClick={() => highlight(c.offer.id)}
                   aria-label={`See ${c.offer.label} pricing`}
-                  className="group/btn flex h-12 w-12 rounded items-center justify-center border border-neutral-1000 text-neutral-1000 transition-colors duration-150 ease-out hover:bg-neutral-1000 hover:text-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
+                  className="group/btn flex h-12 w-12 rounded items-center justify-center border border-neutral-100 text-neutral-100 transition-colors duration-150 ease-out hover:bg-neutral-100 hover:text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                 >
                   <svg
                     width="16"

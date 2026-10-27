@@ -29,7 +29,7 @@ export function HomePricing() {
               <span className="font-brand text-display-s text-neutral-100">{scale.price}</span>
               <span className="text-lead text-primary-100">{scale.period}</span>
             </div>
-            <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <div className="mt-2 flex flex-col items-start gap-4">
               <Button href={scale.cta.href} variant="white" external={isExternal(scale.cta.href)}>
                 {scale.cta.label}
               </Button>
@@ -47,7 +47,7 @@ export function HomePricing() {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <p className="text-lead text-neutral-100">{scale.description}</p>
-              <p className="text-body-s text-primary-100">{scale.bestFor}</p>
+              <p className="font-code text-body-s text-primary-100">{scale.bestFor}</p>
             </div>
             <ol className="flex flex-col">
               {scale.features.map((f, i) => (
@@ -90,7 +90,7 @@ export function HomePricing() {
                 {o.price}
               </span>
               <p className="text-body text-neutral-700">{o.description}</p>
-              <p className="text-body-s text-neutral-700">{o.bestFor}</p>
+              <p className="font-code text-body-s text-neutral-700">{o.bestFor}</p>
               {"note" in o && o.note && (
                 <p className="text-body-s text-neutral-1000">{o.note}</p>
               )}

@@ -12,7 +12,7 @@ const easeOut = (t: number) => 1 - (1 - t) ** 3;
  * on, gridlines off). From 768px up with motion allowed, the stage sticks below the nav
  * while the section scrolls ~3.4 screens: the statement stays at the top of the screen and
  * P1, P2, P3 rise into their columns at the bottom, driven by scroll (ease-out, no bounce).
- * Once P3 is in, everything scrolls away together. The hand-drawn underline under "clear"
+ * Once P3 is in, everything scrolls away together. The hand-drawn circle around "clear"
  * draws once (800ms) when the stage is centered in the viewport. Below 768px or under
  * reduced motion: statement then principles, stacked and static.
  */
@@ -112,16 +112,18 @@ export function Process() {
               {line2.before}
               <span className="relative inline-block">
                 {line2.underline}
+                {/* Hand-drawn circle around the word: one loose stroke that overshoots
+                    where it started, drawn once. Sized to the word, so it scales. */}
                 <svg
                   aria-hidden
-                  viewBox="0 0 200 20"
+                  viewBox="0 0 220 100"
                   preserveAspectRatio="none"
-                  className="statement-underline absolute left-[-2%] top-[92%] h-[0.16em] w-[104%] overflow-visible"
+                  className="statement-underline pointer-events-none absolute left-[-14%] top-[-6%] h-[118%] w-[128%] overflow-visible"
                 >
                   <path
-                    d="M2 13 C 30 6, 58 15, 88 10 S 150 5, 172 11 C 182 13, 192 9, 198 8"
+                    d="M150 14 C 118 4, 58 6, 26 24 C 4 37, 6 70, 40 84 C 82 100, 160 96, 196 74 C 222 58, 214 26, 178 14 C 150 5, 104 6, 76 12"
                     fill="none"
-                    stroke="var(--color-primary-400)"
+                    stroke="var(--color-primary-300)"
                     strokeWidth="2"
                     strokeLinecap="round"
                     vectorEffect="non-scaling-stroke"

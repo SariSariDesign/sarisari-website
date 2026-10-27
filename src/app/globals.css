@@ -602,6 +602,11 @@ body {
   visibility: hidden;
 }
 
+/* Use-case prints only exist while flying in; otherwise the card shows its cover. */
+.usecase-print {
+  opacity: 0;
+}
+
 /* Use-case cards: outcome line shows on hover/focus; always visible on touch. */
 @media (hover: hover) {
   .usecase .usecase-outcome {
@@ -616,14 +621,30 @@ body {
 /* Work tiles: brand color behind the image; hover deepens it (no zoom). */
 .work-frame {
   background: var(--tile);
-  transition:
-    background-color 150ms ease-out,
-    border-color 150ms ease-out;
+  transition: border-color 150ms ease-out;
+}
+/* Hover deepens the backdrop: a dark wash between the gradient and the image. */
+.work-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.18);
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+.work-frame > * {
+  position: relative;
+}
+.work-frame > span.absolute {
+  position: absolute;
 }
 .group:hover .work-frame,
 .group:focus-visible .work-frame {
-  background: color-mix(in srgb, var(--tile) 80%, black);
   border-color: var(--color-neutral-1000);
+}
+.group:hover .work-frame::before,
+.group:focus-visible .work-frame::before {
+  opacity: 1;
 }
 
 /* Process: statement + principles. Static by default (mobile, reduced motion); from
@@ -640,7 +661,7 @@ body {
   height: calc(100svh - 76px);
   padding-block: clamp(72px, 9vw, 136px);
 }
-/* Underline under "clear": draws left to right once the section is centered. */
+/* Circle around "clear": draws once (800ms) when the section is centered. */
 .statement-underline path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
