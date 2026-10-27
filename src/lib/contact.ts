@@ -11,6 +11,9 @@ export function parseContact(body: unknown): Parsed {
   if (str(b.website)) return { ok: "spam" };
   const data = { name: str(b.name), email: str(b.email), company: str(b.company), message: str(b.message) };
   if (!data.name) return { ok: false, error: "Enter your name." };
+  if (data.name.length > 200) return { ok: false, error: "Name is too long." };
+  if (data.email.length > 254) return { ok: false, error: "Email is too long." };
+  if (data.company.length > 200) return { ok: false, error: "Company is too long." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return { ok: false, error: "Enter a valid email." };
   if (!data.message) return { ok: false, error: "Add a message." };
   if (data.message.length > 5000) return { ok: false, error: "Message is too long." };

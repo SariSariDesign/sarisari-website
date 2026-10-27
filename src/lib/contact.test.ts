@@ -20,6 +20,21 @@ describe("parseContact", () => {
   it("flags the honeypot as spam", () => {
     expect(parseContact({ ...good, website: "http://spam" })).toEqual({ ok: "spam" });
   });
+  it.each([
+    ["name", 200, "Name is too long."],
+    ["company", 200, "Company is too long."],
+  ])("caps %s at %i chars", (field, max, error) => {
+    expect(parseContact({ ...good, [field]: "a".repeat(max) }).ok).toBe(true);
+    expect(parseContact({ ...good, [field]: "a".repeat(max + 1) })).toEqual({ ok: false, error });
+  });
+  it("caps email at 254 chars", () => {
+    const email = (n: number) => `${"a".repeat(n - "@example.com".length)}@example.com`;
+    expect(parseContact({ ...good, email: email(254) }).ok).toBe(true);
+    expect(parseContact({ ...good, email: email(255) })).toEqual({ ok: false, error: "Email is too long." });
+  });
+  it("rejects over-length messages", () => {
+    expect(parseContact({ ...good, message: "a".repeat(5001) })).toEqual({ ok: false, error: "Message is too long." });
+  });
   it("rejects non-objects", () => {
     expect(parseContact(null).ok).toBe(false);
   });

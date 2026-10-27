@@ -68,4 +68,22 @@ describe("POST /api/contact", () => {
     expect(res.status).toBe(500);
     expect(spy).toHaveBeenCalled();
   });
+
+  it("returns 400 for a non-JSON body", async () => {
+    const res = await POST(new Request("http://localhost/api/contact", { method: "POST", body: "not json" }));
+    expect(res.status).toBe(400);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when the person upsert succeeds but the note fails", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    fetchMock
+      .mockReset()
+      .mockResolvedValueOnce(Response.json({ data: { id: { record_id: "rec_1" } } }))
+      .mockResolvedValueOnce(new Response("bad note", { status: 400 }));
+    const res = await post(good);
+    expect(res.status).toBe(500);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalled();
+  });
 });
