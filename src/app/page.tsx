@@ -2,11 +2,10 @@ import { Accordion } from "@/components/Accordion";
 import { Button } from "@/components/Button";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FooterCta } from "@/components/FooterCta";
+import { HomePricing } from "@/components/HomePricing";
 import { Marquee } from "@/components/Marquee";
 import { Nav } from "@/components/Nav";
-import { OfferCards } from "@/components/OfferCards";
 import { Reveal } from "@/components/Reveal";
-import { RetainerPanel } from "@/components/RetainerPanel";
 import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesList } from "@/components/ServicesList";
@@ -21,7 +20,6 @@ import {
   caseStudiesSection,
   faq,
   hero,
-  pricing,
   services,
   testimonials,
   useCases,
@@ -144,7 +142,7 @@ function CaseStudies() {
   return (
     <Section id="work" aria-labelledby="work-h" className="bg-neutral-100">
       {/* Title left, "See all work" right. */}
-      <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-6">
+      <div className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between md:gap-4">
         <SectionHeader
           headingId="work-h"
           eyebrow={caseStudiesSection.eyebrow}
@@ -209,20 +207,10 @@ function About() {
 
 function Testimonials() {
   return (
-    <Section
-      id="testimonials"
-      aria-labelledby="testimonials-h"
-      className="bg-neutral-100"
-    >
-      <SectionHeader
-        headingId="testimonials-h"
-        eyebrow={testimonials.eyebrow}
-        headline={testimonials.headline}
-      />
-      <Reveal>
-        <TestimonialCarousel items={testimonials.items} />
-      </Reveal>
-    </Section>
+    <TestimonialCarousel
+      headline={testimonials.headline}
+      items={testimonials.items}
+    />
   );
 }
 
@@ -232,26 +220,9 @@ function Pricing() {
       id="pricing"
       aria-labelledby="pricing-h"
       className="bg-neutral-200"
+      hug
     >
-      <SectionHeader
-        headingId="pricing-h"
-        eyebrow={pricing.eyebrow}
-        headline={pricing.headline}
-      />
-      <Reveal className="mt-12">
-        <RetainerPanel retainer={pricing.retainer} />
-      </Reveal>
-      <Reveal className="mt-8">
-        <Button href={pricing.compare.href} variant="ghost">
-          {pricing.compare.label}
-        </Button>
-      </Reveal>
-      <Reveal className="mt-16 flex flex-col gap-4">
-        <h3 className="text-heading-m text-neutral-1000">
-          {pricing.offersHeading}
-        </h3>
-        <OfferCards offers={pricing.offers} />
-      </Reveal>
+      <HomePricing />
     </Section>
   );
 }

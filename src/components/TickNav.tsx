@@ -32,6 +32,17 @@ export function TickNav() {
   const [current, setCurrent] = useState(0);
   const [hover, setHover] = useState<number | null>(null);
 
+  // Pinned sections (Process, Testimonials) set their height after hydration, which moves
+  // everything below them. Re-land a #hash jump once that layout has settled.
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+    const land = () => document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" });
+    const t = window.setTimeout(land, 150);
+    document.fonts?.ready.then(() => window.setTimeout(land, 0));
+    return () => window.clearTimeout(t);
+  }, []);
+
   useEffect(() => {
     const present = SECTIONS.filter((s) => document.getElementById(s.id));
     setSections(present);

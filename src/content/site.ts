@@ -344,11 +344,34 @@ export type Testimonial = {
 
 export const testimonials = {
   eyebrow: "",
-  headline: "Ask our regulars.", // ⚠️ new intro copy, pending sign-off
-  // Jed G. is verbatim from the Kenchan case study; Michael Campbell is verbatim from the
-  // live activation-diagnostic site. ⚠️ The rest are pending (testimonial bank in Notion;
-  // Steve's is being drafted from his 1 Million Cups endorsement). Do not fabricate.
+  headline: "Ask our regulars.",
+  // Approved quotes only, in this order. Steve (NutriSnap) and Steve C. (Lions & Lambs)
+  // are pending approval: add them here once approved. Do not fabricate.
   items: [
+    {
+      quote:
+        "The speed of delivery and the quality of delivery is so excellent. You guys unblocked a huge work stream so quickly and efficiently.",
+      name: "Eris Hanson-Cooper",
+      role: "Founder & CEO",
+      company: "Disco",
+      photo: null,
+    },
+    {
+      quote:
+        "The five findings are spot on, and the usability session data makes them hard to argue with... The things I knew felt off but couldn't articulate this clearly. Your diagnostic gave me a clear punch list to work from. Highly recommend giving your process a shot; you have nothing to lose.",
+      name: "Michael Campbell",
+      role: "CEO",
+      company: "Signal Verified",
+      photo: "/testimonials/michael-campbell.webp",
+    },
+    {
+      quote:
+        "Sari Sari provided a much-needed, research-informed refresh for my live mobile app. They not only helped tear down every single screen, but also suggested helpful recommendations which were simple to test. I am so grateful they spent the time to dive into every detail and ask clarifying questions along the way - I felt they really understood my business and objectives.",
+      name: "Nora Rabah Rodden",
+      role: "Founder",
+      company: "Nervana",
+      photo: null,
+    },
     {
       quote:
         "Sari Sari didn't just execute a feature request—they reframed it into a validation question and shipped proof in a day. That bundle test went on to become one of the most reliable revenue levers in our digital channel.",
@@ -359,20 +382,78 @@ export const testimonials = {
     },
     {
       quote:
-        "The five findings are spot on, and the usability session data makes them hard to argue with. The competing CTAs, the undefined proprietary terms, and the buried proof are all things I knew felt off but couldn't articulate this clearly. Highly recommend giving your process a shot; you have nothing to lose.",
-      name: "Michael Campbell",
-      role: "CEO",
-      company: "Signal Verified",
-      photo: "/testimonials/michael-campbell.webp",
+        "The appearance of my company now is just so much more professional thanks to the amazing talents of the Sari Sari designers…",
+      name: "Jherray Babida",
+      role: "President",
+      company: "Social Wine & Spirit",
+      photo: null,
     },
-    { quote: null, name: "Steve", role: null, company: "", photo: null },
-    { quote: null, name: "Lendzi", role: null, company: "", photo: null },
-    { quote: null, name: "Dre", role: null, company: "", photo: null },
-    { quote: null, name: "Nora", role: null, company: "", photo: null },
-    { quote: null, name: "NutriSnap", role: null, company: "", photo: null },
-    { quote: null, name: "Nirvana", role: null, company: "", photo: null },
-    { quote: null, name: "Disco", role: null, company: "", photo: null },
   ] satisfies Testimonial[],
+};
+
+/**
+ * Homepage pricing (Batch 6). The services pages still read `pricing` below. Ids let the
+ * use-case buttons scroll to and highlight a card.
+ */
+export const homePricing = {
+  headline: "Ready to get started?",
+  scale: {
+    id: "offer-scale",
+    kicker: "Ongoing · 3-month minimum",
+    name: "Scale",
+    price: "$16K/mo",
+    description: "Ongoing design and development on an open roadmap. You set the direction.",
+    bullets: [
+      "One senior team for design and code",
+      "We join your standups, reviews and user tests",
+      "Starts within two weeks",
+      "3-month minimum, then 30 days notice",
+    ],
+    bestFor: "Best for: high-velocity teams that need flexible, ongoing design and engineering.",
+    grow: { label: "Design only? Grow, $8K/mo", href: "/services/retainers" },
+    cta: { label: "Book a call", href: BOOKING_URL },
+  },
+  offers: [
+    {
+      id: "offer-audit",
+      kicker: "7 days",
+      name: "Activation Audit",
+      price: "$1,500",
+      description:
+        "Discover where users leave in any single flow. Get a scorecard and teardown of that flow with prioritized recommendations.",
+      bestFor: "Best for: something's off but you need clarity.",
+      cta: { label: "Book a call", href: BOOKING_URL },
+    },
+    {
+      id: "offer-diagnostic",
+      kicker: "21 days",
+      name: "Activation Diagnostic",
+      price: "$6,000",
+      description:
+        "Find the biggest problem in any single flow and see the fix. Get a redesigned prototype, a validation guide and a 90-day roadmap.",
+      bestFor: "Best for: you want the fix designed and tested before investing in development.",
+      cta: { label: "Book a call", href: BOOKING_URL },
+    },
+    {
+      id: "offer-build",
+      kicker: "90 days",
+      name: "Activation Build",
+      price: "Let's talk",
+      description:
+        "Ship one defined project in 90 days. We design and build it, or guide your developers through it.",
+      bestFor: "Best for: one defined project, like a launch or redesign.",
+      note: "Diagnostic fee credited if you start within 30 days",
+      cta: { label: "Book a call", href: BOOKING_URL },
+    },
+  ],
+  scorecard: {
+    badge: "Free",
+    kicker: "In minutes",
+    name: "Activation Scorecard",
+    description:
+      "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Free, in minutes.",
+    cta: { label: "Get free Scorecard", href: SCORECARD_URL },
+  },
 };
 
 export const pricing = {

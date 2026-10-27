@@ -27,12 +27,12 @@ test.describe("homepage", () => {
     );
   });
 
-  test("pricing shows the retainer hero and three smaller offers", async ({ page }) => {
+  test("pricing shows Scale, three offers and the free Scorecard", async ({ page }) => {
     const pricing = page.locator("#pricing");
-    await expect(pricing.getByText("$16,000")).toBeVisible();
+    await expect(pricing.getByText("$16K/mo")).toBeVisible();
     await expect(pricing.getByText("$1,500")).toBeVisible();
     await expect(pricing.getByText("$6,000")).toBeVisible();
-    await expect(pricing.getByRole("link", { name: /try it for free/i })).toHaveAttribute(
+    await expect(pricing.getByRole("link", { name: /get free scorecard/i })).toHaveAttribute(
       "href",
       /activation-diagnostic\.sarisari\.design\/preview/,
     );
