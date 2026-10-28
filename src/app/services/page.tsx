@@ -22,7 +22,7 @@ export default function ServicesPage() {
     <>
       <Nav />
       <main>
-        <Section className="bg-neutral-200">
+        <Section className="bg-neutral-100">
           <PageHeader eyebrow={servicesPage.eyebrow} title={servicesPage.title} intro={servicesPage.intro} />
           <h2 className="sr-only">{servicesPage.listHeading}</h2>
           <Reveal>
@@ -35,7 +35,7 @@ export default function ServicesPage() {
             <OfferCards offers={servicesPage.offers} />
           </Reveal>
         </Section>
-        <Section aria-labelledby="services-faq-h" className="bg-neutral-200">
+        <Section aria-labelledby="services-faq-h" className="bg-neutral-100">
           <SectionHeader headingId="services-faq-h" headline={servicesPage.faqHeading} />
           <Reveal className="mt-12">
             <Accordion items={servicesPage.faqItems()} defaultOpen={0} />

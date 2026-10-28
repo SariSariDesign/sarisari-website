@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { pointOfView } from "@/content/site";
+import { Gridlines } from "./Gridlines";
 
 const PIN_QUERY = "(min-width: 768px) and (prefers-reduced-motion: no-preference)";
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
@@ -112,6 +113,7 @@ export function Process() {
       data-pinned="false"
       className="process grain relative bg-neutral-100"
     >
+      <Gridlines />
       <div className="process-stage relative z-[1] flex flex-col overflow-hidden">
         <div className="measure flex flex-1 flex-col justify-between gap-16">
           {/* Statement: top of the screen. */}

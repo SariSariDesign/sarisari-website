@@ -31,6 +31,28 @@ export function UseCases() {
   const cells = useRef<(HTMLDivElement | null)[]>([]);
   const covers = useRef<(HTMLDivElement | null)[]>([]);
   const prints = useRef<(HTMLDivElement | null)[]>([]);
+  const grid = useRef<HTMLUListElement>(null);
+
+  // Annotation lines draw in once the cards are on screen.
+  useEffect(() => {
+    const el = grid.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      el.classList.add("in");
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          el.classList.add("in");
+          io.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -30% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -174,7 +196,7 @@ export function UseCases() {
   };
 
   return (
-    <ul className="mt-12 grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12">
+    <ul ref={grid} className="usecase-grid mt-12 grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12">
       {useCases.cards.map((c, i) => {
         const r = work.regulars[c.print];
         return (
@@ -183,51 +205,19 @@ export function UseCases() {
             // The whole card is clickable; the button inside is the keyboard/screen-reader
             // control and its click bubbles up here.
             onClick={() => highlight(c.offer.id)}
-            className="usecase group relative col-span-4 flex cursor-pointer aspect-[4/5] flex-col rounded border border-transparent transition-colors duration-150 ease-out hover:border-neutral-1000 focus-within:border-neutral-1000 lg:col-span-3 lg:aspect-[3/4]"
+            className="usecase group relative col-span-4 flex cursor-pointer flex-col rounded border border-dashed border-neutral-400 bg-neutral-100 transition-colors duration-150 ease-out hover:border-solid hover:border-neutral-1000 hover:bg-neutral-200 focus-within:border-solid focus-within:border-neutral-1000 lg:col-span-3"
           >
-            {/* Cover: the image fills the card, under an ink wash, strongest behind the
-                copy at the top, so the light text stays readable. */}
-            <div
-              ref={(el) => void (covers.current[i] = el)}
-              className="usecase-cover absolute inset-0 overflow-hidden rounded bg-neutral-800"
-            >
-              {r.image && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={r.image} alt="" className="h-full w-full object-cover" />
-              )}
-              <div className="absolute inset-0 usecase-wash" />
-            </div>
-            {/* Landing spot for the falling print (desktop motion only). */}
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center [container-type:size]">
-              <div
-                ref={(el) => void (cells.current[i] = el)}
-                className="relative"
-                style={{
-                  aspectRatio: r.aspect,
-                  width: `min(100cqw, 100cqh * ${ratio(r.aspect)})`,
-                }}
-              >
-                <div
-                  ref={(el) => void (prints.current[i] = el)}
-                  className="usecase-print regular-fly absolute inset-0 origin-top"
-                >
-                  <div className="hang-sway relative">
-                    <HangHardware />
-                    <RegularPhoto r={r} />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="relative flex flex-1 flex-col gap-3 p-6">
-              <h3 className="text-heading-m text-neutral-100">{c.problem}</h3>
-              <p className="usecase-outcome text-body text-neutral-200">
-                {c.outcome}
-              </p>
-              <div className="mt-auto pt-4">
+            {/* Spec sheet: label + problem up top, the image filed into a framed plate
+                below (crop marks at its corners), the outcome noted with a leader line. */}
+            <div className="flex flex-1 flex-col gap-4 p-6">
+              <div className="flex items-start justify-between gap-4">
+                <span className="ds-label pt-1 text-label text-neutral-700">
+                  Fig. {String(i + 1).padStart(2, "0")} / Problem
+                </span>
                 <button
                   type="button"
                   aria-label={`See ${c.offer.label} pricing`}
-                  className="group/btn flex h-12 w-12 rounded items-center justify-center border border-neutral-1000 bg-neutral-1000 text-neutral-100 transition-colors duration-150 ease-out hover:border-neutral-100 hover:bg-neutral-100 hover:text-neutral-1000 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
+                  className="group/btn flex h-12 w-12 shrink-0 rounded items-center justify-center border border-neutral-1000 bg-neutral-1000 text-neutral-100 transition-colors duration-150 ease-out hover:border-neutral-800 hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                 >
                   <svg
                     width="16"
@@ -246,6 +236,50 @@ export function UseCases() {
                     />
                   </svg>
                 </button>
+              </div>
+              <h3 className="text-heading-m text-neutral-1000">{c.problem}</h3>
+              {/* Outcome note (fades in on hover/focus for pointer devices; its space is kept so
+                  nothing shifts) with a leader to the plate. */}
+              <p className="usecase-outcome flex gap-3 text-body-s text-neutral-700">
+                <span aria-hidden className="ml-3 w-px shrink-0 border-l border-dashed border-neutral-600" />
+                {c.outcome}
+              </p>
+              {/* Plate: the cover image, plus the landing spot for the falling print. Same
+                  size on every card and pinned to the bottom, so the plates line up. */}
+              <div className="relative mt-auto aspect-[4/3] w-full">
+                <div
+                  ref={(el) => void (covers.current[i] = el)}
+                  className="usecase-cover absolute inset-0 overflow-hidden rounded bg-neutral-200"
+                >
+                  {r.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={r.image} alt="" className="h-full w-full object-cover" />
+                  )}
+                </div>
+                <span aria-hidden className="uc-tick pointer-events-none absolute -left-2 -top-2 h-3 w-3 border-l border-t border-neutral-1000" />
+                <span aria-hidden className="uc-tick pointer-events-none absolute -right-2 -top-2 h-3 w-3 border-r border-t border-neutral-1000" />
+                <span aria-hidden className="uc-tick pointer-events-none absolute -bottom-2 -left-2 h-3 w-3 border-b border-l border-neutral-1000" />
+                <span aria-hidden className="uc-tick pointer-events-none absolute -bottom-2 -right-2 h-3 w-3 border-b border-r border-neutral-1000" />
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center [container-type:size]">
+                  <div
+                    ref={(el) => void (cells.current[i] = el)}
+                    className="relative"
+                    style={{
+                      aspectRatio: r.aspect,
+                      width: `min(100cqw, 100cqh * ${ratio(r.aspect)})`,
+                    }}
+                  >
+                    <div
+                      ref={(el) => void (prints.current[i] = el)}
+                      className="usecase-print regular-fly absolute inset-0 origin-top"
+                    >
+                      <div className="hang-sway relative">
+                        <HangHardware />
+                        <RegularPhoto r={r} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </li>
