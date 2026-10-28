@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 /** Homepage sections in page order. Ones not yet on the page are skipped at runtime. */
 export const SECTIONS = [
-  { id: "hero", label: "Hero" },
+  { id: "hero", label: "Home" },
   { id: "use-cases", label: "Use cases" },
   { id: "services", label: "Services" },
   { id: "work", label: "Work" },

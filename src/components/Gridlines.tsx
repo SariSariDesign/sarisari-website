@@ -5,11 +5,11 @@ import { useEffect, useRef } from "react";
 /**
  * Stripe-style column grid on the 1200px measure: solid outer edges plus dashed lines on
  * column boundaries (every 3 cols at 12-col, every 2 at 8-col, center at 4-col). Draws
- * top-down once when the section reaches 80% of the viewport. Rendered inside `Section`;
- * left off the hero, statement panel and closing band. Decorative: aria-hidden, no
+ * top-down once when the section reaches 80% of the viewport. Runs through every section,
+ * including the hero, Process and the blue closing band (`tone="dark"`). Decorative: aria-hidden, no
  * pointer events (see `.gridlines` in globals.css).
  */
-export function Gridlines() {
+export function Gridlines({ tone = "light" }: { tone?: "light" | "dark" }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function Gridlines() {
   }, []);
 
   return (
-    <div ref={ref} className="gridlines" aria-hidden>
+    <div ref={ref} className={`gridlines ${tone === "dark" ? "on-dark" : ""}`} aria-hidden>
       <div className="measure">
         <div>
           <i className="edge l" />

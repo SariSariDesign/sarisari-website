@@ -1,12 +1,14 @@
 import { Accordion } from "@/components/Accordion";
 import { Button } from "@/components/Button";
 import { Eyebrow } from "@/components/Eyebrow";
+import { Gridlines } from "@/components/Gridlines";
 import { FooterCta } from "@/components/FooterCta";
 import { HomePricing } from "@/components/HomePricing";
 import { Marquee } from "@/components/Marquee";
 import { Nav } from "@/components/Nav";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
+import { SnapScroll } from "@/components/SnapScroll";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesList } from "@/components/ServicesList";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
@@ -43,6 +45,7 @@ export default function Home() {
       </main>
       <FooterCta />
       <TickNav />
+      <SnapScroll />
     </>
   );
 }
@@ -55,6 +58,7 @@ function Hero() {
       data-hero
       className="grain flex flex-col overflow-hidden bg-neutral-100 lg:min-h-[calc(100svh-76px)]"
     >
+      <Gridlines />
       <div className="measure relative z-[1] grid flex-1 grid-cols-4 items-center gap-x-4 pb-8 pt-12 md:grid-cols-8 md:pt-16 lg:grid-cols-12 lg:py-10">
         {/* Load sequence: eyebrow 0ms, headline +80ms, subhead +180ms, CTAs +280ms. */}
         <div className="hero-seq col-span-full flex flex-col gap-8 lg:col-span-7">
@@ -118,7 +122,7 @@ function Services() {
     <Section
       id="services"
       aria-labelledby="services-h"
-      className="bg-neutral-200"
+      className="bg-neutral-100"
     >
       <SectionHeader
         headingId="services-h"
@@ -170,7 +174,7 @@ function CaseStudies() {
 
 function About() {
   return (
-    <Section id="about" aria-labelledby="about-h" className="bg-orange-100">
+    <Section id="about" aria-labelledby="about-h" className="bg-neutral-100">
       <SectionHeader
         headingId="about-h"
         eyebrow={about.eyebrow}
@@ -219,7 +223,7 @@ function Pricing() {
     <Section
       id="pricing"
       aria-labelledby="pricing-h"
-      className="bg-neutral-200"
+      className="bg-neutral-100"
       hug
     >
       <HomePricing />
@@ -230,7 +234,7 @@ function Pricing() {
 function Faq() {
   const items = faq.items.map((f) => ({ label: f.q, body: f.a }));
   return (
-    <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-200">
+    <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-100">
       <div className="grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
         {/* Left: header, intro, CTA (sticks while the questions scroll on desktop). */}
         <div className="col-span-full lg:col-span-4">

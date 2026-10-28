@@ -20,7 +20,7 @@ export default function RetainersPage() {
     <>
       <Nav />
       <main>
-        <Section className="bg-neutral-200">
+        <Section className="bg-neutral-100">
           <PageHeader eyebrow={retainers.eyebrow} title={retainers.title} intro={retainers.intro} />
           <div className="mt-16 flex flex-col gap-8">
             {retainers.tiers.map((t) => (

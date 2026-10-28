@@ -27,9 +27,10 @@ test.describe("homepage", () => {
     );
   });
 
-  test("pricing shows Scale, three offers and the free Scorecard", async ({ page }) => {
+  test("pricing shows Design+, three offers and the free Scorecard", async ({ page }) => {
     const pricing = page.locator("#pricing");
-    await expect(pricing.getByText("$16,000")).toBeVisible();
+    await expect(pricing.getByText("$8,000+")).toBeVisible();
+    await expect(pricing.getByRole("heading", { name: "The Design Partner" })).toBeVisible();
     await expect(pricing.getByText("$1,500")).toBeVisible();
     await expect(pricing.getByText("$6,000")).toBeVisible();
     await expect(pricing.getByRole("link", { name: /get free scorecard/i })).toHaveAttribute(

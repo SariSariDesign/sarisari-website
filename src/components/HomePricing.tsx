@@ -3,6 +3,7 @@ import { homePricing } from "@/content/site";
 import { isExternal } from "@/lib/links";
 import { Button } from "./Button";
 import { Reveal } from "./Reveal";
+import { Placeholder } from "./Placeholder";
 import { SectionHeader } from "./SectionHeader";
 
 /**
@@ -27,8 +28,11 @@ export function HomePricing() {
             <h3 className="text-heading-m text-neutral-100">{scale.name}</h3>
             <div className="flex items-baseline gap-2">
               <span className="font-brand text-display-s text-neutral-100">{scale.price}</span>
-              <span className="text-lead text-primary-100">{scale.period}</span>
+              {scale.period && (
+                <span className="text-lead text-primary-100">{scale.period}</span>
+              )}
             </div>
+            <p className="max-w-[40ch] text-lead text-neutral-100">{scale.summary}</p>
             <div className="mt-2 flex flex-col items-start gap-4">
               <Button href={scale.cta.href} variant="white" external={isExternal(scale.cta.href)}>
                 {scale.cta.label}
@@ -44,18 +48,21 @@ export function HomePricing() {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col gap-6">
-            <p className="ds-label text-label text-primary-100">{scale.bestFor}</p>
+          <div className="flex flex-col">
             <ol className="flex flex-col">
               {scale.features.map((f, i) => (
-                <li key={f.title} className="flex gap-6 border-t border-primary-300 py-4">
-                  <span className="ds-label w-6 shrink-0 pt-1 text-label text-primary-100">
+                // Number sits on the vertical middle of the title; body runs under the title.
+                <li
+                  key={f.title}
+                  className="grid grid-cols-[1.5rem_1fr] gap-x-6 gap-y-1 border-t border-primary-300 py-4"
+                >
+                  <span className="ds-label self-center text-label text-primary-100">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="flex flex-col gap-1">
-                    <span className="text-heading-m text-neutral-100">{f.title}</span>
-                    {f.body && <span className="text-body-s text-primary-100">{f.body}</span>}
-                  </span>
+                  <span className="text-heading-m text-neutral-100">{f.title}</span>
+                  {f.body && (
+                    <span className="col-start-2 text-body-s text-primary-100">{f.body}</span>
+                  )}
                 </li>
               ))}
             </ol>
@@ -88,9 +95,6 @@ export function HomePricing() {
               </span>
               <p className="text-body text-neutral-700">{o.description}</p>
               <p className="ds-label text-label text-neutral-700">{o.bestFor}</p>
-              {"note" in o && o.note && (
-                <p className="text-body-s text-neutral-1000">{o.note}</p>
-              )}
               <div className="mt-auto pt-2">
                 <Button
                   href={o.cta.href}
@@ -110,11 +114,12 @@ export function HomePricing() {
       <Reveal>
         <div
           id="offer-scorecard"
-          className="flex flex-col gap-4 rounded border border-dashed border-neutral-600 bg-neutral-100 p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 md:p-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12"
+          className="grid gap-8 rounded border border-dashed border-neutral-600 bg-neutral-100 p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 md:p-10 lg:grid-cols-2 lg:items-center lg:gap-12"
         >
-          <div className="flex flex-col gap-4">
+          {/* Headline block stacked over the CTA; deliverable image on the right. */}
+          <div className="flex flex-col items-start gap-4">
             <div className="flex items-center gap-3">
-              <span className="ds-label rounded bg-success-200 px-2 py-1 text-label text-success-600">
+              <span className="ds-label rounded bg-primary-400 px-2 py-1 text-label text-neutral-100">
                 {scorecard.badge}
               </span>
               <span className="ds-label text-label text-neutral-700">
@@ -130,15 +135,28 @@ export function HomePricing() {
             <p className="max-w-[60ch] text-body text-neutral-700">
               {scorecard.description}
             </p>
+            <div className="mt-4">
+              <Button
+                href={scorecard.cta.href}
+                external={isExternal(scorecard.cta.href)}
+              >
+                {scorecard.cta.label}
+              </Button>
+            </div>
           </div>
-          <div className="shrink-0">
-            <Button
-              href={scorecard.cta.href}
-              external={isExternal(scorecard.cta.href)}
-            >
-              {scorecard.cta.label}
-            </Button>
-          </div>
+          {scorecard.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={scorecard.image}
+              alt="Example Activation Scorecard"
+              className="aspect-[4/3] w-full rounded border border-neutral-300 object-cover object-top lg:order-first"
+            />
+          ) : (
+            <Placeholder
+              className="aspect-[4/3] w-full lg:order-first"
+              label="Scorecard image pending"
+            />
+          )}
         </div>
       </Reveal>
     </div>

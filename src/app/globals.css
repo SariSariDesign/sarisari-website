@@ -250,18 +250,9 @@ section[id] {
   scroll-margin-top: 76px;
 }
 
-/* F2: scrolling settles at section starts. Proximity, not mandatory, so sections taller
-   than the screen (Services open, Pricing, FAQ) still scroll freely. Off under reduced
-   motion. Sections fill the screen below the nav (`.section-full`). */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-snap-type: y proximity;
-  }
-}
-main > section,
-.snap-start {
-  scroll-snap-align: start;
-}
+/* F2 (removed Oct 28): page-level scroll snap fought the scroll-linked hero prints and
+   the pinned Process stage, so the hero jumped. Scrolling is free; sections still fill
+   the screen below the nav (`.section-full`). */
 .section-full {
   min-height: calc(100svh - 76px);
   display: flex;
@@ -318,8 +309,8 @@ body {
   }
 }
 
-/* Film grain (moments only: hero, statement panel, closing band). Grayscale fractal
-   noise multiplied over the surface at 10%. Never on cards or controls. */
+/* Film grain on the hero, Process and the closing band only. Monochrome fractal
+   noise (R/G/B averaged, which keeps it soft) multiplied over the surface. Never on cards or controls. */
 .grain {
   position: relative;
   isolation: isolate;
@@ -330,9 +321,9 @@ body {
   inset: 0;
   z-index: 0; /* under the content (z-[1]) so it never sits on controls */
   pointer-events: none;
-  opacity: 0.14;
+  opacity: 0.122;
   mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3' intercept='-1'/%3E%3CfeFuncG type='linear' slope='3' intercept='-1'/%3E%3CfeFuncB type='linear' slope='3' intercept='-1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='.33 .33 .33 0 0 .33 .33 .33 0 0 .33 .33 .33 0 0 0 0 0 0 1'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='3' intercept='-1'/%3E%3CfeFuncG type='linear' slope='3' intercept='-1'/%3E%3CfeFuncB type='linear' slope='3' intercept='-1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* FAQ accordion: answers open/close over 250ms (grid-template-rows 0fr ↔ 1fr). */
@@ -370,6 +361,13 @@ body {
    lighter step to match visually. */
 .gridlines .edge {
   background: var(--color-neutral-300);
+}
+/* On the blue closing band. */
+.gridlines.on-dark {
+  color: var(--color-primary-300);
+}
+.gridlines.on-dark .edge {
+  background: var(--color-primary-300);
 }
 /* Outer edges sit 8px outside the content box. */
 .gridlines .edge.l {
@@ -602,16 +600,21 @@ body {
   visibility: hidden;
 }
 
-/* Use-case cover wash: ink (neutral-1000), heavy behind the copy at the top and fading
-   out toward the bottom so the image still reads. */
-.usecase-wash {
-  background: linear-gradient(
-    to bottom,
-    rgb(31 29 28 / 0.85) 0%,
-    rgb(31 29 28 / 0.7) 40%,
-    rgb(31 29 28 / 0.25) 72%,
-    rgb(31 29 28 / 0.1) 100%
-  );
+/* Use-case spec sheet: the plate's crop marks fade in once the cards are on screen.
+   Gated on `.js` so they show without JS. */
+.js .usecase-grid .uc-tick {
+  opacity: 0;
+  transition: opacity 400ms ease-out 200ms;
+}
+.js .usecase-grid.in .uc-tick {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .usecase-grid .uc-tick {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Use-case prints only exist while flying in; otherwise the card shows its cover. */
@@ -687,10 +690,10 @@ body {
 /* Pricing cards lift into place when picked from a use case: they rise 8px, cast a
    soft shadow and get a 2px primary-400 outline for ~3.5s. (The one exception to the
    no-lift rule: it marks "this is the one you asked about".) */
-#offer-scale,
+#offer-design-plus,
 #offer-audit,
 #offer-diagnostic,
-#offer-build {
+#offer-design-partner {
   transition:
     transform 300ms ease-out,
     box-shadow 300ms ease-out,

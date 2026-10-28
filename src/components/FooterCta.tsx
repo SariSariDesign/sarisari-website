@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { footer, footerCta } from "@/content/site";
 import { Button } from "./Button";
+import { Gridlines } from "./Gridlines";
 import { Wordmark } from "./Wordmark";
 
 /** Closing blue (primary-400) CTA band (grain, display-l) + the footer. Shared across all pages. */
@@ -12,6 +13,7 @@ export function FooterCta() {
         className="grain snap-start bg-primary-400 text-neutral-100"
         data-dark-band
       >
+        <Gridlines tone="dark" />
         <div className="measure relative z-[1] py-28 md:py-36">
           <div className="flex flex-col gap-6">
             <h2
@@ -40,19 +42,30 @@ export function FooterCta() {
       </section>
 
       <footer className="bg-neutral-1000 text-neutral-500">
-        <div className="measure flex flex-col gap-4 py-10 md:flex-row md:items-center md:justify-between">
-          <Wordmark className="text-[24px] text-neutral-100" />
-          <div className="ds-label flex flex-wrap items-center gap-x-4 gap-y-2 text-label">
-            {footer.links.map((l) => (
-              <Link
-                key={l.label}
-                href={l.href}
-                className="text-neutral-400 hover:text-neutral-100"
-              >
-                {l.label}
-              </Link>
-            ))}
-            <span className="text-neutral-600">{footer.copyright}</span>
+        {/* Row 1: wordmark. Row 2: contact links left, legal + copyright right. */}
+        <div className="measure flex flex-col gap-8 py-10">
+          <Wordmark className="self-start text-[24px] text-neutral-100" />
+          <div className="ds-label flex flex-col gap-4 text-label md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              {footer.links.map((l) => (
+                <Link
+                  key={l.label}
+                  href={l.href}
+                  {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className={`text-neutral-400 hover:text-neutral-100`}
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              {footer.legal.map((l) => (
+                <Link key={l.label} href={l.href} className="text-neutral-400 hover:text-neutral-100">
+                  {l.label}
+                </Link>
+              ))}
+              <span className="text-neutral-600">{footer.copyright}</span>
+            </div>
           </div>
         </div>
       </footer>

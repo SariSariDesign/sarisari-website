@@ -6,6 +6,11 @@
  */
 
 export const BOOKING_URL = "https://calendly.com/sarisari/30min";
+/** Per-offer booking links. */
+export const AUDIT_BOOKING_URL = "https://calendly.com/sarisari/the-audit";
+export const DIAGNOSTIC_BOOKING_URL = "https://calendly.com/sarisari/sari-sari-activation-sprint-intro-call";
+export const DESIGN_PLUS_BOOKING_URL = "https://calendly.com/sarisari/design-plus";
+// Design Partner and every Book a call not tied to an offer use BOOKING_URL (30 min).
 export const DIAGNOSTIC_URL = "https://activation-diagnostic.sarisari.design/";
 /** Free activation scorecard (lead magnet). Lives in the activation-diagnostic app. */
 export const SCORECARD_URL = "https://activation-diagnostic.sarisari.design/preview";
@@ -143,25 +148,25 @@ export const useCases = {
       print: 2, // Disco
       problem: "Users sign up, then disappear",
       outcome: "Find where they leave and fix that first.",
-      offer: { id: "offer-audit", label: "Activation Audit" },
+      offer: { id: "offer-audit", label: "The Audit" },
     },
     {
       print: 4, // NutriSnap
       problem: "It looks like every other AI-built app",
       outcome: "Give it a look and flow that's yours.",
-      offer: { id: "offer-diagnostic", label: "Activation Diagnostic" },
+      offer: { id: "offer-diagnostic", label: "The Diagnostic" },
     },
     {
       print: 1, // Funding Solutions
       problem: "You're launching something new",
       outcome: "Brand, product and site, designed and built together.",
-      offer: { id: "offer-build", label: "Activation Build" },
+      offer: { id: "offer-design-plus", label: "Design+" },
     },
     {
       print: 0, // Kenchan
       problem: "Your roadmap is stuck waiting on a design hire",
       outcome: "A senior team that starts in two weeks.",
-      offer: { id: "offer-scale", label: "Scale" },
+      offer: { id: "offer-design-partner", label: "The Design Partner" },
     },
   ],
 };
@@ -233,6 +238,14 @@ export const caseStudiesSection = {
       color: "linear-gradient(160deg, #d2c4b4 0%, #c9b9a8 45%, #98877a 100%)",
       layout: "wide" as const,
     },
+    {
+      slug: "disco",
+      title: "Turning strong signup intent into a first-session win",
+      tags: ["Health", "Activation", "AI product UX"],
+      // ⚠️ placeholder backdrop (neutral ramp) until the Disco image + brand color land
+      color: "linear-gradient(160deg, #e6e5e4 0%, #bdbab7 100%)",
+      layout: "square" as const,
+    },
   ],
 };
 
@@ -244,15 +257,15 @@ export const pointOfView = {
   principles: [
     {
       title: "Machine speed, human curation.",
-      body: "Generative tools handle the heavy lifting of production. We provide the vision, direction, and editorial discipline to ensure the final product actually matters.",
+      body: "Our generative tools handle the heavy lifting. We bring the taste, vision, and gut instincts to make sure your work really resonates.",
     },
     {
-      title: "Trust at every touchpoint.",
-      body: "Just as sari sari stores run on familiarity and trust, we design the critical micro-moments that turn first-time users into regulars, from fintech to health to e-commerce.",
+      title: "Built on trust from day one.",
+      body: "Sari-sari stores run on familiarity. We bake that same trust into critical moments, so first-timers turn into regulars—whatever your industry.",
     },
     {
-      title: "Evidence over instincts.",
-      body: "We put interactive flows in front of actual users, watch where they hesitate, and fix that first. We test our instincts against real behavior, then build what holds up.",
+      title: "Real people beat guesswork.",
+      body: "We put our work in front of actual users, watch where they hesitate, and fix it. We don't guess—we build around real feedback.",
     },
   ],
 };
@@ -397,57 +410,59 @@ export const testimonials = {
 export const homePricing = {
   headline: "Ready to get started?",
   scale: {
-    id: "offer-scale",
-    kicker: "Ongoing · Cancel anytime",
-    name: "Scale",
-    price: "$16,000",
+    // The featured card: a defined 90-day project (formerly Activation Build).
+    id: "offer-design-plus",
+    kicker: "3-Month Minimum",
+    name: "Design+",
+    price: "$8,000+",
     period: "/ month",
-    bestFor: "Best for: high-velocity teams that need flexible, ongoing design and engineering on an open roadmap.",
+    // ⚠️ footnote text for * pending
+    summary: "Ship one defined project in 90 days. We design and build it, or guide your developers through it, with a money back guarantee.*",
+    // ⚠️ Drafted for the 90-day project; the old list was retainer terms (cancel anytime, open roadmap).
     features: [
       { title: "One senior team for design and code.", body: "Design and ship at the speed your startup actually moves." },
-      { title: "We join your standups, reviews and user tests.", body: "Anything from design workshops to test parties." },
-      { title: "We shape the roadmap together.", body: "You decide on the direction." },
+      { title: "One defined project, shipped in 90 days.", body: "A launch, a redesign or a new feature set." },
+      { title: "We build it, or guide your developers.", body: "Annotated files and reviews while your team builds, or we build it on your stack." },
+      { title: "We join your standups, reviews and user tests." },
       { title: "Starts within two weeks." },
-      { title: "Cancel anytime.", body: "30 days notice, no fees." },
     ] as { title: string; body?: string }[],
-    grow: { label: "Design only? Grow, $8K/mo", href: "/services/retainers" },
-    cta: { label: "Book a call", href: BOOKING_URL },
+    grow: { label: "Need Design+Development?", href: "/services/retainers" },
+    cta: { label: "Book a call", href: DESIGN_PLUS_BOOKING_URL },
   },
 
   offers: [
     {
       id: "offer-audit",
       kicker: "7 days",
-      name: "Activation Audit",
+      name: "The Audit",
       price: "$1,500",
       description:
         "Discover where users leave in any single flow. Get a scorecard and teardown of that flow with prioritized recommendations.",
       bestFor: "Best for: something's off but you need clarity.",
-      cta: { label: "Book a call", href: BOOKING_URL },
+      cta: { label: "Book a call", href: AUDIT_BOOKING_URL },
     },
     {
       id: "offer-diagnostic",
       kicker: "21 days",
-      name: "Activation Diagnostic",
+      name: "The Diagnostic",
       price: "$6,000",
       description:
         "Find the biggest problem in any single flow and see the fix. Get a redesigned prototype, a validation guide and a 90-day roadmap.",
       bestFor: "Best for: you want the fix designed and tested before investing in development.",
-      cta: { label: "Book a call", href: BOOKING_URL },
+      cta: { label: "Book a call", href: DIAGNOSTIC_BOOKING_URL },
     },
     {
-      id: "offer-build",
-      kicker: "90 days",
-      name: "Activation Build",
-      price: "Let's talk",
-      description:
-        "Ship one defined project in 90 days. We design and build it, or guide your developers through it.",
-      bestFor: "Best for: one defined project, like a launch or redesign.",
-      note: "Diagnostic fee credited if you start within 30 days",
+      // Ongoing retainer (formerly Scale).
+      id: "offer-design-partner",
+      kicker: "Ongoing",
+      name: "The Design Partner",
+      price: "Let's talk", // ⚠️ confirm: was $16,000/mo as Scale
+      description: "Looking for something long-term?",
+      bestFor: "Best for: high-velocity teams that need flexible design and engineering on an open roadmap.",
       cta: { label: "Book a call", href: BOOKING_URL },
     },
   ],
-  offersHeading: "Not ready for a retainer? Start smaller.",
+  offersHeading: "Start smaller, or stay longer",
   scorecard: {
     badge: "Free",
     kicker: "2 minutes",
@@ -456,6 +471,8 @@ export const homePricing = {
     description:
       "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Start working on the solution in just a few minutes.",
     cta: { label: "Get free Scorecard", href: SCORECARD_URL },
+    /** Image of the deliverable; null shows the hatch placeholder. ⚠️ pending */
+    image: null as string | null,
   },
 };
 
@@ -530,12 +547,12 @@ export const faq = {
       a: "Two ways. We design and hand your developers annotated files they can build from, and stay on hand while they build. Or our developers build it with you, on your stack.",
     },
     {
-      q: "What's the difference between Build and Grow/Scale?",
-      a: "Build is one defined project on a set 90-day timeline. Grow and Scale are ongoing, with an open roadmap you steer month to month. Grow is design; Scale is design and engineering.",
+      q: "What's the difference between Design+ and Design Partner?",
+      a: "Design+ is one defined project on a set 90-day timeline. Design Partner is ongoing, with an open roadmap you steer month to month.",
     },
     {
-      q: "Does the Diagnostic fee count toward Build?",
-      a: "Yes. Sign Build within 30 days of your Diagnostic delivery and the fee is credited toward it.",
+      q: "Does the Diagnostic fee count toward Design+?", // ⚠️ keep? note removed from the card
+      a: "Yes. Sign Design+ within 30 days of your Diagnostic delivery and the fee is credited toward it.",
     },
     {
       q: "Why you instead of AI tools, a freelancer or a hire?",
@@ -554,7 +571,7 @@ export const faq = {
       a: `You give ${terms.noticePeriod} notice and stop paying, with no wind-down fees or penalties. We'd rather part cleanly than hold a client who isn't getting value.`,
     },
     {
-      q: "Can we pause the retainer?",
+      q: "Can we pause our partnership?",
       a: `Pause anytime. We hold your slot for ${terms.pauseHoldPeriod}. After that we may fill it, and you'd restart when one opens.`,
     },
     {
@@ -577,10 +594,13 @@ export const footerCta = {
 };
 
 export const footer = {
+  // Left: ways to reach us. Right: legal + copyright.
   links: [
-    { label: "Contact", href: "/contact" },
     { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
+    { label: "Say Hello", href: "/contact" },
     { label: "LinkedIn", href: LINKEDIN_URL },
+  ],
+  legal: [
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },
   ],
@@ -619,7 +639,7 @@ export const servicesPage = {
   faqQuestions: [
     "How soon can you start?",
     "What if it isn't working?",
-    "Can we pause the retainer?",
+    "Can we pause our partnership?",
     "What do we need ready before starting?",
   ],
   faqItems() {

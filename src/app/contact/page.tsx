@@ -37,7 +37,7 @@ export default function ContactPage() {
             </a>
           </div>
         </Section>
-        <Section aria-labelledby="hello-h" className="bg-neutral-200">
+        <Section aria-labelledby="hello-h" className="bg-neutral-100">
           <SectionHeader headingId="hello-h" headline={contact.form.heading} />
           <div className="mt-10">
             <ContactForm />

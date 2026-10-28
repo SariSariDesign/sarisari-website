@@ -21,7 +21,7 @@ export default function ActivationDiagnosticPage() {
     <>
       <Nav />
       <main>
-        <Section className="bg-neutral-200">
+        <Section className="bg-neutral-100">
           <PageHeader eyebrow={diagnostic.eyebrow} title={diagnostic.title} intro={diagnostic.intro} />
           <Reveal className="mt-8">
             <Button href={diagnostic.cta.href} external>
