@@ -10,7 +10,8 @@ export const BOOKING_URL = "https://calendly.com/sarisari/30min";
 export const AUDIT_BOOKING_URL = "https://calendly.com/sarisari/the-audit";
 export const DIAGNOSTIC_BOOKING_URL = "https://calendly.com/sarisari/sari-sari-activation-sprint-intro-call";
 export const DESIGN_PLUS_BOOKING_URL = "https://calendly.com/sarisari/design-plus";
-// Design Partner and every Book a call not tied to an offer use BOOKING_URL (30 min).
+export const DESIGN_PARTNER_BOOKING_URL = "https://calendly.com/sarisari/the-design-partner";
+// Every Book a call not tied to an offer uses BOOKING_URL (30 min).
 export const DIAGNOSTIC_URL = "https://activation-diagnostic.sarisari.design/";
 /** Free activation scorecard (lead magnet). Lives in the activation-diagnostic app. */
 export const SCORECARD_URL = "https://activation-diagnostic.sarisari.design/preview";
@@ -459,7 +460,7 @@ export const homePricing = {
       price: "Let's talk", // ⚠️ confirm: was $16,000/mo as Scale
       description: "Looking for something long-term?",
       bestFor: "Best for: high-velocity teams that need flexible design and engineering on an open roadmap.",
-      cta: { label: "Book a call", href: BOOKING_URL },
+      cta: { label: "Book a call", href: DESIGN_PARTNER_BOOKING_URL },
     },
   ],
   offersHeading: "Start smaller, or stay longer",
@@ -605,6 +606,67 @@ export const footer = {
     { label: "Terms", href: "/terms" },
   ],
   copyright: "© 2026 Sari Sari LLC",
+};
+
+/**
+ * Thank-you pages, one per Calendly event (/thank-you/<slug>). Calendly redirects each
+ * event type to its page; GTM tracks the page view + a `booking_confirmed` event.
+ */
+export const thankYou = {
+  title: "You're booked.",
+  intro: "Your calendar invite is on its way to your inbox.",
+  prepHeading: "To get the most out of the call, have these ready:",
+  next: "Want a head start before we talk? Run your free Activation Scorecard and we'll have your top friction points in hand for the call.",
+  primary: { label: "Get free Scorecard", href: SCORECARD_URL },
+  secondary: { label: "Back to home", href: "/" },
+  offers: {
+    "design-plus": {
+      name: "Design+",
+      calendly: DESIGN_PLUS_BOOKING_URL,
+      prep: [
+        "A link to your product, or the designs you have so far.",
+        "What you want shipped in the next 90 days.",
+        "Your dev setup: your own developers, or you need us to build it.",
+      ],
+    },
+    "the-audit": {
+      name: "The Audit",
+      calendly: AUDIT_BOOKING_URL,
+      prep: [
+        "A link to your product or site.",
+        "The one flow you want us to look at, like signup or onboarding.",
+        "Where you think users drop off, and any numbers you have.",
+      ],
+    },
+    "the-diagnostic": {
+      name: "The Diagnostic",
+      calendly: DIAGNOSTIC_BOOKING_URL,
+      prep: [
+        "A link to your product.",
+        "The flow you most want fixed, like signup or onboarding.",
+        "Any data you can share: funnel numbers, session recordings or user feedback.",
+      ],
+    },
+    "the-design-partner": {
+      name: "The Design Partner",
+      calendly: DESIGN_PARTNER_BOOKING_URL,
+      prep: [
+        "A link to your product.",
+        "What's on your roadmap for the next few months.",
+        "How your team works today: who designs, who builds, and how often you ship.",
+      ],
+    },
+    // The 30-min call: every general "Book a call".
+    call: {
+      name: "Intro call",
+      calendly: BOOKING_URL,
+      prep: [
+        "A link to what you're building.",
+        "Where it's stuck, or what you want to change first.",
+        "Who else needs to be on the call to make a decision.",
+      ],
+    },
+  },
 };
 
 /** /work index copy. */

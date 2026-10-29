@@ -5,9 +5,11 @@ import { Gridlines } from "./Gridlines";
 import { Wordmark } from "./Wordmark";
 
 /** Closing blue (primary-400) CTA band (grain, display-l) + the footer. Shared across all pages. */
-export function FooterCta() {
+/** `cta={false}` drops the blue band and keeps only the footer (thank-you pages). */
+export function FooterCta({ cta = true }: { cta?: boolean } = {}) {
   return (
     <>
+      {cta && (
       <section
         aria-labelledby="cta-h"
         className="grain snap-start bg-primary-400 text-neutral-100"
@@ -40,6 +42,7 @@ export function FooterCta() {
           </div>
         </div>
       </section>
+      )}
 
       <footer className="bg-neutral-1000 text-neutral-500">
         {/* Row 1: wordmark. Row 2: contact links left, legal + copyright right. */}
