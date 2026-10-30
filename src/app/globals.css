@@ -129,32 +129,32 @@
 }
 
 :root {
-  --fs-display-l: 48px;
-  --fs-display-m: 36px;
-  --fs-display-s: 40px;
-  --fs-heading-l: 24px;
-  --fs-heading-m: 20px;
+  --fs-display-l: 56px;
+  --fs-display-m: 42px;
+  --fs-display-s: 36px;
+  --fs-heading-l: 28px;
+  --fs-heading-m: 22px;
   --fs-lead: 18px;
   --fs-body: 16px;
   --fs-label: 12px;
 }
 @media (min-width: 48rem) {
   :root {
-    --fs-display-l: 64px;
-    --fs-display-m: 48px;
+    --fs-display-l: 72px;
+    --fs-display-m: 52px;
     --fs-display-s: 44px;
-    --fs-heading-l: 26px;
-    --fs-heading-m: 22px;
+    --fs-heading-l: 30px;
+    --fs-heading-m: 24px;
     --fs-lead: 20px;
   }
 }
 @media (min-width: 64rem) {
   :root {
-    --fs-display-l: 88px;
-    --fs-display-m: 64px;
+    --fs-display-l: 96px;
+    --fs-display-m: 68px;
     --fs-display-s: 56px;
-    --fs-heading-l: 32px;
-    --fs-heading-m: 24px;
+    --fs-heading-l: 36px;
+    --fs-heading-m: 28px;
     --fs-lead: 22px;
     --fs-body: 18px;
     --fs-label: 14px;
@@ -162,11 +162,11 @@
 }
 @media (min-width: 90rem) {
   :root {
-    --fs-display-l: 104px;
-    --fs-display-m: 72px;
+    --fs-display-l: 112px;
+    --fs-display-m: 84px;
     --fs-display-s: 72px;
-    --fs-heading-l: 40px;
-    --fs-heading-m: 28px;
+    --fs-heading-l: 44px;
+    --fs-heading-m: 32px;
     --fs-lead: 24px;
   }
 }
@@ -650,7 +650,9 @@ body {
 .work-frame > * {
   position: relative;
 }
-.work-frame > span.absolute {
+.work-frame > span.absolute,
+.work-frame > video.absolute,
+.work-frame > img.absolute {
   position: absolute;
 }
 .group:hover .work-frame,

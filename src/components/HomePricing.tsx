@@ -54,7 +54,7 @@ export function HomePricing() {
                 // Number sits on the vertical middle of the title; body runs under the title.
                 <li
                   key={f.title}
-                  className="grid grid-cols-[1.5rem_1fr] gap-x-6 gap-y-1 border-t border-primary-300 py-4"
+                  className="grid grid-cols-[1.5rem_1fr] gap-x-3 gap-y-1 border-t border-primary-300 py-4 md:gap-x-6"
                 >
                   <span className="ds-label self-center text-label text-primary-100">
                     {String(i + 1).padStart(2, "0")}
@@ -84,18 +84,21 @@ export function HomePricing() {
             <li
               key={o.id}
               id={o.id}
-              className="col-span-4 flex flex-col gap-4 rounded border border-neutral-300 bg-white p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-100 md:col-span-8 md:p-10 lg:col-span-4"
+              className="col-span-4 flex flex-col rounded border border-neutral-300 bg-white p-6 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-100 md:col-span-8 md:p-10 lg:col-span-4"
             >
-              <span className="ds-label text-label text-neutral-700">
-                {o.kicker}
-              </span>
-              <h4 className="text-heading-m text-neutral-1000">{o.name}</h4>
-              <span className="font-brand text-display-s text-neutral-1000">
+              {/* Three groups: name + price, what you get, who it's for. */}
+              <div className="flex flex-col gap-2">
+                <span className="ds-label text-label text-neutral-700">
+                  {o.kicker}
+                </span>
+                <h4 className="text-heading-m text-neutral-1000">{o.name}</h4>
+              </div>
+              <span className="mt-4 font-brand text-display-s text-neutral-1000">
                 {o.price}
               </span>
-              <p className="text-body text-neutral-700">{o.description}</p>
-              <p className="ds-label text-label text-neutral-700">{o.bestFor}</p>
-              <div className="mt-auto pt-2">
+              <Detail label="Best for" text={o.bestFor} />
+              <Detail label="What you get" text={o.includes} />
+              <div className="mt-auto pt-8">
                 <Button
                   href={o.cta.href}
                   variant="secondary"
@@ -160,5 +163,15 @@ export function HomePricing() {
         </div>
       </Reveal>
     </div>
+  );
+}
+
+/** Labeled detail row on the small offer cards: Supply label over body text, hairline above. */
+function Detail({ label, text }: { label: string; text: string }) {
+  return (
+    <p className="mt-6 flex flex-col gap-1 border-t border-neutral-300 pt-4">
+      <span className="ds-label text-label text-neutral-700">{label}</span>
+      <span className="text-body text-neutral-1000">{text}</span>
+    </p>
   );
 }

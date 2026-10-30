@@ -196,7 +196,11 @@ export function UseCases() {
   };
 
   return (
-    <ul ref={grid} className="usecase-grid mt-12 grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12">
+    // Below 768px the cards are a swipeable row (snap, next card peeks); grid from tablet up.
+    <ul
+      ref={grid}
+      className="usecase-grid carousel-track -mx-6 mt-12 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 md:mx-0 md:grid md:grid-cols-8 md:overflow-visible md:px-0 lg:grid-cols-12"
+    >
       {useCases.cards.map((c, i) => {
         const r = work.regulars[c.print];
         return (
@@ -205,7 +209,7 @@ export function UseCases() {
             // The whole card is clickable; the button inside is the keyboard/screen-reader
             // control and its click bubbles up here.
             onClick={() => highlight(c.offer.id)}
-            className="usecase group relative col-span-4 flex cursor-pointer flex-col rounded border border-dashed border-neutral-400 bg-neutral-100 transition-colors duration-150 ease-out hover:border-solid hover:border-neutral-1000 hover:bg-neutral-200 focus-within:border-solid focus-within:border-neutral-1000 lg:col-span-3"
+            className="usecase group relative flex w-[82%] shrink-0 snap-start cursor-pointer flex-col md:col-span-4 md:w-auto rounded border border-dashed border-neutral-400 bg-white transition-colors duration-150 ease-out hover:border-solid hover:border-neutral-1000 hover:bg-neutral-200 focus-within:border-solid focus-within:border-neutral-1000 lg:col-span-3"
           >
             {/* Spec sheet: label + problem up top, the image filed into a framed plate
                 below (crop marks at its corners), the outcome noted with a leader line. */}

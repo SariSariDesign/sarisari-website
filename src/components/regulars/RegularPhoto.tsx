@@ -2,7 +2,8 @@ import type { PortfolioPiece } from "@/content/site";
 import { Placeholder } from "../Placeholder";
 
 /**
- * A client-work print: the photo, unframed, like a snapshot pinned up in a shop window.
+ * A client-work print: the photo inside a white border, like a snapshot pinned up in a
+ * shop window.
  * Shared by the hero's hanging line and the Our Recent Clients gallery so the two read as
  * the same object while it falls from one to the other. Radius and caption are
  * proportional (%, cqw) so the print looks identical at any scale.
@@ -10,12 +11,12 @@ import { Placeholder } from "../Placeholder";
 export function RegularPhoto({ r }: { r: Pick<PortfolioPiece, "client" | "image" | "aspect"> }) {
   return (
     <div
-      className="regular-print relative w-full overflow-hidden rounded bg-neutral-200 shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
+      className="regular-print relative w-full rounded bg-white p-[2.4%] shadow-[0_10px_28px_-14px_rgba(31,29,28,0.45)] [container-type:inline-size]"
       style={{ aspectRatio: r.aspect }}
     >
       {r.image ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={r.image} alt="" className="h-full w-full object-cover" />
+        <img src={r.image} alt="" className="h-full w-full rounded-[2px] object-cover" />
       ) : (
         <div className="relative h-full w-full">
           <Placeholder className="h-full w-full" rounded={false} />

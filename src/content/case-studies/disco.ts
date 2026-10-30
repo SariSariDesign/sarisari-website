@@ -3,7 +3,8 @@ import type { CaseStudy } from "./types";
 /**
  * Disco (formerly GenWell) — ported from "Disco Case Study Draft 2.md"
  * (05 client work/13 GenWell/Claude outputs). Eris gave blanket approval for her quotes.
- * ⚠️ Before shipping: confirm build status (TestFlight vs App Store), "4 weeks" vs the
+ * Posted after Eris's approval window passed without a response (Oct 2026).
+ * Note: confirm build status (TestFlight vs App Store), "4 weeks" vs the
  * 21-day Diagnostic naming, and swap figure placeholders for the before/after exports.
  */
 export const disco: CaseStudy = {
@@ -14,13 +15,13 @@ export const disco: CaseStudy = {
     productType: "Women's health app",
     helpedWith: ["Activation Diagnostic"],
     outcome: "Redesigned onboarding around one first-session win: saving the first pin.",
-    image: null, // ⚠️ unbranded image pending
+    image: "/work/disco-square.webp",
   },
   page: {
     title: "Turning strong signup intent into a first-session win",
     byline: "Client: Eris Hanson-Cooper, Founder & CEO, Disco",
     tags: ["Activation Diagnostic", "UX audit", "Product strategy", "Product design"],
-    heroImage: null, // "/work/disco-hero.webp"
+    heroImage: "/work/disco-cover.webp",
     heroStats: [
       { value: "44/100", label: "baseline Activation Score" },
       { value: "39", label: "screens audited" },
@@ -29,6 +30,13 @@ export const disco: CaseStudy = {
     intro:
       "Disco is a women's health discovery app that pairs expert video, products and care with conversational voice AI. About four weeks after launch, founder Eris Hanson-Cooper asked us what would bring early signups back.",
     blocks: [
+      {
+        kind: "quote",
+        quote:
+          "The speed and quality of delivery is so excellent. You unblocked a huge work stream quickly and efficiently. I'm more than wildly impressed with the outcome.",
+        name: "Eris Hanson-Cooper",
+        role: "Founder & CEO, Disco",
+      },
       {
         kind: "section",
         label: "Inquiry",
@@ -40,10 +48,18 @@ export const disco: CaseStudy = {
       },
       {
         kind: "section",
+        label: "Key takeaways for founders",
+        title: "The short version.",
+        paragraphs: [
+          "• Audit before adding: fixing session-one activation yields far more leverage than building new features for a leaky bucket.\n• Define one activation moment: align your whole onboarding flow around one undeniable win in session one (for Disco, saving the first pin).\n• Design for rapid iteration: clear UX architecture, component states and validation guides let founders build and test quickly in AI tools like Codex.",
+        ],
+      },
+      {
+        kind: "section",
         title: "Retention can't help users who haven't reached first value.",
         paragraphs: [
           "When founders see drop-off after launch, the instinct is to ask what will bring users back. A user who hasn't reached first value has nothing to come back to.",
-          "We focused the sprint on session-one activation and saved broader retention loops for the 90-day roadmap.",
+          "The most valuable growth available to any startup is the audience already downloading the app. We focused the sprint on session-one activation and saved broader retention loops for the 90-day roadmap.",
         ],
       },
       {
@@ -58,7 +74,7 @@ export const disco: CaseStudy = {
         label: "Diagnosis",
         title: "Three things stood between new users and first value.",
         paragraphs: [
-          "We combined Mixpanel analytics, a 39-screen audit against 11 weighted UX dimensions, two moderated user sessions, 24 beta feedback logs and five competitor teardowns. The flow scored 44 out of 100.",
+          "We combined Mixpanel analytics, a 39-screen audit against 11 weighted UX dimensions, 5 moderated user sessions, 24 beta feedback logs and five competitor teardowns. The flow scored 44 out of 100.",
           "• The voice call asked for 10–15 minutes before showing any matched content.\n• The call was audio-only, with no captions, pause or mute.\n• The conversation didn't leave a saved summary, so users had nothing to look back on.",
         ],
       },
@@ -68,15 +84,16 @@ export const disco: CaseStudy = {
         label: "The pivot",
         title: "AI became the engine of health discovery, not the gate in front of it.",
         paragraphs: [
+          "In our first round of design, the AI voice intake had gradually taken center stage. The technology was compelling, but users needed clearer mental models: how to engage with each feature, where their health information went and what to explore next. Disco was always meant to be a health discovery engine, with AI powering it. People open the app to get clarity on their health.",
           "In week 2 we mapped the product into three surfaces: Disco Voice for the guided intake, Disco Chat for recaps and recommendations, and Boards and Pins for a personal library of answers, products and clinicians.",
-          "With that clarity, Eris renamed the product from GenWell to Disco. We anchored the redesign on one activation moment: the first pin in session one.",
+          "With that clarity, Eris renamed the product from GenWell to Disco, around one promise: \"Clarity for every health decision.\" We anchored the redesign on one activation moment: the first pin in session one. Saving a pin is the explicit signal that what we showed is relevant to the user's health context, and it builds a library that brings them back.",
         ],
       },
-      { kind: "step", title: "1. Let users hear Disco Voice first.", paragraphs: ["An audio preview on the value-proposition screen, before asking for the microphone, so users know what to expect."] },
-      { kind: "step", title: "2. Personalize the \"Maybe later\" path.", paragraphs: ["\"Skip for now\" became \"Maybe later,\" with a 3-topic picker that seeds the feed right away. In-feed prompts bring users back to the call."] },
-      { kind: "step", title: "3. Add captions, pause and plain-language privacy.", paragraphs: ["So the intake works on a train or at a desk, and users know how their health data is stored before they share it."] },
-      { kind: "step", title: "4. End the call with a recap in Disco Chat.", paragraphs: ["A summary card linking what was said to matched videos, products and care providers."] },
-      { kind: "step", title: "5. Make the first pin the win.", paragraphs: ["An explicit \"Pin\" button saves content into personal boards, and boards give users a reason to return."] },
+      { kind: "step", title: "1. Let users hear Disco Voice first.", paragraphs: ["An audio preview on the value-proposition screen, before asking for the microphone, so users know what to expect.", "Hypothesis: hearing Disco Voice first increases call starts and completions. Test: permission acceptance and call starts against baseline."] },
+      { kind: "step", title: "2. Personalize the \"Maybe later\" path.", paragraphs: ["\"Skip for now\" became \"Maybe later,\" with a 3-topic picker that seeds the feed right away. In-feed prompts bring users back to the call.", "Hypothesis: users who delay still find value through their topics. Test: delay-path conversion to the feed, then return-to-call rate."] },
+      { kind: "step", title: "3. Add captions, pause and plain-language privacy.", paragraphs: ["So the intake works on a train or at a desk, and users know how their health data is stored before they share it.", "Hypothesis: visual controls and plain privacy language reduce mid-call drop-off. Test: drop points and completion with captions on."] },
+      { kind: "step", title: "4. End the call with a recap in Disco Chat.", paragraphs: ["A summary card linking what was said to matched videos, products and care providers: a health summary users can re-read and share with their doctors.", "Hypothesis: a visible payoff gets users exploring instead of leaving. Test: post-call click-through, saves and session length."] },
+      { kind: "step", title: "5. Make the first pin the win.", paragraphs: ["An explicit \"Pin\" button saves content into personal boards, and boards give users a reason to return.", "Hypothesis: a first pin in session one correlates with higher 7-day return. Test: first pin as the primary activation metric, comparing 7-day retention for users who pin and those who don't."] },
       {
         kind: "figure-row",
         figures: [
@@ -88,6 +105,12 @@ export const disco: CaseStudy = {
       {
         kind: "quote",
         quote: "I love the idea of the pin board. It's so actionable, so organized, and it also feels shareable.",
+        name: "Eris Hanson-Cooper",
+        role: "Founder & CEO, Disco",
+      },
+      {
+        kind: "quote",
+        quote: "I really love the recap of the conversation. You get so much back for the effort of chatting with Disco.",
         name: "Eris Hanson-Cooper",
         role: "Founder & CEO, Disco",
       },
@@ -121,6 +144,31 @@ export const disco: CaseStudy = {
         stats: [
           { value: "70+", label: "target Activation Score on re-test" },
           { value: "2 wks", label: "handoff to working build" },
+        ],
+      },
+      {
+        kind: "quote",
+        quote: "It did pretty well on the first pass, telling Codex to read the Figma file and bringing designs straight in.",
+        name: "Eris Hanson-Cooper",
+        role: "Founder & CEO, Disco",
+      },
+      {
+        kind: "section",
+        label: "Partner spotlight",
+        title: "Building in lockstep with Eris Hanson-Cooper.",
+        paragraphs: [
+          "Transformation at this speed is only possible when a founder comes with exceptional clarity of vision, decisiveness, and a willingness to test and iterate. Throughout this four-week sprint, Eris Hanson-Cooper (Founder & CEO of Disco) was a true co-creator.",
+          "From embracing critical findings during the 39-screen audit, to using our lo-fi wireframe review to pivot the brand positioning, to independently spinning up a TestFlight build in Codex within two weeks of handoff, Eris demonstrated what modern, high-velocity product leadership looks like.",
+          "Working alongside Eris to help lay the foundation for Disco's next chapter has been a highlight for our team. We're honored to be part of Disco's journey as they transform how women discover personalized health solutions.",
+        ],
+      },
+      {
+        kind: "section",
+        label: "Founder takeaway",
+        title: "Fix first value before building retention loops.",
+        paragraphs: [
+          "For seed and Series A founders, early growth stalls are rarely fixed by more features. If new users drop off before first value, retention mechanics and more acquisition spend just speed up churn. Start here:",
+          "1. Audit the critical path with data: where new users stop, and why.\n2. Clarify the product architecture before asking for heavy commitments.\n3. Align onboarding on one activation moment in session one.\n4. Validate with real users before over-investing in production code.",
         ],
       },
       {
