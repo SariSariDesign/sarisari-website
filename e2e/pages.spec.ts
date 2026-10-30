@@ -23,11 +23,11 @@ test.describe("/work", () => {
       "href",
       "/work/disco",
     );
-    await expect(page.getByRole("link", { name: /lendzi case study/i })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /nutrisnap case study/i })).toHaveCount(0);
   });
 
   test("the template and drafts have no page", async ({ page }) => {
-    for (const slug of ["template", "lendzi", "nutrisnap"]) {
+    for (const slug of ["template", "nutrisnap"]) {
       const res = await page.goto(`/work/${slug}`);
       expect(res?.status()).toBe(404);
     }

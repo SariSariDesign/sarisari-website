@@ -7,7 +7,11 @@ type Tile = {
   title: string;
   tags: string[];
   color: string;
-  layout: "square" | "portrait" | "wide";
+  layout: "square" | "portrait" | "wide" | "pair";
+  /** Image fills the frame (cover, centered) instead of sitting inside it. */
+  fill?: boolean;
+  /** Looping, muted cover video; fills the frame. The study's card image is its poster. */
+  video?: string;
 };
 
 /** Grid placement + image frame per layout (12 cols desktop, 8 tablet, 1 col mobile). */
@@ -21,6 +25,11 @@ const LAYOUT = {
   portrait: {
     cell: "col-span-4 md:col-span-4 md:mt-[clamp(80px,13vw,200px)] lg:col-span-6",
     frame: "aspect-[4/5]",
+  },
+  // cols 7–12 · 1:1, level with the square beside it
+  pair: {
+    cell: "col-span-4 md:col-span-4 lg:col-span-6",
+    frame: "aspect-square",
   },
   // cols 3–12 · 16:9 (full width on tablet)
   wide: {
@@ -48,12 +57,27 @@ export function WorkTile({ t }: { t: Tile }) {
         className={`work-frame relative flex rounded border border-transparent items-center justify-center overflow-hidden p-[8%] ${l.frame}`}
         style={{ "--tile": t.color } as React.CSSProperties}
       >
-        {image ? (
+        {t.video ? (
+          <video
+            src={t.video}
+            poster={image ?? undefined}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={image}
             alt=""
-            className="max-h-full max-w-full object-contain"
+            className={
+              t.fill
+                ? "absolute inset-0 h-full w-full object-cover"
+                : "max-h-full max-w-full object-contain"
+            }
           />
         ) : (
           <Placeholder
@@ -87,6 +111,7 @@ export function WorkTile({ t }: { t: Tile }) {
       <div className="mt-6 flex flex-col gap-3">
         <span className="ds-label text-label text-neutral-700">
           {study?.client}
+          {!href && " • Coming soon"}
         </span>
         <h3 className="max-w-[28ch] text-heading-m text-neutral-1000">
           {t.title}

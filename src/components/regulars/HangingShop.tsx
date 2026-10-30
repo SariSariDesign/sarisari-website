@@ -15,9 +15,9 @@ const HANG = [
   { left: 0, top: 6, width: 46, delay: "0ms" }, // Kenchan 4/3
   { left: 50, top: 18, width: 46, delay: "60ms" }, // Funding Solutions 4/3
   { left: 4, top: 50, width: 44, delay: "120ms" }, // Disco 4/3
-  { left: 54, top: 62, width: 42, delay: "40ms" }, // Lendzi 3/2
+  { left: 60, top: 60, width: 34, delay: "40ms" }, // Lendzi 1/1
   { left: 26, top: 80, width: 34, delay: "100ms" }, // NutriSnap 6/7
-  { left: 66, top: 96, width: 30, delay: "160ms" }, // sixth piece 1/1
+  { left: 62, top: 100, width: 34, delay: "160ms" }, // Lendzi dashboard 4/3
 ];
 
 /** Height of the hanging cluster (deepest string + print), in cqw, for vertical centering. */

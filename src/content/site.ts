@@ -97,7 +97,7 @@ export const services = {
     {
       n: "01",
       title: "Digital products",
-      media: "/work/nutrisnap.webp",
+      media: "/work/lendzi-dashboard.webp",
       body: "From idea to a launched product, aimed at the metric your next round depends on.",
       tags: ["Product strategy", "Product discovery", "MVP design", "Prototyping", "AI product UX", "Launch"],
     },
@@ -111,12 +111,14 @@ export const services = {
     {
       n: "03",
       title: "Design systems",
+      media: "/work/fs-design-system.webp",
       body: "A component library your developers build from, so new features ship faster and stay consistent.",
       tags: ["Component libraries", "Design tokens", "Figma libraries", "Annotated dev handoff"],
     },
     {
       n: "04",
       title: "User testing & research",
+      media: "/work/user-research.webp",
       body: "We don't rely on just best practices or AI-generated personas. We watch real users try your product and show you where they stall and why.",
       tags: ["Usability testing", "User interviews", "Competitor analysis", "Funnel & analytics review", "Activation audits"],
     },
@@ -130,6 +132,7 @@ export const services = {
     {
       n: "06",
       title: "Branding & marketing support",
+      media: "/work/lendzi-brand.webp",
       body: "A brand, site and pitch deck that make an early company look as credible as its product.",
       tags: ["Brand identity", "Websites", "Landing pages", "Pitch decks & investor collateral", "Launch assets"],
     },
@@ -202,10 +205,10 @@ export const work = {
       aspect: "4/3",
       caseStudy: "funding-solutions",
     },
-    { client: "Disco", image: null, aspect: "4/3", caseStudy: "disco" },
-    { client: "Lendzi", image: null, aspect: "3/2", caseStudy: "lendzi" },
+    { client: "Disco", image: "/work/disco-print.webp", aspect: "4/3", caseStudy: "disco" },
+    { client: "Lendzi", image: "/work/lendzi-print.webp", aspect: "1/1", caseStudy: "lendzi" },
     { client: "NutriSnap", image: "/work/nutrisnap.webp", aspect: "6/7", caseStudy: "nutrisnap" },
-    { client: "Portfolio piece", image: null, aspect: "1/1" }, // ⚠️ sixth piece TBD
+    { client: "Lendzi dashboard", image: "/work/lendzi-dashboard.webp", aspect: "4/3" },
   ] satisfies PortfolioPiece[],
 };
 
@@ -224,6 +227,7 @@ export const caseStudiesSection = {
       tags: ["E-commerce", "Conversion", "Shopify"],
       color: "radial-gradient(120% 90% at 0% 100%, #216eb9 0%, rgba(33,110,185,0) 60%), #20307a",
       layout: "square" as const,
+      fill: true,
     },
     {
       slug: "funding-solutions",
@@ -231,6 +235,7 @@ export const caseStudiesSection = {
       tags: ["Fintech", "0→1 design", "B2B tools"],
       color: "linear-gradient(110deg, #2b1342 0%, #281c47 30%, #4a5f9a 68%, #7cc0dd 100%)",
       layout: "portrait" as const,
+      fill: true,
     },
     {
       slug: "nutrisnap",
@@ -238,14 +243,26 @@ export const caseStudiesSection = {
       tags: ["Health", "Activation", "AI-built app"],
       color: "linear-gradient(160deg, #d2c4b4 0%, #c9b9a8 45%, #98877a 100%)",
       layout: "wide" as const,
+      fill: true,
     },
     {
       slug: "disco",
       title: "Turning strong signup intent into a first-session win",
       tags: ["Health", "Activation", "AI product UX"],
-      // ⚠️ placeholder backdrop (neutral ramp) until the Disco image + brand color land
-      color: "linear-gradient(160deg, #e6e5e4 0%, #bdbab7 100%)",
+      color: "#d9c7b0",
       layout: "square" as const,
+      // The cover photo fills the square frame (centered crop).
+      fill: true,
+    },
+    {
+      slug: "lendzi",
+      title: "Diagnosing why a logo wasn't getting the click",
+      tags: ["Fintech", "Brand identity", "A/B test"],
+      color: "#0b4652",
+      // Square, side by side with Disco (cols 7–12, no drop).
+      layout: "pair" as const,
+      // Animated cover; the poster is the case study image.
+      video: "/work/lendzi-cover.mp4",
     },
   ],
 };
@@ -418,14 +435,13 @@ export const homePricing = {
     price: "$8,000+",
     period: "/ month",
     // ⚠️ footnote text for * pending
-    summary: "Ship one defined project in 90 days. We design and build it, or guide your developers through it, with a money back guarantee.*",
+    summary: "A senior team that designs and ships one defined project, with a money back guarantee.*",
     // ⚠️ Drafted for the 90-day project; the old list was retainer terms (cancel anytime, open roadmap).
     features: [
-      { title: "One senior team for design and code.", body: "Design and ship at the speed your startup actually moves." },
-      { title: "One defined project, shipped in 90 days.", body: "A launch, a redesign or a new feature set." },
-      { title: "We build it, or guide your developers.", body: "Annotated files and reviews while your team builds, or we build it on your stack." },
-      { title: "We join your standups, reviews and user tests." },
-      { title: "Starts within two weeks." },
+      { title: "One defined project.", body: "A launch, a redesign or a new feature set, scoped up front." },
+      { title: "Shipped in 90 days.", body: "A set timeline with a ship date." },
+      { title: "We build it, or guide your developers.", body: "Design + dev guidance from $8K/mo, or design + development from $16K/mo." },
+      { title: "Diagnostic fee credited.", body: "If you start within 30 days of your Diagnostic." },
     ] as { title: string; body?: string }[],
     grow: { label: "Need Design+Development?", href: "/services/retainers" },
     cta: { label: "Book a call", href: DESIGN_PLUS_BOOKING_URL },
@@ -437,9 +453,8 @@ export const homePricing = {
       kicker: "7 days",
       name: "The Audit",
       price: "$1,500",
-      description:
-        "Discover where users leave in any single flow. Get a scorecard and teardown of that flow with prioritized recommendations.",
-      bestFor: "Best for: something's off but you need clarity.",
+      bestFor: "Finding clarity on where users leave any single flow.",
+      includes: "A scorecard and a teardown.",
       cta: { label: "Book a call", href: AUDIT_BOOKING_URL },
     },
     {
@@ -447,9 +462,8 @@ export const homePricing = {
       kicker: "21 days",
       name: "The Diagnostic",
       price: "$6,000",
-      description:
-        "Find the biggest problem in any single flow and see the fix. Get a redesigned prototype, a validation guide and a 90-day roadmap.",
-      bestFor: "Best for: you want the fix designed and tested before investing in development.",
+      bestFor: "Finding the biggest problem in a flow and redesigning the solution.",
+      includes: "A scorecard, teardown, redesigned prototype, validation guide and 90-day roadmap.",
       cta: { label: "Book a call", href: DIAGNOSTIC_BOOKING_URL },
     },
     {
@@ -458,8 +472,8 @@ export const homePricing = {
       kicker: "Ongoing",
       name: "The Design Partner",
       price: "Let's talk", // ⚠️ confirm: was $16,000/mo as Scale
-      description: "Looking for something long-term?",
-      bestFor: "Best for: high-velocity teams that need flexible design and engineering on an open roadmap.",
+      bestFor: "Fast-moving teams that need ongoing support on an open roadmap.",
+      includes: "A senior design and engineering team. Cancel anytime.",
       cta: { label: "Book a call", href: DESIGN_PARTNER_BOOKING_URL },
     },
   ],
@@ -469,11 +483,10 @@ export const homePricing = {
     kicker: "2 minutes",
     name: "Activation Scorecard",
     price: "$0",
-    description:
-      "Drop in your URL to get your activation score and the top 5 points of friction keeping visitors from signing up. Start working on the solution in just a few minutes.",
+    description: "Drop in your URL to get your activation score and the top 5 friction points stopping signups.",
     cta: { label: "Get free Scorecard", href: SCORECARD_URL },
     /** Image of the deliverable; null shows the hatch placeholder. ⚠️ pending */
-    image: null as string | null,
+    image: "/work/scorecard-preview.webp" as string | null,
   },
 };
 
@@ -552,7 +565,7 @@ export const faq = {
       a: "Design+ is one defined project on a set 90-day timeline. Design Partner is ongoing, with an open roadmap you steer month to month.",
     },
     {
-      q: "Does the Diagnostic fee count toward Design+?", // ⚠️ keep? note removed from the card
+      q: "Does the Diagnostic fee count toward Design+?",
       a: "Yes. Sign Design+ within 30 days of your Diagnostic delivery and the fee is credited toward it.",
     },
     {
