@@ -343,7 +343,7 @@ function inputCls(hasError: boolean) {
 function LegalFooter() {
   const { legal } = scorecard;
   return (
-    <p className="text-body-s text-neutral-600">
+    <p className="text-body-s text-neutral-700">
       {legal.entity}. {legal.note}{" "}
       <a href={legal.privacyHref} className="underline underline-offset-2 hover:text-neutral-900">
         Privacy Policy

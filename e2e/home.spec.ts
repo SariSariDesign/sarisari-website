@@ -35,7 +35,7 @@ test.describe("homepage", () => {
     await expect(pricing.getByText("$6,000")).toBeVisible();
     await expect(pricing.getByRole("link", { name: /get free scorecard/i })).toHaveAttribute(
       "href",
-      /activation-diagnostic\.sarisari\.design\/preview/,
+      "/scorecard-preview",
     );
   });
 
