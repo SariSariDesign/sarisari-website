@@ -785,3 +785,13 @@ body {
     transition: none;
   }
 }
+
+/* Indeterminate progress bar on the scorecard form's submitting state. */
+@keyframes scorecard-load {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
