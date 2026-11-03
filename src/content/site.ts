@@ -13,8 +13,12 @@ export const DESIGN_PLUS_BOOKING_URL = "https://calendly.com/sarisari/design-plu
 export const DESIGN_PARTNER_BOOKING_URL = "https://calendly.com/sarisari/the-design-partner";
 // Every Book a call not tied to an offer uses BOOKING_URL (30 min).
 export const DIAGNOSTIC_URL = "https://activation-diagnostic.sarisari.design/";
-/** Free activation scorecard (lead magnet). Standalone page; backend in /api/scorecard-request. */
-export const SCORECARD_URL = "/scorecard-preview";
+/**
+ * Free activation scorecard (lead magnet). www now hosts it at /scorecard-preview (backend in
+ * /api/scorecard-request), but CTAs keep pointing at the diagnostic app until www's Vercel env
+ * (Supabase, Resend, FireCrawl, Anthropic) is set. Then switch this to "/scorecard-preview".
+ */
+export const SCORECARD_URL = "https://activation-diagnostic.sarisari.design/preview";
 export const CONTACT_EMAIL = "hello@sarisari.design"; // ⚠️ confirm address
 export const LINKEDIN_URL = "https://www.linkedin.com/company/sarisaridesign"; // ⚠️ confirm URL
 

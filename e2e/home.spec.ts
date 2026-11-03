@@ -1,5 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { SCORECARD_URL } from "../src/content/site";
+import { isExternal } from "../src/lib/links";
 
 test.describe("homepage", () => {
   test.beforeEach(async ({ page }) => {
@@ -35,19 +37,20 @@ test.describe("homepage", () => {
     await expect(pricing.getByText("$6,000")).toBeVisible();
     await expect(pricing.getByRole("link", { name: /get free scorecard/i })).toHaveAttribute(
       "href",
-      "/scorecard-preview",
+      SCORECARD_URL,
     );
   });
 
-  test("the Scorecard CTAs link to the internal page in the same tab", async ({ page }) => {
+  test("the Scorecard CTAs link to the Scorecard, in a new tab only when offsite", async ({ page }) => {
     const hero = page.locator("#hero").getByRole("link", { name: /get free scorecard/i });
     const footer = page
       .getByRole("region", { name: /./ })
       .filter({ has: page.locator("#cta-h") })
       .getByRole("link", { name: /get free scorecard/i });
     for (const link of [hero, footer]) {
-      await expect(link).toHaveAttribute("href", "/scorecard-preview");
-      await expect(link).not.toHaveAttribute("target", "_blank");
+      await expect(link).toHaveAttribute("href", SCORECARD_URL);
+      if (isExternal(SCORECARD_URL)) await expect(link).toHaveAttribute("target", "_blank");
+      else await expect(link).not.toHaveAttribute("target", "_blank");
     }
   });
 
