@@ -40,4 +40,13 @@ describe("ScorecardForm", () => {
     await fill();
     expect(await screen.findByRole("heading", { name: "You've already got one on the way." })).toBeInTheDocument();
   });
+
+  it("shows the error state on a failed request and lets the user try again", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("", { status: 500 })));
+    render(<ScorecardForm />);
+    await fill();
+    expect(await screen.findByRole("heading", { name: "Something went wrong." })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Try again" }));
+    expect(screen.getByRole("button", { name: /get your free activation scorecard/i })).toBeInTheDocument();
+  });
 });

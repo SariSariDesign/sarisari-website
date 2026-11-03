@@ -16,7 +16,7 @@ type Step = "form" | "submitting" | "done" | "duplicate" | "error";
 // www's Button is link-only, so the submit and retry actions are native buttons
 // sharing the primary pill styling.
 const actionCls =
-  "ds-label inline-flex items-center justify-center rounded-full bg-primary-400 text-label text-neutral-100 hover:bg-primary-500 active:bg-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
+  "ds-label inline-flex items-center justify-center rounded-full bg-primary-400 text-label text-neutral-100 hover:bg-primary-500 active:bg-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300 transition-colors duration-150 ease-out cursor-pointer";
 
 /**
  * The free Activation Scorecard lead form + its submit state machine, rendered
@@ -182,8 +182,9 @@ function FormScreen({
       </div>
 
       <div className="mt-1">
-        <button type="submit" className={`${actionCls} w-full px-8 py-4`}>
+        <button type="submit" className={`${actionCls} group w-full gap-2 px-8 py-4`}>
           {f.submitLabel}
+          <Arrow />
         </button>
       </div>
 
@@ -233,7 +234,7 @@ function LoadingScreen({ titleId }: { titleId: string }) {
       <div className="h-[3px] w-56 overflow-hidden rounded-full bg-neutral-300">
         <div className="h-full w-1/3 animate-[scorecard-load_1.1s_ease-in-out_infinite] rounded-full bg-primary-400" />
       </div>
-      <p className="text-body-s text-neutral-600">Sending your request to our analyst.</p>
+      <p className="text-body-s text-neutral-700">Sending your request to our analyst.</p>
     </div>
   );
 }
@@ -264,7 +265,7 @@ function ConfirmationScreen({
       </h2>
       <p className="max-w-[46ch] text-body text-neutral-700">{confirmation.body}</p>
       <div className="flex flex-col items-center gap-3 pt-2">
-        <span className="ds-label text-label text-neutral-600">
+        <span className="ds-label text-label text-neutral-700">
           {confirmation.bookPrompt}
         </span>
         <Button href={DIAGNOSTIC_BOOKING_URL} external variant="secondary" size="medium" className="rounded-full">
@@ -354,5 +355,20 @@ function LegalFooter() {
       </a>
       .
     </p>
+  );
+}
+
+function Arrow() {
+  return (
+    <svg
+      width="18"
+      height="16"
+      viewBox="0 0 18 16"
+      fill="none"
+      aria-hidden
+      className="line-icon nudge-x"
+    >
+      <path d="M10 1l7 7-7 7M17 8H1" stroke="currentColor" strokeWidth="2" strokeLinecap="square" pathLength={1} />
+    </svg>
   );
 }
