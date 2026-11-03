@@ -8,6 +8,10 @@ const nextConfig = {
       { source: "/kenchan-ramen-case-study", destination: "/work/kenchan-ramen", permanent: true },
     ];
   },
+  async headers() {
+    // Per-lead scorecard reports: unguessable URLs that must stay out of search.
+    return [{ source: "/s/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }];
+  },
 };
 
 export default nextConfig;

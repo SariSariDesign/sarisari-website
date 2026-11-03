@@ -97,3 +97,17 @@ test("nav reaches every sitemap route, and anchors work from a sub-page", async 
   await expect(page).toHaveURL(/\/#pricing$/);
   await expect(page.locator("#pricing")).toBeInViewport();
 });
+
+test.describe("/scorecard-preview", () => {
+  test("renders the standalone scorecard form", async ({ page }) => {
+    await page.goto("/scorecard-preview");
+    await expect(page.getByRole("heading", { name: /top 5 points keeping your users/i })).toBeVisible();
+    await expect(page.getByRole("button", { name: /get your free activation scorecard/i })).toBeVisible();
+    await expect(page.getByRole("navigation")).toHaveCount(0);
+  });
+
+  test("is accessible", async ({ page }) => {
+    await page.goto("/scorecard-preview");
+    await expectNoSeriousA11yViolations(page);
+  });
+});

@@ -13,7 +13,11 @@ export const DESIGN_PLUS_BOOKING_URL = "https://calendly.com/sarisari/design-plu
 export const DESIGN_PARTNER_BOOKING_URL = "https://calendly.com/sarisari/the-design-partner";
 // Every Book a call not tied to an offer uses BOOKING_URL (30 min).
 export const DIAGNOSTIC_URL = "https://activation-diagnostic.sarisari.design/";
-/** Free activation scorecard (lead magnet). Lives in the activation-diagnostic app. */
+/**
+ * Free activation scorecard (lead magnet). www now hosts it at /scorecard-preview (backend in
+ * /api/scorecard-request), but CTAs keep pointing at the diagnostic app until www's Vercel env
+ * (Supabase, Resend, FireCrawl, Anthropic) is set. Then switch this to "/scorecard-preview".
+ */
 export const SCORECARD_URL = "https://activation-diagnostic.sarisari.design/preview";
 export const CONTACT_EMAIL = "hello@sarisari.design"; // ⚠️ confirm address
 export const LINKEDIN_URL = "https://www.linkedin.com/company/sarisaridesign"; // ⚠️ confirm URL
@@ -772,3 +776,71 @@ export const contact = {
     fallbackError: `Something went wrong. Email us at ${CONTACT_EMAIL}.`,
   },
 };
+
+/**
+ * Free lead-magnet page (`/scorecard-preview`): captures a lead and emails back
+ * a personalized Activation Scorecard preview.
+ */
+export const scorecard = {
+  eyebrow: "Free Activation Scorecard",
+  // The packaged "report cover" shown beside the form.
+  cover: {
+    title: "Activation Scorecard",
+    subhead: "A preview across 11 UX dimensions",
+  },
+  page: {
+    meta: {
+      // The root layout's title template appends the site suffix.
+      title: "Free Activation Scorecard",
+      description:
+        "Get a free Activation Scorecard: the top 5 points of friction keeping users from converting on your landing page, scored across 11 UX dimensions and emailed within minutes.",
+    },
+  },
+  headline: "The top 5 points keeping your users from converting",
+  body: [
+    "This free tool identifies the top 5 points of friction on your landing page that keep users from converting: the friction standing between them and the “a-ha” moment in your product. Remove it, and more users reach the moment your product proves its worth.",
+    "The score is backed by the latest UX research across 11 dimensions, the same techniques we use to help growth-stage companies convert, activate, and retain more users.",
+    "Fill out the form and we'll email your personalized Activation Scorecard within minutes. Free.",
+  ],
+  form: {
+    submitLabel: "Get your free Activation Scorecard",
+    fields: {
+      name: "Name",
+      company: "Company",
+      email: "Work email",
+      stage: "Funding stage",
+      url: "Company website, landing page, or product page",
+    },
+    urlPlaceholder: "https://",
+    stageOptions: [
+      "Pre-seed",
+      "Seed",
+      "Series A",
+      "Series B",
+      "Series C+",
+      "Bootstrapped / Other",
+    ],
+  },
+  confirmation: {
+    headline: "Your scorecard is on its way.",
+    body: "We're analyzing your page now. Check your inbox in a few minutes for your personalized Activation Scorecard: the top 5 points of friction keeping users from converting, and how to fix them.",
+    bookPrompt: "Want to talk it through sooner?",
+  },
+  duplicate: {
+    headline: "You've already got one on the way.",
+    body: "We've already sent an Activation Scorecard to this email. Check your inbox (and spam), or book a call and we'll walk through it together.",
+    bookPrompt: "Rather talk it through?",
+  },
+  error: {
+    headline: "Something went wrong.",
+    body: "We couldn't submit your request just now. Please try again. If it keeps happening, email us and we'll sort it out.",
+    retryLabel: "Try again",
+  },
+  bookLabel: "Book an intro call",
+  legal: {
+    entity: "Sari Sari Design LLC",
+    privacyHref: "/privacy",
+    termsHref: "/terms",
+    note: "By submitting, you agree to our",
+  },
+} as const;

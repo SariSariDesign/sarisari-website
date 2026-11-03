@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { footer, footerCta } from "@/content/site";
+import { isExternal } from "@/lib/links";
 import { Button } from "./Button";
 import { Gridlines } from "./Gridlines";
 import { Wordmark } from "./Wordmark";
@@ -34,7 +35,7 @@ export function FooterCta({ cta = true }: { cta?: boolean } = {}) {
               <Button
                 href={footerCta.secondary.href}
                 variant="outline-light"
-                external
+                external={isExternal(footerCta.secondary.href)}
               >
                 {footerCta.secondary.label}
               </Button>
