@@ -39,6 +39,18 @@ test.describe("homepage", () => {
     );
   });
 
+  test("the Scorecard CTAs link to the internal page in the same tab", async ({ page }) => {
+    const hero = page.locator("#hero").getByRole("link", { name: /get free scorecard/i });
+    const footer = page
+      .getByRole("region", { name: /./ })
+      .filter({ has: page.locator("#cta-h") })
+      .getByRole("link", { name: /get free scorecard/i });
+    for (const link of [hero, footer]) {
+      await expect(link).toHaveAttribute("href", "/scorecard-preview");
+      await expect(link).not.toHaveAttribute("target", "_blank");
+    }
+  });
+
   test("the case-study template renders a published study", async ({ page }) => {
     await page.goto("/work/kenchan-ramen");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("37% of Digital Revenue");
