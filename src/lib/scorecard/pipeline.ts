@@ -15,7 +15,7 @@ export type ScorecardLead = {
 /** Absolute base URL the hosted report is served from (for email links). */
 export function reportBaseUrl(): string {
   return (
-    process.env.SCORECARD_PUBLIC_BASE_URL ??
+    process.env.SCORECARD_PUBLIC_BASE_URL ||
     "https://www.sarisari.design"
   ).replace(/\/+$/, "");
 }
