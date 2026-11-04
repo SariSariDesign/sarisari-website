@@ -46,7 +46,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${GTM_ID}');`;
 
 // Mirrors the homepage hero (hero.headline / eyebrow / subhead in content/site.ts).
-const title = "Sari Sari — Design that turns users into regulars";
+const title = "Sari Sari | Design that turns users into regulars";
 const description =
   "A senior-led design and development studio helping Seed to Series A founders launch, fix and grow products people trust.";
 
