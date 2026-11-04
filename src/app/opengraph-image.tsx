@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 // Static link-preview card. Brand colors from the DS (neutral-100 bg, primary-400
 // accent, neutral-800 text). Uses Satori's default sans — the licensed brand faces
 // aren't embeddable here yet, and the card reads fine without them.
-export const alt = "Sari Sari — Your fractional product team.";
+export const alt = "Sari Sari — Design that turns users into regulars.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -47,10 +47,11 @@ export default function OgImage() {
             maxWidth: "1000px",
           }}
         >
-          <span>Your fractional</span>
+          {/* Mirrors the homepage hero (hero.headline in content/site.ts). */}
+          <span>Design that turns</span>
           {/* Satori has no italic-synthesis without an italic font file, so emphasis is
               carried by the brand blue instead of the site's editorial italic. */}
-          <span style={{ color: "#1f5fa6" }}>product team.</span>
+          <span style={{ color: "#1f5fa6" }}>users into regulars.</span>
         </div>
 
         <div
