@@ -45,10 +45,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`;
 
-const title =
-  "Sari Sari — Senior product design & development for growth-stage software companies";
+// Mirrors the homepage hero (hero.headline / eyebrow / subhead in content/site.ts).
+const title = "Sari Sari — Design that turns users into regulars";
 const description =
-  "Your fractional product team: senior product design and development in one team, aimed at the numbers that decide your next round — activation, conversion, retention, satisfaction.";
+  "A senior-led design and development studio helping Seed to Series A founders launch, fix and grow products people trust.";
 
 export const metadata: Metadata = {
   title: { default: title, template: "%s — Sari Sari Design" },
