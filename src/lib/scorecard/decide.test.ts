@@ -2,16 +2,14 @@ import { describe, it, expect } from "vitest";
 import { decideScorecardAction } from "./decide";
 import { createInMemoryStore } from "./store.memory";
 import type { StoredScorecard } from "./store";
-import { SAMPLE_SCORECARD } from "./types";
+import { SAMPLE_REPORT, sampleRow } from "./fixtures";
 
 const DAY = 24 * 60 * 60 * 1000;
 
 function stored(over: Partial<StoredScorecard>): StoredScorecard {
   return {
-    id: "1", slug: "acme-1", url: "https://acme.com/", domain: "acme.com",
-    email: "a@acme.com", name: "A", company: "Acme", stage: "Seed",
-    overallScore: 70, result: SAMPLE_SCORECARD,
-    previousScore: null, delta: null, servedFromCache: false,
+    ...sampleRow({ overallScore: 70, result: SAMPLE_REPORT }),
+    id: "1", slug: "acme-1",
     createdAt: new Date("2026-07-01T00:00:00Z").toISOString(),
     ...over,
   };
@@ -52,6 +50,8 @@ it("fails open to analyze when the store throws", async () => {
     async hasRowForUrlEmail() { throw new Error("db down"); },
     async insert() { throw new Error("db down"); },
     async getBySlug() { throw new Error("db down"); },
+    async update() { throw new Error("db down"); },
+    async listSince() { throw new Error("db down"); },
   };
   const a = await decideScorecardAction({ store: broken, url: "https://acme.com/", email: "a@acme.com", now });
   expect(a).toEqual({ kind: "analyze", previous: null });

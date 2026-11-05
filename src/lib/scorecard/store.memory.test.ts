@@ -1,23 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { createInMemoryStore } from "./store.memory";
 import type { NewScorecard } from "./store";
-import { SAMPLE_SCORECARD } from "./types";
+import { sampleRow } from "./fixtures";
 
 function row(over: Partial<NewScorecard> = {}): NewScorecard {
-  return {
-    url: "https://acme.com/",
-    domain: "acme.com",
-    email: "a@acme.com",
-    name: "A",
-    company: "Acme",
-    stage: "Seed",
-    overallScore: SAMPLE_SCORECARD.overallScore,
-    result: SAMPLE_SCORECARD,
-    previousScore: null,
-    delta: null,
-    servedFromCache: false,
-    ...over,
-  };
+  return sampleRow(over);
 }
 
 describe("in-memory store", () => {

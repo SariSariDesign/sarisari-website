@@ -1,4 +1,4 @@
-import type { ScorecardResult } from "@/lib/scorecard/types";
+import type { LegacyScorecardResult as ScorecardResult } from "@/lib/scorecard/legacy-types";
 
 export type ReportLead = {
   name: string;
@@ -19,7 +19,7 @@ export type ReportLead = {
  * `<style>` rendered here into `<head>`.
  */
 
-const REPORT_CSS = `
+export const REPORT_CSS = `
 :root {
   /* Warm gray scale */
   --grey-100: #F7F5F0;
@@ -479,7 +479,7 @@ const IMPACT_TAG: Record<
   low: { className: "tag ti-low", label: "Impact: Low" },
 };
 
-export function ScorecardReport({
+export function LegacyScorecardReport({
   lead,
   result,
 }: {
