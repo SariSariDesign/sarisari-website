@@ -1,6 +1,22 @@
 import { analyzeUrl } from "./analyze";
 import { sendScorecardEmail } from "./email";
+import { finalizeReport, scoreOf, type ReportDraft } from "./report";
+import { RUBRIC_VERSION } from "./rubric";
+import type { ReviewEvent, ScorecardStore, StoredScorecard } from "./store";
 import { getStore, storeConfigured } from "./store.supabase";
+
+/**
+ * ONE preview pipeline, two kickoff paths.
+ *
+ *   self-serve (form)  → analyzeUrl → finalizeReport → store → email the requester
+ *   operator (Zach)    → reviewed draft → finalizeReport → store (pending_approval)
+ *                        → review copy to admin → approve → same email to prospect
+ *
+ * Both paths share report validation and scoring (report.ts), storage, the
+ * /s/<slug> page, and the email renderer. The only differences are who starts
+ * it and that an operator run waits for founder approval before reaching the
+ * prospect, because the prospect did not request it themselves.
+ */
 
 /** The captured lead, passed from the submit route to the background job. */
 export type ScorecardLead = {
@@ -12,70 +28,217 @@ export type ScorecardLead = {
   domain: string;
 };
 
+/** Where operator runs go for review before release. */
+export function reviewInbox(): string {
+  return process.env.SCORECARD_REVIEW_EMAIL || "admin@sarisari.design";
+}
+
 /** Absolute base URL the hosted report is served from (for email links). */
 export function reportBaseUrl(): string {
-  return (
-    process.env.SCORECARD_PUBLIC_BASE_URL ||
-    "https://www.sarisari.design"
-  ).replace(/\/+$/, "");
+  return (process.env.SCORECARD_PUBLIC_BASE_URL || "https://www.sarisari.design").replace(/\/+$/, "");
+}
+
+export function reportUrlFor(slug: string): string {
+  return `${reportBaseUrl()}/s/${slug}`;
 }
 
 /** True when every credential the analysis + delivery path needs is configured. */
 export function analysisConfigured(): boolean {
   return Boolean(
-    process.env.FIRECRAWL_API_KEY &&
-      process.env.ANTHROPIC_API_KEY &&
-      process.env.RESEND_API_KEY &&
-      storeConfigured(),
+    process.env.FIRECRAWL_API_KEY && process.env.ANTHROPIC_API_KEY && process.env.RESEND_API_KEY && storeConfigured(),
   );
 }
 
-/**
- * Background job: produce the scorecard for the submitted URL, persist it, and
- * email the lead a link to the hosted report page. Throws are logged, not
- * surfaced — the lead was already captured to the CRM by the time this runs, so a
- * failed analysis never loses the lead. Fails fast and loud in logs so a broken
- * key or quota is visible.
- *
- * Caching: if this URL was already scored, reuse that row (and its slug) instead
- * of re-running the slow FireCrawl + Claude pass. Cooldown/dedupe policy is
- * decided upstream (see decide.ts); this job only ensures a report exists to link.
- */
-export async function runAnalysisAndEmail(lead: ScorecardLead): Promise<void> {
-  if (!analysisConfigured()) {
-    console.warn(
-      "[scorecard] analysis skipped — missing FIRECRAWL/ANTHROPIC/RESEND/SUPABASE config:",
-      lead.email,
-    );
-    return;
-  }
-  try {
-    const store = getStore();
+const event = (by: string, action: ReviewEvent["action"], extra: Partial<ReviewEvent> = {}): ReviewEvent => ({
+  at: new Date().toISOString(),
+  by,
+  action,
+  ...extra,
+});
 
-    let row = await store.latestForUrl(lead.url);
-    if (!row) {
-      const result = await analyzeUrl(lead.url);
-      row = await store.insert({
+type Send = typeof sendScorecardEmail;
+
+/**
+ * Self-serve background job: score the submitted URL, persist it, and email the
+ * requester. Throws are logged, not surfaced: the lead was already captured to
+ * the CRM. When the evidence supports fewer than five findings, the run is
+ * recorded as failed for operator follow-up instead of being padded.
+ */
+export async function runAnalysisAndEmail(
+  lead: ScorecardLead,
+  deps: { store?: ScorecardStore; analyze?: typeof analyzeUrl; send?: Send } = {},
+): Promise<StoredScorecard | null> {
+  if (!deps.store && !analysisConfigured()) {
+    console.warn("[scorecard] analysis skipped: missing FIRECRAWL/ANTHROPIC/RESEND/SUPABASE config:", lead.email);
+    return null;
+  }
+  const store = deps.store ?? getStore();
+  const analyze = deps.analyze ?? analyzeUrl;
+  const send = deps.send ?? sendScorecardEmail;
+  let row: StoredScorecard | null = null;
+  try {
+    // Cache: reuse the latest delivered self-serve preview for this URL. Never
+    // reuse an operator run (it may be unapproved) or a failed one.
+    const latest = await store.latestForUrl(lead.url);
+    if (latest && latest.status === "sent" && latest.kickoff === "self_serve") {
+      row = latest;
+    } else {
+      const gen = await analyze({ company: lead.company, url: lead.url });
+      const base = {
         url: lead.url,
         domain: lead.domain,
         email: lead.email,
         name: lead.name,
         company: lead.company,
         stage: lead.stage,
-        overallScore: result.overallScore,
-        result,
         previousScore: null,
         delta: null,
         servedFromCache: false,
+        kickoff: "self_serve" as const,
+        rubricVersion: RUBRIC_VERSION,
+        sentAt: null,
+      };
+      if (!gen.ok) {
+        console.warn(`[scorecard] insufficient evidence, not sent (${gen.reason}): ${lead.email}`);
+        await store.insert({
+          ...base,
+          overallScore: 0,
+          result: { format: "insufficient" } as unknown as StoredScorecard["result"],
+          status: "failed",
+          internal: { ...gen.internal, heldReason: gen.reason },
+          reviewEvents: [event("generator", "failed", { reason: gen.reason })],
+          lastError: `insufficient_evidence: ${gen.reason}`,
+        });
+        return null;
+      }
+      const { report, score } = finalizeReport(gen.draft);
+      row = await store.insert({
+        ...base,
+        overallScore: score,
+        result: report,
+        status: "pending_approval",
+        internal: gen.internal,
+        reviewEvents: [event("generator", "created")],
+        lastError: null,
       });
     }
 
-    const reportUrl = `${reportBaseUrl()}/s/${row.slug}`;
-    await sendScorecardEmail(lead, row.result, { reportUrl, delta: row.delta });
-    console.log(
-      `[scorecard] delivered to ${lead.email} (${row.result.overallScore}/100) → ${reportUrl}`,
-    );
+    const { id } = await send(lead, row.result, { reportUrl: reportUrlFor(row.slug), delta: row.delta });
+    if (row.status !== "sent") {
+      row = await store.update(row.slug, {
+        status: "sent",
+        sentAt: new Date().toISOString(),
+        reviewEvents: [...row.reviewEvents, event("system", "sent", { reason: `resend:${id ?? "unknown"} to requester` })],
+      });
+    }
+    console.log(`[scorecard] delivered to ${lead.email} (${scoreOf(row.result).score}/100) → ${reportUrlFor(row.slug)}`);
+    return row;
   } catch (err) {
     console.error(`[scorecard] analysis/email failed for ${lead.email}:`, err);
+    if (row && row.status !== "sent") {
+      await store
+        .update(row.slug, { status: "failed", lastError: String(err).slice(0, 500) })
+        .catch((e) => console.error("[scorecard] could not record failure:", e));
+    }
+    return null;
+  }
+}
+
+/** Operator kickoff: store a reviewed draft (held) and email the review copy to admin. */
+export async function createOperatorRun(
+  input: { lead: ScorecardLead; draft: ReportDraft; internal: Record<string, unknown>; by: string },
+  deps: { store?: ScorecardStore; send?: Send } = {},
+): Promise<{ row: StoredScorecard; reportUrl: string; reviewEmailId: string | null }> {
+  const store = deps.store ?? getStore();
+  const send = deps.send ?? sendScorecardEmail;
+  const { report, score } = finalizeReport(input.draft);
+  const { lead } = input;
+  let row = await store.insert({
+    url: lead.url,
+    domain: lead.domain,
+    email: lead.email,
+    name: lead.name,
+    company: lead.company,
+    stage: lead.stage,
+    overallScore: score,
+    result: report,
+    previousScore: null,
+    delta: null,
+    servedFromCache: false,
+    kickoff: "operator",
+    rubricVersion: report.rubricVersion,
+    status: "pending_approval",
+    internal: input.internal,
+    reviewEvents: [event(input.by, "created")],
+    sentAt: null,
+    lastError: null,
+  });
+  const reportUrl = reportUrlFor(row.slug);
+  // The review copy is the exact email the prospect will get, addressed to admin.
+  const { id } = await send(lead, report, {
+    reportUrl,
+    to: reviewInbox(),
+    subjectPrefix: `[REVIEW: ${lead.company} to ${lead.email}] `,
+  });
+  row = await store.update(row.slug, {
+    reviewEvents: [...row.reviewEvents, event("system", "created", { reason: `review copy resend:${id ?? "unknown"}` })],
+  });
+  return { row, reportUrl, reviewEmailId: id };
+}
+
+/** Replace a held operator run's report. Founder edits become learning feedback. */
+export async function reviseOperatorRun(
+  slug: string,
+  input: { draft: ReportDraft; by: string; reason: string; changes: string[]; internal?: Record<string, unknown> },
+  deps: { store?: ScorecardStore } = {},
+): Promise<StoredScorecard> {
+  const store = deps.store ?? getStore();
+  const row = await store.getBySlug(slug);
+  if (!row) throw new Error(`no run for ${slug}`);
+  if (row.status !== "pending_approval") throw new Error(`run ${slug} is ${row.status}; only held runs can be revised`);
+  const { report, score } = finalizeReport(input.draft);
+  return store.update(slug, {
+    result: report,
+    overallScore: score,
+    internal: input.internal ?? row.internal,
+    reviewEvents: [...row.reviewEvents, event(input.by, "revised", { reason: input.reason, changes: input.changes })],
+  });
+}
+
+/**
+ * Release a held operator run to the prospect. This is the only path that emails
+ * a prospect who did not request a preview, and it refuses anything that is not
+ * pending approval. `approvedBy` records the founder approval.
+ */
+export async function approveAndSend(
+  slug: string,
+  input: { approvedBy: string; note?: string },
+  deps: { store?: ScorecardStore; send?: Send } = {},
+): Promise<{ row: StoredScorecard; emailId: string | null }> {
+  const store = deps.store ?? getStore();
+  const send = deps.send ?? sendScorecardEmail;
+  if (!input.approvedBy.trim()) throw new Error("approvedBy is required");
+  let row = await store.getBySlug(slug);
+  if (!row) throw new Error(`no run for ${slug}`);
+  if (row.kickoff !== "operator") throw new Error(`run ${slug} is not an operator run`);
+  if (row.status !== "pending_approval") throw new Error(`run ${slug} is ${row.status}; refusing to send`);
+  const events = [...row.reviewEvents, event(input.approvedBy, "approved", { reason: input.note })];
+  row = await store.update(slug, { reviewEvents: events });
+  try {
+    const lead: ScorecardLead = {
+      name: row.name, company: row.company, email: row.email, stage: row.stage, url: row.url, domain: row.domain,
+    };
+    const { id } = await send(lead, row.result, { reportUrl: reportUrlFor(slug) });
+    row = await store.update(slug, {
+      status: "sent",
+      sentAt: new Date().toISOString(),
+      lastError: null,
+      reviewEvents: [...events, event("system", "sent", { reason: `resend:${id ?? "unknown"} to ${row.email}` })],
+    });
+    return { row, emailId: id };
+  } catch (err) {
+    // Stay pending so a retry is possible; record the failure.
+    await store.update(slug, { lastError: String(err).slice(0, 500) }).catch(() => {});
+    throw err;
   }
 }

@@ -1,5 +1,9 @@
-import type { ScorecardResult } from "./types";
+import type { PreviewReport } from "./types";
+import type { LegacyScorecardResult } from "./legacy-types";
 import type { ScorecardLead } from "./pipeline";
+import { findingTitles, scoreOf } from "./report";
+
+type AnyResult = PreviewReport | LegacyScorecardResult;
 
 /**
  * Emails the lead a short, branded "your scorecard is ready" note with a link to
@@ -39,20 +43,22 @@ function esc(s: string) {
 
 export function renderScorecardEmailHtml(
   lead: ScorecardLead,
-  result: ScorecardResult,
+  result: AnyResult,
   opts: ScorecardEmailOpts = {},
 ): string {
   const firstName = lead.name.split(" ")[0] || lead.name;
   const href = esc(opts.reportUrl ?? "");
 
-  const findings = result.topFindings
-    .map((f) => `<li style="margin:0 0 8px;">${esc(f.title)}</li>`)
+  const { score, bandName } = scoreOf(result);
+  const findings = findingTitles(result)
+    .map((t) => `<li style="margin:0 0 8px;">${esc(t)}</li>`)
     .join("");
+  const what = "format" in result && result.source === "recording" ? "the first-run recording of " : "";
 
   const improved = opts.delta != null && opts.delta > 0;
   const deltaBanner = improved
     ? `<div style="background:${C.primarySoft};border-radius:10px;padding:10px 14px;margin-bottom:20px;font-size:13px;color:${C.primary};">
-         Your score improved from ${result.overallScore - (opts.delta as number)} to ${result.overallScore} since your last check.
+         Your score improved from ${score - (opts.delta as number)} to ${score} since your last check.
        </div>`
     : "";
 
@@ -60,19 +66,19 @@ export function renderScorecardEmailHtml(
   <div style="max-width:520px;margin:0 auto;padding:40px 24px;font-family:'Helvetica Neue',Arial,sans-serif;color:${C.body};">
     <div style="background:${C.card};border:1px solid ${C.border};border-radius:8px;padding:32px;">
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:${C.primary};">Activation Scorecard</div>
-      <h1 style="font-size:24px;line-height:1.25;color:${C.ink};margin:10px 0 14px;">Hi ${esc(firstName)}, your scorecard is ready</h1>
+      <h1 style="font-size:24px;line-height:1.25;color:${C.ink};margin:10px 0 14px;">Hi ${esc(firstName)}, your scorecard preview is ready</h1>
       <p style="font-size:15px;line-height:1.6;color:${C.body};margin:0 0 8px;">
-        We scored <strong style="color:${C.ink};">${esc(lead.domain)}</strong> against 11 UX dimensions.
+        We scored ${what}<strong style="color:${C.ink};">${esc(lead.company)}</strong> against our activation rubric. Here are the five findings that matter most.
       </p>
       <p style="font-size:15px;line-height:1.6;color:${C.body};margin:0 0 24px;">
-        Your Activation Score is <strong style="color:${C.primary};">${result.overallScore}/100</strong> &mdash; ${esc(result.bandName)}.
+        Your Preview Score is <strong style="color:${C.primary};">${score}/100</strong>: ${esc(bandName)}.
       </p>
       ${deltaBanner}
       <ul style="font-size:14px;line-height:1.6;color:${C.body};margin:0 0 24px;padding-left:18px;">
         ${findings}
       </ul>
 
-      <a href="${href}" style="display:inline-block;background:${C.primary};color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:14px 28px;border-radius:6px;">View your scorecard</a>
+      <a href="${href}" style="display:inline-block;background:${C.primary};color:#ffffff;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:14px 28px;border-radius:6px;">View your scorecard preview</a>
 
       <p style="font-size:13px;line-height:1.6;color:${C.muted};margin:24px 0 0;">
         Or paste this link into your browser:<br>
@@ -90,9 +96,9 @@ export function renderScorecardEmailHtml(
 
 export async function sendScorecardEmail(
   lead: ScorecardLead,
-  result: ScorecardResult,
-  opts: ScorecardEmailOpts = {},
-): Promise<void> {
+  result: AnyResult,
+  opts: ScorecardEmailOpts & { to?: string; subjectPrefix?: string } = {},
+): Promise<{ id: string | null }> {
   const key = process.env.RESEND_API_KEY;
   if (!key) throw new Error("RESEND_API_KEY is not set");
 
@@ -107,8 +113,8 @@ export async function sendScorecardEmail(
     },
     body: JSON.stringify({
       from,
-      to: [lead.email],
-      subject: `Your Activation Scorecard — ${result.overallScore}/100`,
+      to: [opts.to ?? lead.email],
+      subject: `${opts.subjectPrefix ?? ""}Your Activation Scorecard Preview: ${scoreOf(result).score}/100`,
       html,
     }),
   });
@@ -117,4 +123,8 @@ export async function sendScorecardEmail(
     const detail = await res.text().catch(() => "");
     throw new Error(`Resend send failed: ${res.status} ${detail}`);
   }
+  const json = (await Promise.resolve()
+    .then(() => res.json())
+    .catch(() => ({}))) as { id?: string };
+  return { id: json.id ?? null };
 }

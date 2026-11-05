@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { renderScorecardEmailHtml, sendScorecardEmail } from "./email";
 import type { ScorecardLead } from "./pipeline";
-import { SAMPLE_SCORECARD } from "./types";
+import { SAMPLE_REPORT as SAMPLE_SCORECARD } from "./fixtures";
+import { scoreOf } from "./report";
+const SCORE = scoreOf(SAMPLE_SCORECARD).score;
 
 const lead: ScorecardLead = {
   name: "Jane Doe", company: "Acme", email: "jane@acme.com",
@@ -13,14 +15,16 @@ afterEach(() => vi.unstubAllGlobals());
 describe("renderScorecardEmailHtml", () => {
   it("includes the score and all five findings", () => {
     const html = renderScorecardEmailHtml(lead, SAMPLE_SCORECARD);
-    expect(html).toContain(String(SAMPLE_SCORECARD.overallScore));
-    for (const f of SAMPLE_SCORECARD.topFindings) expect(html).toContain(f.title);
+    expect(html).toContain(`${SCORE}/100`);
+    for (const f of SAMPLE_SCORECARD.findings) expect(html).toContain(f.title);
+    expect(html).toMatch(/Preview Score/);
+    expect(html).not.toMatch(/\u2014|&mdash;/);
   });
 
   it("shows an improvement banner only when delta > 0", () => {
-    const up = renderScorecardEmailHtml(lead, { ...SAMPLE_SCORECARD, overallScore: 72 }, { delta: 12 });
+    const up = renderScorecardEmailHtml(lead, SAMPLE_SCORECARD, { delta: 12 });
     expect(up).toMatch(/improved/i);
-    expect(up).toContain("60"); // 72 - 12
+    expect(up).toContain(`from ${SCORE - 12} to ${SCORE}`);
     const down = renderScorecardEmailHtml(lead, SAMPLE_SCORECARD, { delta: -7 });
     expect(down).not.toMatch(/improved/i);
     const none = renderScorecardEmailHtml(lead, SAMPLE_SCORECARD, { delta: null });
@@ -43,7 +47,7 @@ describe("sendScorecardEmail", () => {
     const body = JSON.parse(init.body);
     expect(body.from).toBe("Sari Sari Design <scorecard@sarisari.design>");
     expect(body.to).toEqual(["jane@acme.com"]);
-    expect(body.subject).toContain(String(SAMPLE_SCORECARD.overallScore));
+    expect(body.subject).toContain(`Preview: ${SCORE}/100`);
   });
 
   it("throws when Resend returns a non-2xx (so the pipeline logs it)", async () => {

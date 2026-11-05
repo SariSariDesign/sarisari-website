@@ -1,4 +1,4 @@
-import type { NewScorecard, ScorecardStore, StoredScorecard } from "./store";
+import type { EvidenceStore, NewScorecard, ScorecardStore, StoredScorecard } from "./store";
 
 /**
  * Test double for ScorecardStore. Deterministic ordering: rows carry an
@@ -32,6 +32,28 @@ export function createInMemoryStore(
     },
     async getBySlug(slug) {
       return rows.find((r) => r.slug === slug) ?? null;
+    },
+    async update(slug, patch) {
+      const i = rows.findIndex((r) => r.slug === slug);
+      if (i === -1) throw new Error(`[scorecard-store] update: no row for ${slug}`);
+      rows[i] = { ...rows[i], ...patch };
+      return rows[i];
+    },
+    async listSince(since) {
+      return rows.filter((r) => r.createdAt >= since).reverse();
+    },
+  };
+}
+
+export function createInMemoryEvidence(): EvidenceStore & { files: Map<string, { bytes: Uint8Array; contentType: string }> } {
+  const files = new Map<string, { bytes: Uint8Array; contentType: string }>();
+  return {
+    files,
+    async put(slug, key, bytes, contentType) {
+      files.set(`${slug}/${key}`, { bytes, contentType });
+    },
+    async get(slug, key) {
+      return files.get(`${slug}/${key}`) ?? null;
     },
   };
 }
