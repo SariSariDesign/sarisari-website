@@ -97,7 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
         />
         {children}
-        {/* Deployed builds get Agentation only on opt-in (Vercel previews or ?annotate). */}
+        {/* Local dev: DevTools. Vercel previews: Agentation via AnnotateGate. Production: only with ?annotate (per tab). */}
         {DevTools ? <DevTools /> : <AnnotateGate />}
       </body>
     </html>
