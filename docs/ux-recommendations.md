@@ -23,7 +23,7 @@
 
 ## 1. P0 — Launch blockers (functional + trust)
 
-1. **Hide the annotation toolbar on production.** Where: floating "Agentation" button bottom-right on every page. Why: visible to every visitor today; should only load with `?annotate`.
+1. ~~**Hide the annotation toolbar on production.**~~ Done: Agentation now loads only in local dev and on Vercel preview deploys; production never ships it (the `?annotate` opt-in was removed).
 2. **Add analytics + conversion tracking.** Where: `layout.tsx`. GA4 (or Vercel Analytics) + a booking event. Why: zero analytics on the new site; ads can't be measured and CCP §12 can't be filled without it.
 3. **Pass UTMs/gclid into Calendly.** Where: `BOOKING_URL` in `site.ts`. Why: every CTA leaves the site; without pass-through you can't tell which ad booked a call. Use `02_Areas/04_marketing/utm-conventions.md`.
 4. **Fix meta title + description.** Where: `layout.tsx`. Now: "Senior product design & development for growth-stage software companies… fractional product team." Why: contradicts the hero and the ad copy; hurts ad landing-page relevance and link previews.

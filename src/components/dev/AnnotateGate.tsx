@@ -2,39 +2,38 @@
 
 import { type ComponentType, useEffect, useState } from "react";
 
-const KEY = "sarisari:annotate";
+/** Legacy opt-in key from the old `?annotate` flag; cleared so it can't linger. */
+const LEGACY_KEY = "sarisari:annotate";
+
+const IS_PREVIEW = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
 
 /**
- * Opt-in Agentation feedback toolbar outside local dev, so reviewers can annotate a
- * deployed build. On when either:
- *   - this is a Vercel preview deployment (NEXT_PUBLIC_VERCEL_ENV === "preview"), or
- *   - the visitor opened any page with `?annotate` (remembered in localStorage;
- *     `?annotate=off` turns it back off).
- * The toolbar is a lazy chunk fetched only when on, so regular visitors never load it.
+ * Agentation feedback toolbar for Vercel preview deployments only, so reviewers can
+ * annotate a deployed branch. Production never loads it: NEXT_PUBLIC_VERCEL_ENV is
+ * inlined at build time, so the `import("agentation")` chunk is dropped from
+ * production bundles. (Local dev gets the toolbar via DevTools instead.)
  * Annotations copy to the clipboard as markdown to paste back into the conversation.
  */
-export function AnnotateGate() {
+export const AnnotateGate = IS_PREVIEW ? PreviewToolbar : ClearLegacyFlag;
+
+function PreviewToolbar() {
   const [Toolbar, setToolbar] = useState<ComponentType | null>(null);
 
   useEffect(() => {
-    const flag = new URLSearchParams(window.location.search).get("annotate");
-    try {
-      if (flag === "off") localStorage.removeItem(KEY);
-      else if (flag !== null) localStorage.setItem(KEY, "1");
-    } catch {
-      // Storage blocked (private mode etc.): fall back to the URL flag alone.
-    }
-    let remembered = false;
-    try {
-      remembered = localStorage.getItem(KEY) === "1";
-    } catch {}
-    const on =
-      process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
-      remembered ||
-      (flag !== null && flag !== "off");
-    if (!on) return;
     import("agentation").then((m) => setToolbar(() => m.Agentation));
   }, []);
 
   return Toolbar ? <Toolbar /> : null;
+}
+
+function ClearLegacyFlag() {
+  useEffect(() => {
+    try {
+      localStorage.removeItem(LEGACY_KEY);
+    } catch {
+      // Storage blocked (private mode etc.): nothing to clear.
+    }
+  }, []);
+
+  return null;
 }
