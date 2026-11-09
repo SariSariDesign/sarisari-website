@@ -49,6 +49,7 @@ export const kenchanRamen: CaseStudy = {
       },
       {
         kind: "section",
+        label: "Reframe", // ⚠️ chapter label added for the tick nav — confirm
         title: "We reframed the project from “ship a feature” to “test if bundles even work.”",
         paragraphs: [
           "With 15+ individual SKUs and only 4 premade sets, most customers bought 1–3 kits at a time — which meant the real question wasn't how to build the feature, but whether bundle behavior was something their customers did at all.",
@@ -57,6 +58,7 @@ export const kenchanRamen: CaseStudy = {
       },
       {
         kind: "figure",
+        span: "full",
         ratio: "774x516",
         caption: "Fig 01 — caption TBD", // ⚠️ asset + caption needed
       },
@@ -69,6 +71,7 @@ export const kenchanRamen: CaseStudy = {
       },
       {
         kind: "section",
+        label: "Approach", // ⚠️ chapter label added for the tick nav — confirm
         title: "When AI becomes your production partner, design becomes the strategic layer.",
         paragraphs: [
           "As AI takes more of the execution load, the constraint shifts from engineering capacity to product judgment. In this build, Shopify Magic handled assembly; design owned what to ship, how it should work, and how operators would run it day to day.",
@@ -133,6 +136,7 @@ export const kenchanRamen: CaseStudy = {
       },
       {
         kind: "split",
+        label: "Outcome", // ⚠️ chapter label added for the tick nav — confirm
         title: "From hypothesis test to a long-term revenue channel.",
         paragraphs: [
           "By separating the validation question from the infrastructure cost, we shipped a converting feature in an afternoon that a traditional build path would have taken six to eight weeks and $13K+ to produce.",
@@ -152,6 +156,7 @@ export const kenchanRamen: CaseStudy = {
       },
       {
         kind: "figure",
+        span: "full",
         ratio: "773x516",
         caption: "Fig 06 — caption TBD",
       },

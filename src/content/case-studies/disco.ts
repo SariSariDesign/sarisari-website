@@ -109,12 +109,6 @@ export const disco: CaseStudy = {
         role: "Founder & CEO, Disco",
       },
       {
-        kind: "quote",
-        quote: "I really love the recap of the conversation. You get so much back for the effort of chatting with Disco.",
-        name: "Eris Hanson-Cooper",
-        role: "Founder & CEO, Disco",
-      },
-      {
         kind: "section",
         label: "Process",
         title: "Lo-fi first, so a big decision didn't cost finished design.",
@@ -132,6 +126,7 @@ export const disco: CaseStudy = {
       },
       {
         kind: "split",
+        label: "Outcome", // ⚠️ chapter label added for the tick nav — confirm
         title: "From handoff to a working build in two weeks.",
         paragraphs: [
           "Clear styles, component states and annotated flows let Eris bring the designs into code with Codex and stand up a TestFlight build within two weeks of handoff.",
@@ -148,6 +143,7 @@ export const disco: CaseStudy = {
       },
       {
         kind: "quote",
+        span: "body",
         quote: "It did pretty well on the first pass, telling Codex to read the Figma file and bringing designs straight in.",
         name: "Eris Hanson-Cooper",
         role: "Founder & CEO, Disco",

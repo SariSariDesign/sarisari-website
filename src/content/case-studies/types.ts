@@ -9,14 +9,21 @@ export type CaseStudyStat = { value: string; label: string };
 
 export type CaseStudyFigure = { ratio: string; caption: string; image?: string };
 
+/**
+ * A block with a `label` opens a new chapter: the label becomes the chapter's eyebrow in
+ * the left rail and its tick in the page's tick nav. Keep labels to one or two words.
+ */
 export type CaseStudyBlock =
   | { kind: "section"; label?: string; title: string; paragraphs: string[] }
   | { kind: "step"; title: string; paragraphs: string[] }
-  | { kind: "quote"; quote: string; name: string; role: string }
+  /** `span`: "offset" c1–c6 (default), "body" c4–c12, "full" c1–c12. */
+  | { kind: "quote"; quote: string; name: string; role: string; span?: "offset" | "full" | "body" }
   | { kind: "stats"; big?: boolean; stats: CaseStudyStat[] }
-  | ({ kind: "figure" } & CaseStudyFigure)
-  | { kind: "figure-row"; figures: CaseStudyFigure[] }
-  | { kind: "split"; title: string; paragraphs: string[] };
+  /** `span`: "body" c4–c12 (default) or "full" c1–c12. */
+  | ({ kind: "figure"; span?: "body" | "full" } & CaseStudyFigure)
+  /** 2–3 images side by side. `span`: "full" c1–c12 (default) or "body" c4–c12. */
+  | { kind: "figure-row"; span?: "body" | "full"; figures: CaseStudyFigure[] }
+  | { kind: "split"; label?: string; title: string; paragraphs: string[] };
 
 export type CaseStudy = {
   slug: string;

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-/** Homepage sections in page order. Ones not yet on the page are skipped at runtime. */
+/** Homepage sections in page order (the default; other pages pass their own `sections`). Ones not yet on the page are skipped at runtime. */
 export const SECTIONS = [
   { id: "hero", label: "Home" },
   { id: "use-cases", label: "Use cases" },
@@ -27,8 +27,10 @@ const MIN = 14;
  * outer margin has room); below that, the current section number above the ticks. Click scrolls to the
  * section. Below 768px it becomes a sticky bottom bar: "01 · Hero" + progress segments.
  */
-export function TickNav() {
-  const [sections, setSections] = useState(SECTIONS);
+export type TickSection = { id: string; label: string };
+
+export function TickNav({ sections: all = SECTIONS }: { sections?: TickSection[] } = {}) {
+  const [sections, setSections] = useState(all);
   const [current, setCurrent] = useState(0);
   const [hover, setHover] = useState<number | null>(null);
   // Over the near-black closing band the ink ticks would vanish, so they flip to paper.
@@ -56,7 +58,7 @@ export function TickNav() {
   }, []);
 
   useEffect(() => {
-    const present = SECTIONS.filter((s) => document.getElementById(s.id));
+    const present = all.filter((s) => document.getElementById(s.id));
     setSections(present);
     const onScroll = () => {
       const line = window.innerHeight * 0.4;
@@ -74,7 +76,7 @@ export function TickNav() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [all]);
 
   const go = useCallback((id: string) => {
     const el = document.getElementById(id);
