@@ -33,6 +33,12 @@ export function HomePricing() {
               )}
             </div>
             <p className="max-w-[40ch] text-lead text-neutral-100">{scale.summary}</p>
+            <p className="max-w-[48ch] text-body-s text-primary-100">
+              {scale.footnote.text}{" "}
+              <Link href={scale.footnote.href} className="underline underline-offset-4">
+                {scale.footnote.linkLabel}
+              </Link>
+            </p>
             <div className="mt-2 flex flex-col items-start gap-4">
               <Button href={scale.cta.href} variant="white" external={isExternal(scale.cta.href)}>
                 {scale.cta.label}
