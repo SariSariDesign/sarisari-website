@@ -10,10 +10,10 @@ import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
-import { WorkTile } from "@/components/WorkTile";
+import { WorkWall } from "@/components/WorkWall";
 import { Wordmark } from "@/components/Wordmark";
 import { ScorecardForm } from "@/components/scorecard/ScorecardForm";
-import { caseStudiesSection, faq, hero, testimonials } from "@/content/site";
+import { faq, hero, testimonials } from "@/content/site";
 import { squeeze } from "@/content/squeeze";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -40,64 +40,82 @@ export default function StartPage() {
       </header>
 
       <main>
-        {/* 1 · Hero */}
-        <section data-hero className="grain flex flex-col overflow-hidden bg-neutral-100 lg:min-h-[calc(100svh-76px)]">
+        {/* 1 · Hero: their pain + our fix on the left, a wall of client work on the right */}
+        <section data-hero className="grain relative overflow-hidden bg-neutral-100">
           <Gridlines />
-          <div className="measure relative z-[1] grid flex-1 grid-cols-4 items-center gap-x-4 pb-8 pt-12 md:grid-cols-8 md:pt-16 lg:grid-cols-12 lg:py-10">
-            <div className="hero-seq col-span-full flex flex-col gap-8 lg:col-span-9">
+          <div className="measure relative z-[1] grid grid-cols-4 items-center gap-x-4 gap-y-12 pt-12 md:grid-cols-8 lg:min-h-[calc(100svh-76px)] lg:grid-cols-12 lg:py-0">
+            <div className="hero-seq col-span-full flex flex-col gap-8 lg:col-span-6">
               <Eyebrow>{squeeze.hero.eyebrow}</Eyebrow>
-              <h1 className="text-balance font-brand text-display-l italic text-neutral-1000">
+              <h1 className="text-balance font-brand text-display-m italic text-neutral-1000">
                 {squeeze.hero.headline}
               </h1>
               <p className="max-w-[44ch] text-lead text-neutral-700">{squeeze.hero.subhead}</p>
-              <div>
+              <div className="flex flex-wrap items-center gap-4">
                 <Button href={squeeze.hero.cta.href} external>
                   {squeeze.hero.cta.label}
                 </Button>
+                <Button href={squeeze.hero.secondary.href} variant="ghost">
+                  {squeeze.hero.secondary.label}
+                </Button>
               </div>
             </div>
+            <WorkWall className="col-span-full h-[520px] md:h-[640px] lg:col-span-6 lg:h-[calc(100svh-76px)]" />
           </div>
-          <div className="measure relative z-[1] pb-8">
+          <div className="measure relative z-[1] py-8">
             <Marquee items={hero.marquee.logos} />
           </div>
         </section>
 
-        {/* 2 · Work wall */}
-        <Section id="work" aria-labelledby="work-h" className="bg-neutral-100" hug>
-          <SectionHeader headingId="work-h" eyebrow={squeeze.work.eyebrow} headline={squeeze.work.headline} />
-          <Reveal as="ul" stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-16 md:grid-cols-8 lg:grid-cols-12">
-            {caseStudiesSection.tiles.map((t) => (
-              <WorkTile key={t.slug} t={t} />
-            ))}
-          </Reveal>
-        </Section>
-
-        {/* 3 · The problem */}
-        <Section id="problem" aria-labelledby="problem-h" className="bg-neutral-100" hug>
-          <div className="grid grid-cols-4 gap-x-4 gap-y-8 md:grid-cols-8 lg:grid-cols-12">
-            <div className="col-span-full flex flex-col gap-6 lg:col-span-9">
-              <Eyebrow>{squeeze.problem.eyebrow}</Eyebrow>
-              <h2 id="problem-h" className="text-balance font-brand text-display-s text-neutral-1000">
-                {squeeze.problem.headline}
-              </h2>
-              <p className="max-w-[52ch] text-lead text-neutral-700">{squeeze.problem.body}</p>
-              <p className="text-body-s text-neutral-600">{squeeze.problem.source}</p>
-            </div>
-          </div>
-        </Section>
-
-        {/* 4 · How we work */}
-        <Section id="how" aria-labelledby="how-h" className="bg-neutral-100" hug>
-          <SectionHeader headingId="how-h" eyebrow={squeeze.how.eyebrow} headline={squeeze.how.headline} />
-          <Reveal stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-10 md:grid-cols-8 lg:grid-cols-12">
-            {squeeze.how.items.map((item, i) => (
-              <div key={item.title} className="col-span-4 flex flex-col gap-3 md:col-span-4 lg:col-span-3">
-                <span className="ds-label text-label text-primary-400">{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="text-heading-m text-neutral-1000">{item.title}</h3>
-                <p className="text-body text-neutral-700">{item.body}</p>
+        {/* 2 · Their pains, in their words, each answered with what we do */}
+        <Section id="pains" aria-labelledby="pains-h" className="bg-neutral-100" hug>
+          <SectionHeader headingId="pains-h" eyebrow={squeeze.pains.eyebrow} headline={squeeze.pains.headline} />
+          <Reveal stagger className="mt-12 grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12">
+            {squeeze.pains.items.map((p) => (
+              <div
+                key={p.quote}
+                className="col-span-4 flex flex-col justify-between gap-10 rounded border border-neutral-300 bg-neutral-100 p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 lg:col-span-6"
+              >
+                <p className="font-brand text-heading-l italic text-neutral-1000">&ldquo;{p.quote}&rdquo;</p>
+                <div className="flex flex-col gap-2">
+                  <span className="ds-label text-label text-primary-400">How we help</span>
+                  <p className="text-lead text-neutral-1000">{p.help}</p>
+                  {p.note && <p className="text-body-s text-neutral-700">{p.note}</p>}
+                </div>
               </div>
             ))}
           </Reveal>
+          <p className="mt-6 text-body-s text-neutral-600">{squeeze.pains.source}</p>
+        </Section>
+
+        {/* 3 · Proof in numbers */}
+        <section className="bg-primary-400 text-neutral-100">
+          <div className="measure grid grid-cols-4 gap-x-4 gap-y-10 py-16 md:grid-cols-8 lg:grid-cols-12 lg:py-20">
+            {squeeze.stats.map((s) => (
+              <div key={s.value} className="col-span-4 flex flex-col gap-2 lg:col-span-4">
+                <span className="font-brand text-display-m text-neutral-100">{s.value}</span>
+                <span className="max-w-[28ch] text-body text-primary-100">{s.label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 4 · How we fix it */}
+        <Section id="how" aria-labelledby="how-h" className="bg-neutral-100" hug>
+          <SectionHeader headingId="how-h" eyebrow={squeeze.how.eyebrow} headline={squeeze.how.headline} />
+          <Reveal stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-10 md:grid-cols-8 lg:grid-cols-12">
+            {squeeze.how.steps.map((step, i) => (
+              <div key={step.title} className="col-span-4 flex flex-col gap-4 md:col-span-8 lg:col-span-4">
+                <span className="font-brand text-display-s text-primary-400">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="text-heading-m text-neutral-1000">{step.title}</h3>
+                <p className="text-body text-neutral-700">{step.body}</p>
+              </div>
+            ))}
+          </Reveal>
+          <div className="mt-12">
+            <Button href={squeeze.cta.href} external>
+              {squeeze.cta.label}
+            </Button>
+          </div>
         </Section>
 
         {/* 5 · Proof */}

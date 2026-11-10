@@ -795,3 +795,14 @@ body {
     transform: translateX(320%);
   }
 }
+
+/* /start work wall: columns drift; pause on hover; static with reduced motion. */
+@keyframes work-wall-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-50% - 8px)); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .work-wall-track { animation: work-wall-up 60s linear infinite; }
+  .work-wall-down { animation-direction: reverse; }
+  .work-wall:hover .work-wall-track { animation-play-state: paused; }
+}
