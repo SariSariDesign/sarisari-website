@@ -8,6 +8,8 @@ import { Nav } from "@/components/Nav";
 import { Placeholder } from "@/components/Placeholder";
 import { Reveal } from "@/components/Reveal";
 import { TickNav } from "@/components/TickNav";
+import { WorkTile } from "@/components/WorkTile";
+import { caseStudiesSection } from "@/content/site";
 import {
   type CaseStudy,
   type CaseStudyBlock,
@@ -67,7 +69,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
   const study = load((await params).slug);
   if (!study?.page) notFound();
   const page = study.page;
-  const chapters = toChapters(page.blocks);
+  // Callouts (e.g. Key takeaways) render in the overview, after the stats.
+  const callouts = page.blocks.filter((b) => b.kind === "callout");
+  const chapters = toChapters(page.blocks.filter((b) => b.kind !== "callout"));
   const ticks = [
     { id: "overview", label: "Overview" },
     ...chapters.filter((c) => c.label).map((c) => ({ id: c.id, label: c.label as string })),
@@ -77,18 +81,27 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
     <>
       <Nav />
       <main className="bg-neutral-100">
-        <Overview study={study} page={page} />
+        <Overview study={study} page={page} callouts={callouts} />
         {chapters.map((c, i) => (
           <ChapterSection key={c.id} chapter={c} index={i} />
         ))}
+        <MoreWork current={study.slug} />
       </main>
-      <FooterCta />
+      <FooterCta content={page.cta} />
       <TickNav sections={ticks} />
     </>
   );
 }
 
-function Overview({ study, page }: { study: CaseStudy; page: Page }) {
+function Overview({
+  study,
+  page,
+  callouts,
+}: {
+  study: CaseStudy;
+  page: Page;
+  callouts: CaseStudyBlock[];
+}) {
   // "Client: Kenchan Ramen · Partner: Kocah" → [["Client", "Kenchan Ramen"], ["Partner", "Kocah"]]
   const credits = page.byline.split(" · ").map((part) => {
     const i = part.indexOf(":");
@@ -103,23 +116,31 @@ function Overview({ study, page }: { study: CaseStudy; page: Page }) {
           <Eyebrow>{["Case study", study.card.productType].filter(Boolean).join(" · ")}</Eyebrow>
           <h1
             id="cs-title"
-            className="text-balance font-brand text-display-m text-neutral-1000"
+            className="text-pretty font-brand text-display-m text-neutral-1000"
             style={{ "--d": "80ms" } as React.CSSProperties}
           >
             {page.title}
           </h1>
+          <p className="cols-8 text-lead text-neutral-700" style={{ "--d": "180ms" } as React.CSSProperties}>
+            {page.intro}
+          </p>
         </div>
 
         <Reveal delay={280} className="mt-12 lg:mt-16">
           {page.heroImage ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={page.heroImage} alt="" className="aspect-video w-full rounded object-cover" />
+            <img
+              src={page.heroImage}
+              alt=""
+              className="w-full rounded object-cover"
+              style={{ aspectRatio: (page.heroRatio ?? "16x9").replace("x", "/") }}
+            />
           ) : (
             <Placeholder className="aspect-video w-full" label="Hero image — asset pending" />
           )}
         </Reveal>
 
-        {/* Meta on c1–c3; intro + headline stats on the body column c4–c12. */}
+        {/* Meta on c1–c3; headline stats on the body column c4–c12. */}
         <div className="mt-12 grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:mt-20 lg:grid-cols-12">
           <Reveal className="col-span-full md:col-span-3">
             <dl className="flex flex-col gap-6">
@@ -139,16 +160,18 @@ function Overview({ study, page }: { study: CaseStudy; page: Page }) {
               </div>
             </dl>
           </Reveal>
-          <div className="col-span-full flex flex-col gap-12 md:col-span-5 lg:col-span-9 lg:col-start-4 lg:gap-16">
-            <Reveal delay={100}>
-              <p className="text-lead text-neutral-1000">{page.intro}</p>
-            </Reveal>
-            <Reveal as="ul" stagger className="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-3">
-              {page.heroStats.map((s, i) => (
-                <Stat key={s.label} index={i} value={s.value} label={s.label} size="text-display-s" />
-              ))}
-            </Reveal>
-          </div>
+          <Reveal
+            as="ul"
+            stagger
+            className="col-span-full grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-3 md:col-span-5 lg:col-span-9 lg:col-start-4"
+          >
+            {page.heroStats.map((s) => (
+              <Stat key={s.label} value={s.value} label={s.label} />
+            ))}
+          </Reveal>
+          {callouts.map((b, i) => (
+            <Block key={i} block={b} />
+          ))}
         </div>
       </div>
     </section>
@@ -201,7 +224,7 @@ function Block({ block, eyebrow }: { block: CaseStudyBlock; eyebrow?: React.Reac
       return (
         <Reveal className={`${BODY} flex flex-col gap-5`}>
           {eyebrow}
-          <h2 className="text-balance font-brand text-heading-m text-neutral-1000">{block.title}</h2>
+          <h2 className="text-pretty font-brand text-heading-m text-neutral-1000">{block.title}</h2>
           <Paragraphs paragraphs={block.paragraphs} />
         </Reveal>
       );
@@ -209,8 +232,19 @@ function Block({ block, eyebrow }: { block: CaseStudyBlock; eyebrow?: React.Reac
       return (
         <Reveal className={`${BODY} flex flex-col gap-2`}>
           {eyebrow}
-          <h3 className="text-lead text-neutral-1000">{block.title}</h3>
+          <h3 className="text-lead text-primary-400">{block.title}</h3>
           <Paragraphs paragraphs={block.paragraphs} />
+        </Reveal>
+      );
+    case "compare":
+      return (
+        <Reveal stagger className={`${BODY} grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2`}>
+          {block.items.map((it) => (
+            <div key={it.title} className="flex flex-col gap-2">
+              <h3 className="text-lead text-primary-400">{it.title}</h3>
+              <p className="text-lead text-neutral-700">{it.text}</p>
+            </div>
+          ))}
         </Reveal>
       );
     case "split":
@@ -218,7 +252,7 @@ function Block({ block, eyebrow }: { block: CaseStudyBlock; eyebrow?: React.Reac
       return (
         <Reveal className={`${FULL} grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-12`}>
           {eyebrow && <div className="lg:col-span-12">{eyebrow}</div>}
-          <h2 className="text-balance font-brand text-heading-m text-neutral-1000 lg:col-span-5">
+          <h2 className="text-pretty font-brand text-heading-m text-neutral-1000 lg:col-span-5">
             {block.title}
           </h2>
           <div className="flex flex-col gap-5 lg:col-span-6 lg:col-start-7">
@@ -233,39 +267,41 @@ function Block({ block, eyebrow }: { block: CaseStudyBlock; eyebrow?: React.Reac
       return (
         <Reveal className={place}>
           {eyebrow}
-          <figure className="relative flex flex-col gap-6 bg-neutral-200 px-6 py-8 md:px-10 md:py-12">
+          <div className="relative">
             <CropMarks />
-            <blockquote className="relative text-pretty font-brand text-heading-m italic text-neutral-1000">
-              <span aria-hidden className="absolute -left-[0.5em] text-primary-400">
-                “
-              </span>
-              {block.quote.replace(/^[“"]|[”"]$/g, "")}”
-            </blockquote>
-            <figcaption className="flex flex-col gap-1">
-              <span className="ds-label text-label text-neutral-1000">{block.name}</span>
-              <span className="text-body-s text-neutral-700">{block.role}</span>
-            </figcaption>
-          </figure>
+            <figure className="flex flex-col gap-6 bg-neutral-200 px-6 py-8 md:px-10 md:py-12">
+              <blockquote className="relative text-pretty font-brand text-heading-m italic text-neutral-1000">
+                <span aria-hidden className="absolute -left-[0.5em] text-primary-400">
+                  “
+                </span>
+                {block.quote.replace(/^[“"]|[”"]$/g, "")}”
+              </blockquote>
+              <figcaption className="flex flex-col gap-1">
+                <span className="ds-label text-label text-neutral-1000">{block.name}</span>
+                <span className="text-body-s text-neutral-700">{block.role}</span>
+              </figcaption>
+            </figure>
+          </div>
         </Reveal>
       );
     }
     case "stats":
-      // Spec-sheet readout: a primary index number over each value, no rules.
+      // Value over label, three across on the gridline columns; no rules.
       return (
         <Reveal
           as="ul"
           stagger
           className={`${BODY} grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-3`}
         >
-          {block.stats.map((s, i) => (
-            <Stat key={s.label} index={i} value={s.value} label={s.label} size="text-heading-l" />
+          {block.stats.map((s) => (
+            <Stat key={s.label} value={s.value} label={s.label} />
           ))}
         </Reveal>
       );
     case "figure":
       return (
         <Reveal className={(block.span ?? "body") === "full" ? FULL : BODY}>
-          <Figure ratio={block.ratio} caption={block.caption} image={block.image} />
+          <Figure ratio={block.ratio} caption={block.caption} image={block.image} video={block.video} />
         </Reveal>
       );
     case "figure-row":
@@ -275,8 +311,25 @@ function Block({ block, eyebrow }: { block: CaseStudyBlock; eyebrow?: React.Reac
           className={`${(block.span ?? "full") === "full" ? FULL : BODY} flex flex-col gap-8 sm:flex-row sm:items-start`}
         >
           {block.figures.map((f) => (
-            <Figure key={f.caption} ratio={f.ratio} caption={f.caption} image={f.image} grow />
+            <Figure key={f.caption} ratio={f.ratio} caption={f.caption} image={f.image} video={f.video} grow />
           ))}
+        </Reveal>
+      );
+    case "callout":
+      return (
+        <Reveal className={BODY}>
+          {eyebrow}
+          <aside className="relative flex flex-col gap-6 bg-neutral-200 px-6 py-8 md:px-10 md:py-10">
+            <CropMarks />
+            <h2 className="ds-label text-label text-primary-400">{block.title}</h2>
+            <ul className="flex flex-col gap-4">
+              {block.items.map((it) => (
+                <li key={it.lead} className="text-body text-neutral-700">
+                  <span className="text-neutral-1000">{it.lead}</span> {it.text}
+                </li>
+              ))}
+            </ul>
+          </aside>
         </Reveal>
       );
     default:
@@ -284,21 +337,11 @@ function Block({ block, eyebrow }: { block: CaseStudyBlock; eyebrow?: React.Reac
   }
 }
 
-function Stat({
-  index,
-  value,
-  label,
-  size,
-}: {
-  index: number;
-  value: string;
-  label: string;
-  size: "text-heading-l" | "text-display-s";
-}) {
+/** One stat style everywhere: display-s value over a label. */
+function Stat({ value, label }: { value: string; label: string }) {
   return (
     <li className="flex flex-col gap-2">
-      <span className="ds-label text-label text-primary-400">{String(index + 1).padStart(2, "0")}</span>
-      <span className={`font-brand text-neutral-1000 ${size}`}>{value}</span>
+      <span className="font-brand text-display-s text-neutral-1000">{value}</span>
       <span className="ds-label text-label text-neutral-700">{label}</span>
     </li>
   );
@@ -322,11 +365,13 @@ function Figure({
   ratio,
   caption,
   image,
+  video,
   grow,
 }: {
   ratio: string;
   caption: string;
   image?: string;
+  video?: string;
   grow?: boolean;
 }) {
   const [w, h] = ratio.split("x").map(Number);
@@ -337,17 +382,61 @@ function Figure({
     <figure className={`flex flex-col gap-4 ${grow ? "flex-1" : ""}`} style={grow ? { flexGrow: w / h } : undefined}>
       <div style={{ aspectRatio: `${w}/${h}` }} className="relative w-full">
         <CropMarks />
+        {video ? (
+          // Muted, looping, inline: plays like an image. Reduced-motion users get the poster.
+          <video
+            src={video}
+            poster={image}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden
+            className="h-full w-full rounded object-cover motion-reduce:hidden"
+          />
+        ) : null}
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt="" className="h-full w-full rounded object-cover" />
-        ) : (
+          <img
+            src={image}
+            alt=""
+            className={`h-full w-full rounded object-cover ${video ? "hidden motion-reduce:block" : ""}`}
+          />
+        ) : !video ? (
           <Placeholder className="h-full w-full" label="asset pending" />
-        )}
+        ) : null}
       </div>
       <figcaption className="flex gap-3 text-body-s text-neutral-700">
         {label && <span className="ds-label shrink-0 text-label text-primary-400">{label}</span>}
         <span>{text}</span>
       </figcaption>
     </figure>
+  );
+}
+
+/**
+ * "More work": the homepage work tiles, smaller. Up to three other published studies,
+ * just above the CTA band, so it reads as a footnote, not a moment.
+ */
+function MoreWork({ current }: { current: string }) {
+  const published = new Set(publishedCaseStudies.map((c) => c.slug));
+  const tiles = caseStudiesSection.tiles
+    .filter((t) => t.slug !== current && published.has(t.slug))
+    .slice(0, 3);
+  if (!tiles.length) return null;
+  return (
+    <section aria-labelledby="more-work-h" className="relative bg-neutral-100 py-16 lg:py-24">
+      <Gridlines />
+      <div className="measure relative z-[1] flex flex-col gap-10">
+        <Eyebrow>
+          <span id="more-work-h">More case studies</span>
+        </Eyebrow>
+        <Reveal as="ul" stagger className="grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
+          {tiles.map((t) => (
+            <WorkTile key={t.slug} t={{ ...t, layout: "third" }} />
+          ))}
+        </Reveal>
+      </div>
+    </section>
   );
 }

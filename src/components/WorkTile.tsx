@@ -7,7 +7,7 @@ type Tile = {
   title: string;
   tags: string[];
   color: string;
-  layout: "square" | "portrait" | "wide" | "pair";
+  layout: "square" | "portrait" | "wide" | "pair" | "third";
   /** Image fills the frame (cover, centered) instead of sitting inside it. */
   fill?: boolean;
   /** Looping, muted cover video; fills the frame. The study's card image is its poster. */
@@ -30,6 +30,11 @@ const LAYOUT = {
   pair: {
     cell: "col-span-4 md:col-span-4 lg:col-span-6",
     frame: "aspect-square",
+  },
+  // 4 cols · 4:3 (case-study "More case studies" row)
+  third: {
+    cell: "col-span-4 md:col-span-4 lg:col-span-4",
+    frame: "aspect-[4/3]",
   },
   // cols 3–12 · 16:9 (full width on tablet)
   wide: {

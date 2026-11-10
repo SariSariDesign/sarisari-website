@@ -27,46 +27,52 @@ export const lendzi: CaseStudy = {
       { value: "4–6 wks", label: "to a reliable signal" },
     ],
     intro:
-      "When we do foundational identity work for early- and growth-stage companies, the AI question comes up constantly: should founders try the tools before hiring a studio? Probably, yeah, especially for exploration. But there's a specific moment when the tools stop being useful, and most founders don't recognize it until they've spent significant time on the wrong problem.",
+      "Lendzi's AI-generated logo options all looked fine, and none felt right. We found the problem first, then designed two concepts to test against it.",
+    cta: {
+      headline: "AI concepts that all look fine? Start with a diagnosis.",
+      subhead:
+        "AI tools are great for exploring and for moving fast once the direction is clear. We find the problem first, so you know which direction to build and how to tell if it worked.",
+      primary: { label: "Book a call", href: "https://calendly.com/sarisari/30min" },
+      secondary: { label: "See our services", href: "/services" },
+    },
     blocks: [
+      {
+        kind: "callout",
+        title: "Outcome",
+        items: [
+          {
+            lead: "The arrow is live.",
+            text: "Concept 2 now leads Lendzi's main website: a mark built to stand out on a crowded listing page.",
+          },
+        ],
+      },
       {
         kind: "section",
         label: "Inquiry",
         title: "Lower-ranked competitors were getting more clicks.",
         paragraphs: [
-          "Lendzi is a B2B financial services company competing with eight other brands on a third-party listing platform. Their instinct was that the logo wasn't pulling its weight: it's the single most visual component on their listing.",
-          "So they ran it through AI tools, got a handful of directions, and couldn't evaluate them. Nothing felt clearly right, but they weren't sure what was wrong either. They had less clarity than when they started.",
+          "Lendzi competes with eight other brands on a third-party listing platform, where the logo is the most visual part of each listing. They'd tried AI tools for new directions, but with nothing to judge them against, they ended up with less clarity than they started with.",
         ],
       },
       {
         kind: "section",
         label: "Diagnosis",
-        title: "The mark was blending into the listing page.",
+        title: "The mark was blending in, and the AI had no way to know.",
         paragraphs: [
-          "They wanted to move fast: skip the research and go straight to concepts. We aligned on speed but kept discovery and diagnosis. Without them, faster just means arriving at the wrong answer sooner.",
-          "Discovery made the problem visible. Their mark shared visual weight, tonal range and energy with the listing page itself, so it read as part of the page. The competitors getting more clicks had higher-contrast lockups that punched through the page noise immediately.",
+          "Lendzi's mark shared the listing page's visual weight and tonal range, so it read as part of the page, while the competitors winning clicks used high-contrast lockups that cut through. The AI concepts were built against none of that: no competitive context, no constraints, no hypothesis. We use AI heavily for execution, but finding the problem is still the work.",
         ],
       },
       {
-        kind: "split",
-        title: "What the AI tools were missing.",
-        paragraphs: [
-          "The AI outputs were built against nothing: no competitive context, no constraints, no hypothesis about what wasn't working. Without a diagnosis, there's no way to tell if a concept is better, or what to try next if it fails.",
-          "We're heavy AI users ourselves, and it compresses execution time significantly. Knowing what problem we're solving, what \"better\" means, and what we're betting on is still manual work. When you can generate options faster than you can evaluate them, that strategic layer matters more.",
-        ],
-      },
-      {
-        kind: "step",
-        title: "Concept 1 is a bet on recognition.",
-        paragraphs: [
-          "A refinement of the original icon with more institutional weight and higher contrast. People who already know the brand see continuity and evolution, not a rebrand.",
-        ],
-      },
-      {
-        kind: "step",
-        title: "Concept 2 is a bet on attention.",
-        paragraphs: [
-          "A new, higher-contrast lockup with a dynamic, directional element. It works better for cold audiences who don't know the brand at all.",
+        kind: "compare",
+        items: [
+          {
+            title: "Concept 1 is a bet on recognition.",
+            text: "A refined version of the original icon with more weight and contrast, so existing customers see an evolution, not a rebrand.",
+          },
+          {
+            title: "Concept 2 is a bet on attention.",
+            text: "A new high-contrast lockup with a directional arrow, built for cold audiences who don't know the brand yet.",
+          },
         ],
       },
       {
@@ -74,25 +80,16 @@ export const lendzi: CaseStudy = {
         label: "The test",
         title: "Every outcome tells them what to do next.",
         paragraphs: [
-          "Both concepts ran as an A/B test on the listing platform, measured by popularity score (a proxy for clicks) over 4–6 weeks.",
-          "Before this, the client had no way to define success and no next step if a concept failed. The diagnosis plus a well-structured test gives them both:",
-          "• Concept 1 wins: the brand equity is real, and the execution needed stronger craft. Next: is contrast enough, or does the icon need to work harder?\n• Concept 2 wins: the old mark was doing negative work, and clarity beat continuity. Next: we can capture attention, but can the landing page convert?\n• Neither moves the needle: contrast and icon form may not be the levers, or the logo isn't the main variable. Next: what else is worth testing first?\n• Results get worse: the mark had more recognition value than the audit suggested. Stop touching the logo; the problem is upstream, likely platform score or positioning copy.",
+          "Both concepts ran as an A/B test on the listing platform, measured by popularity score over 4–6 weeks. Each result points to a next step:",
+          "• Concept 1 wins: the brand equity holds. Next, find out if contrast alone is enough.\n• Concept 2 wins: clarity beat continuity. Next, find out if the landing page converts.\n• No change: the logo may not be the lever. Next, test platform score or positioning.\n• Results drop: the original mark carried more recognition than expected. Leave it and look upstream.",
         ],
       },
       {
-        kind: "split",
-        title: "The arrow is live.",
-        paragraphs: [
-          "The new arrow mark from Concept 2 is now live on Lendzi's main website.",
-        ],
-      },
-      {
-        kind: "split",
-        title: "When to use AI tools, and when not to.",
-        paragraphs: [
-          "AI tools are great for rapid early exploration: options to react to, and fast execution once the direction is clear. They're much less useful for finding the problem, judging whether a direction solves it, or building a hypothesis you can test.",
-          "If you're sitting on a handful of AI-generated concepts that all look fine and none feel right, that's a diagnosis problem.",
-        ],
+        kind: "figure",
+        span: "full",
+        ratio: "2600x1460",
+        caption: "The Lendzi brand guide: logo variations, color and spacing for the new arrow mark.",
+        image: "/work/lendzi-brand.webp",
       },
     ],
   },

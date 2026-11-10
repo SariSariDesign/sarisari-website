@@ -380,6 +380,29 @@ reduce`:
 - **Micro-transitions:** 150ms color transitions on buttons, tabs, and nav; the
   button's trailing arrow nudges 2px right on hover.
 
+## Case Study Image Sizes
+
+Export every case-study image at 2× its desktop size (content maxes out at 1184px). Images
+fill their frame with `object-cover`, so match the ratio exactly or the edges get cropped. The
+ratio set in the content file (`ratio: "1800x1200"`) sets the frame.
+
+| Slot | Block / `span` | Shown at (desktop) | Export at (2×) | Ratio |
+|---|---|---|---|---|
+| Hero | `page.heroImage` | 1184 × 666 | **2400 × 1350** | 16:9 (fixed) |
+| Full-width image | `figure`, `span: "full"` (c1–c12) | 1184 wide | **2400 × 1350** or **2400 × 1600** | 16:9 or 3:2 |
+| Body-width image | `figure` (default, c4–c12) | 884 wide | **1800 × 1200** | 3:2 (or 16:10 → 1800 × 1125) |
+| 2 images, body width | `figure-row`, `span: "body"` | ~426 each | **860 × 1075** each | 4:5 |
+| 2 images, full width | `figure-row` (default) | ~576 each | **1200 × 1500** each | 4:5 |
+| 3 images, full width | `figure-row` (default) | ~373 each | **760 × 950** each | 4:5 |
+| Video | any `figure` with `video` | same as its slot | same as its slot (e.g. full width **2400** wide) | match the slot |
+| Case study card / More case studies | `card.image` | 384 × 288 | **1600 × 1200** | 4:3 |
+| Homepage work tile | `card.image` (square tile) | ~584 × 584 | **1200 × 1200** | 1:1 |
+
+- **Phone screens:** set them on a 4:5 colored plate, never as bare 9:19.5 screenshots. Three bare screenshots in a row come out over 800px tall each.
+- **Legibility:** full-width images shrink to ~340px wide on a phone (about 1/7 of export), so keep UI text large and show fewer screens per image.
+- **Files:** WebP at ~80% quality, under ~300KB. Video: H.264 MP4 with no audio, under ~1MB, plus a WebP poster (first frame) set as `image`.
+- **Naming:** `public/work/<slug>-<what>.webp` (e.g. `disco-onboarding.mp4`, `disco-onboarding-poster.webp`).
+
 ## Do's and Don'ts
 
 ### Do:

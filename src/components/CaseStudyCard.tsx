@@ -18,7 +18,7 @@ export function CaseStudyCard({
 }) {
   const H = headingLevel;
   const href = caseStudyHref(c);
-  const image = (featured && c.page?.heroImage) || c.card.image;
+  const image = (featured && (c.card.wideImage ?? c.page?.heroImage)) || c.card.image;
   const photo = (
     <div
       className={`relative overflow-hidden rounded border border-transparent transition-colors duration-150 ease-out group-hover:border-neutral-1000 group-focus-visible:border-neutral-1000 ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CtaContent } from "@/content/case-studies/types";
 import { footer, footerCta } from "@/content/site";
 import { isExternal } from "@/lib/links";
 import { Button } from "./Button";
@@ -6,8 +7,18 @@ import { Gridlines } from "./Gridlines";
 import { Wordmark } from "./Wordmark";
 
 /** Closing blue (primary-400) CTA band (grain, display-l) + the footer. Shared across all pages. */
-/** `cta={false}` drops the blue band and keeps only the footer (thank-you pages). */
-export function FooterCta({ cta = true }: { cta?: boolean } = {}) {
+/** `cta={false}` drops the blue band and keeps only the footer (thank-you pages).
+ *  `content` swaps the band's copy and buttons (case studies speak to their own problem). */
+export function FooterCta({
+  cta = true,
+  content,
+}: { cta?: boolean; content?: CtaContent } = {}) {
+  const c: CtaContent = content ?? {
+    headline: footerCta.headline,
+    subhead: footerCta.subhead,
+    primary: footerCta.cta,
+    secondary: footerCta.secondary,
+  };
   return (
     <>
       {cta && (
@@ -23,22 +34,24 @@ export function FooterCta({ cta = true }: { cta?: boolean } = {}) {
               id="cta-h"
               className="max-w-[18ch] text-balance font-brand text-display-l text-neutral-100"
             >
-              {footerCta.headline}
+              {c.headline}
             </h2>
             <p className="max-w-[48ch] text-lead text-primary-100">
-              {footerCta.subhead}
+              {c.subhead}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-4">
-              <Button href={footerCta.cta.href} variant="white" external>
-                {footerCta.cta.label}
+              <Button href={c.primary.href} variant="white" external={isExternal(c.primary.href)}>
+                {c.primary.label}
               </Button>
-              <Button
-                href={footerCta.secondary.href}
-                variant="outline-light"
-                external={isExternal(footerCta.secondary.href)}
-              >
-                {footerCta.secondary.label}
-              </Button>
+              {c.secondary && (
+                <Button
+                  href={c.secondary.href}
+                  variant="outline-light"
+                  external={isExternal(c.secondary.href)}
+                >
+                  {c.secondary.label}
+                </Button>
+              )}
             </div>
           </div>
         </div>
