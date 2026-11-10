@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-/** Homepage sections in page order. Ones not yet on the page are skipped at runtime. */
+/** Homepage sections in page order (the default; other pages pass their own `sections`). Ones not yet on the page are skipped at runtime. */
 export const SECTIONS = [
   { id: "hero", label: "Home" },
   { id: "use-cases", label: "Use cases" },
@@ -27,19 +27,27 @@ const MIN = 14;
  * outer margin has room); below that, the current section number above the ticks. Click scrolls to the
  * section. Below 768px it becomes a sticky bottom bar: "01 · Hero" + progress segments.
  */
-export function TickNav() {
-  const [sections, setSections] = useState(SECTIONS);
+export type TickSection = { id: string; label: string };
+
+export function TickNav({ sections: all = SECTIONS }: { sections?: TickSection[] } = {}) {
+  const [sections, setSections] = useState(all);
   const [current, setCurrent] = useState(0);
   const [hover, setHover] = useState<number | null>(null);
-  // Over the near-black closing band the ink ticks would vanish, so they flip to paper.
+  // Over a dark band the ink ticks would vanish, so they flip to paper.
   const [onDark, setOnDark] = useState(false);
   useEffect(() => {
-    const band = document.querySelector("[data-dark-band]");
-    if (!band || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(([e]) => setOnDark(e.isIntersecting), {
-      rootMargin: "-50% 0px -50% 0px",
-    });
-    io.observe(band);
+    // Any dark band (the closing CTA, a case study's brand-color hero) flips the ticks.
+    const bands = Array.from(document.querySelectorAll("[data-dark-band]"));
+    if (!bands.length || typeof IntersectionObserver === "undefined") return;
+    const on = new Set<Element>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => (e.isIntersecting ? on.add(e.target) : on.delete(e.target)));
+        setOnDark(on.size > 0);
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    bands.forEach((b) => io.observe(b));
     return () => io.disconnect();
   }, []);
   const ink = onDark ? "text-neutral-100" : "text-neutral-1000";
@@ -56,7 +64,7 @@ export function TickNav() {
   }, []);
 
   useEffect(() => {
-    const present = SECTIONS.filter((s) => document.getElementById(s.id));
+    const present = all.filter((s) => document.getElementById(s.id));
     setSections(present);
     const onScroll = () => {
       const line = window.innerHeight * 0.4;
@@ -74,7 +82,7 @@ export function TickNav() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [all]);
 
   const go = useCallback((id: string) => {
     const el = document.getElementById(id);

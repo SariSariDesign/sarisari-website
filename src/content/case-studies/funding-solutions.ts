@@ -46,7 +46,7 @@ export const fundingSolutions: CaseStudy = {
           "We interviewed key players and mapped the full loan lifecycle, from lead to funding: what triggers each status change, what underwriting needs, and which data objects exist (application, offer, stipulation, booster, document, profile).",
         ],
       },
-      { kind: "figure", ratio: "2400x1740", caption: "Application history: every application, status and next step in one place.", image: "/work/fs-app-history.webp" },
+      { kind: "figure", span: "full", ratio: "2400x1740", caption: "Application history: every application, status and next step in one place.", image: "/work/fs-app-history.webp" },
       {
         kind: "section",
         label: "Approach",
@@ -70,6 +70,7 @@ export const fundingSolutions: CaseStudy = {
       },
       {
         kind: "split",
+        label: "Outcome", // ⚠️ chapter label added for the tick nav — confirm
         title: "A foundation for the roadmap.",
         paragraphs: [
           "Funding Solutions is in active development. Automated underwriting, post-funding servicing and a business tools marketplace are next on the roadmap, all built on this foundation.",
