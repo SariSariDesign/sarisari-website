@@ -1,55 +1,82 @@
-import { BOOKING_URL, terms } from "./site";
+import {
+  AUDIT_BOOKING_URL,
+  BOOKING_URL,
+  DESIGN_PARTNER_BOOKING_URL,
+  DESIGN_PLUS_BOOKING_URL,
+  DIAGNOSTIC_BOOKING_URL,
+  terms,
+} from "./site";
+import type { OfferCard } from "@/components/OfferGrid";
 
 /**
- * Google Ads landing page (/start). Follows Superside's ad-page pattern and voice
- * (confident, punchy, benefit-first) with SSD's strategy: turn the users founders
- * worked hard to get into regulars; senior strategic design they can't hire yet.
- * Prices stay visible because the ads test pricing. Main CTA is the general
- * 30-min call; each offer card keeps its own tracked booking link.
+ * Google Ads landing page (/start). Order: promise → approach → proof → benefits →
+ * vs. alternatives → prices → free Scorecard → FAQ. Prices stay visible because the
+ * ads test pricing. Main CTA is the general 30-min call; each offer keeps its own
+ * tracked booking link.
  */
 export const squeeze = {
   meta: {
-    title: "The product design team your startup can't hire yet",
+    title: "The design team that turns signups into regulars",
     description:
-      "Sari Sari turns the users you worked hard to get into regulars. Senior product design for Seed to Series A founders.",
+      "We find where your users drop off, design the fix and ship it, so the ones you worked hard to get stick around.",
   },
   hero: {
-    // First line renders in the italic serif, second in the sans (Superside pattern).
-    lead: "The product design team",
-    rest: "your startup can't hire yet",
+    // First line renders in the italic serif, second in the sans.
+    lead: "The design team",
+    rest: "that turns signups into regulars",
     subhead:
-      "We turn the users you worked hard to get into regulars. Find where they drop off, fix it, ship it.",
+      "We find where your users drop off, design the fix and ship it, so the ones you worked hard to get stick around.",
     cta: { label: "Book a call", href: BOOKING_URL },
+    secondary: { label: "Pricing", href: "#pricing" },
   },
   logosLine: "Trusted by founder-led teams in health, fintech and commerce",
-  intro: {
-    eyebrow: "You built fast. Now make it stick.",
-    headline: "Your users found you. Now give them a reason to stay.",
-    body: "You shipped fast, often with AI. Now people sign up, poke around and drift away, and nobody on the team can say why. We find exactly where your product loses them and redesign those moments so they come back.",
-    cta: { label: "Book a call", href: BOOKING_URL },
+  approach: {
+    eyebrow: "Our approach",
+    headline: "How we keep your users",
+    steps: [
+      {
+        title: "Find where they leave",
+        body: "We walk your product like a new user and test it with real people. You get a clear list of what's costing you users, in order.",
+      },
+      {
+        title: "Design the fix",
+        body: "We redesign the screens and flows that lose people, then test them before anything gets built.",
+      },
+      {
+        title: "Ship it",
+        body: "We build it with you, or hand your developers specs they can run with.",
+      },
+    ],
   },
-  flex: {
-    // Built from what clients say we did for them (approved testimonials).
-    eyebrow: "What founders hire us for",
-    headline: "Unblocked. Clear. Proven.",
+  results: {
+    // One statement per approved testimonial, backed by that quote.
+    eyebrow: "Results",
+    headline: "What founders hire us for",
     items: [
       {
-        title: "Unblock your roadmap, fast",
-        body: "We pick up the work that's stuck and ship it quickly, without cutting corners on quality.",
+        statement: "Unblock your roadmap and ship in weeks",
         quote: "You guys unblocked a huge work stream so quickly and efficiently.",
         who: "Eris Hanson-Cooper, Founder & CEO, Disco",
       },
       {
-        title: "Know exactly what's broken",
-        body: "We research with your real users and turn \"something feels off\" into a clear list of what to fix first.",
+        statement: "Turn “something's off” into a clear to-do list, backed by real users",
         quote: "The things I knew felt off but couldn't articulate this clearly. Your diagnostic gave me a clear punch list to work from.",
         who: "Michael Campbell, CEO, Signal Verified",
       },
       {
-        title: "Test it before you build it",
-        body: "We turn feature requests into quick tests, so you only build what earns its keep.",
-        quote: "They reframed it into a validation question and shipped proof in a day.",
+        statement: "Prove ideas work before you build them",
+        quote: "They reframed it into a validation question and shipped proof in a day. That bundle test went on to become one of the most reliable revenue levers in our digital channel.",
         who: "Jed G., Cofounder, Kocah",
+      },
+      {
+        statement: "Get every screen reviewed, with fixes you can test right away",
+        quote: "They not only helped tear down every single screen, but also suggested helpful recommendations which were simple to test.",
+        who: "Nora Rabah Rodden, Founder, Nervana",
+      },
+      {
+        statement: "Look like the company you're becoming",
+        quote: "The appearance of my company now is just so much more professional thanks to the amazing talents of the Sari Sari designers…",
+        who: "Jherray Babida, President, Social Wine & Spirit",
       },
     ],
   },
@@ -57,58 +84,103 @@ export const squeeze = {
     eyebrow: "Success in numbers",
     headline: "Results you can count",
     items: [
-      { value: "37%", label: "of Kenchan's digital revenue came from a feature we designed" },
-      { value: "13", label: "founder-led teams served across health, fintech and commerce" },
-      { value: "15+", label: "years designing products people come back to" },
+      { value: "$48M+", label: "raised by the founders we've designed for, and counting" },
+      { value: "37%", label: "of Kenchan's digital revenue came from one feature we designed" },
+      { value: "1 hour", label: "from launch to live data proving Kenchan's new feature worked" },
     ],
   },
-  versus: {
-    eyebrow: "Sari Sari vs. the alternatives",
-    headline: "Freelancer? In-house hire? Self-serve? Neither.",
-    columns: ["Sari Sari", "Freelancer", "In-house hire", "Self-serve tools"],
-    rows: [
-      { label: "Finds why users leave, with your real users", values: ["yes", "some", "some", "no"] },
-      { label: "Strategy and design in one team", values: ["yes", "some", "yes", "no"] },
-      { label: "Designs and builds", values: ["yes", "some", "no", "some"] },
-      { label: `Starts within ${terms.startLeadTime}`, values: ["yes", "yes", "no", "yes"] },
-      { label: "Prices you can see upfront", values: ["yes", "some", "no", "yes"] },
-      { label: "Money-back guarantee", values: ["yes", "no", "no", "some"] },
-      { label: "Scale up or down any month", values: ["yes", "some", "no", "yes"] },
-    ] as { label: string; values: ("yes" | "some" | "no")[] }[],
-  },
   why: {
-    eyebrow: "No, we're not a pixel factory.",
+    eyebrow: "Benefits",
     headline: "Why Sari Sari?",
+    // Eyebrows are the brand pillars; each title says what that pillar means for the founder.
     items: [
       {
+        icon: "arrows-clockwise",
         label: "Strategic",
-        title: "Built to keep users",
-        body: "We design around the moments that decide whether people stay: signup, the first session, the reason to come back.",
+        title: "Every decision tied to keeping users",
+        body: "We design the moments that decide whether people stay: signup, the first session, the reason to come back.",
       },
       {
+        icon: "eye",
         label: "Human",
         title: "Taste AI can't fake",
         body: "Tools can generate screens. They can't sit with your users, weigh trade-offs or tell you what to cut.",
       },
       {
+        icon: "magnifying-glass",
         label: "Insightful",
-        title: "Start small or go all in",
-        body: "Start with a $1,500 Audit, run a 90-day project or keep us on as your design partner. Your call.",
+        title: "Built on what your users actually do",
+        body: "We test with the people you're trying to keep, so every fix is backed by evidence instead of guesses.",
       },
       {
+        icon: "shield-check",
         label: "Bold",
-        title: "Your first month, guaranteed",
+        title: "We put our fee on the line",
         body: "Not happy after Month 1 of Design+? We refund it in full and you walk away.",
       },
     ],
   },
+  versus: {
+    eyebrow: "Sari Sari vs. the alternatives",
+    headline: "Freelancer? In-house hire? DIY tools? Neither.",
+    columns: ["Sari Sari", "Freelancer", "In-house hire", "DIY tools"],
+    rows: [
+      { label: "Finds why users drop off", values: ["✓ Tested with your real users", "If you scope it", "Once they're up to speed", "You read the data yourself"] },
+      { label: "Strategy, design and build", values: ["✓ One team", "Usually design only", "One person's skill set", "—"] },
+      { label: "Start date", values: ["As fast as 3 days", "Varies", "Months to hire", "Today"] },
+      { label: "Price", values: ["Public, from $1,500", "Hourly, varies", "Salary, equity, benefits", "Free to a % of revenue"] },
+      { label: "Smallest first step", values: ["Free 2-min Scorecard, or a 7-day Audit", "A paid project", "A full-time hire", "Setup and your own time"] },
+      { label: "Commitment", values: ["From 7 days. Retainers cancel anytime.", "Per project", "Full-time", "Monthly"] },
+    ],
+  },
+  pricing: {
+    eyebrow: "Pricing",
+    headline: "Pick where to start",
+    offers: [
+      {
+        id: "offer-audit",
+        name: "The Audit",
+        summary: "Find where users leave in any single flow, and exactly why.",
+        price: "$1,500",
+        cta: { label: "Book a call", href: AUDIT_BOOKING_URL },
+        features: ["7 days", "UX scorecard", "Screen-by-screen teardown"],
+      },
+      {
+        id: "offer-diagnostic",
+        name: "The Diagnostic",
+        summary: "Redesign your biggest leak and get a 90-day plan for the rest.",
+        price: "$6,000",
+        cta: { label: "Book a call", href: DIAGNOSTIC_BOOKING_URL },
+        features: ["28 days", "UX scorecard", "Screen-by-screen teardown", "Redesigned prototype", "Usability testing guide", "90-day roadmap"],
+      },
+      {
+        id: "offer-design-plus",
+        name: "Design+",
+        summary: "Hand us your biggest product project. We ship it in 90 days.",
+        price: "$8,000+",
+        period: "/ month",
+        featured: true,
+        cta: { label: "Book a call", href: DESIGN_PLUS_BOOKING_URL },
+        features: ["Shipped in 90 days", "One launch, redesign or feature set, start to finish", "Clarity on what to build first, before anything gets built", "We build it, or guide your developers", "3-month minimum"],
+        note: "Not happy after Month 1? We refund it in full.",
+      },
+      {
+        id: "offer-design-partner",
+        name: "The Design Partner",
+        summary: "Ongoing design and dev on an open roadmap, month to month.",
+        price: "Let's talk",
+        cta: { label: "Book a call", href: DESIGN_PARTNER_BOOKING_URL },
+        features: ["Design and engineering team", "Open roadmap", `Starts within ${terms.startLeadTime}`, "Cancel anytime"],
+      },
+    ] satisfies OfferCard[],
+  },
   scorecard: {
-    eyebrow: "Not ready to talk?",
-    headline: "See where your users drop off, free",
+    eyebrow: "Free · 2 minutes",
+    headline: "Not ready to talk? Get a free Scorecard.",
+    submitLabel: "Get Free Scorecard",
+    body: "Drop in your URL. We'll email you the top 5 things keeping users from converting.",
   },
-  faqExtra: {
-    q: "Do you run ads?",
-    a: "No. We design the product so the users you bring in stay.",
-  },
+  // FAQ items left off this page (not relevant to ad visitors).
+  faqHide: ["Does the Diagnostic fee count toward Design+?"],
   cta: { label: "Book a call", href: BOOKING_URL },
 };

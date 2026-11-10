@@ -32,7 +32,11 @@ declare global {
   }
 }
 
-export function ScorecardForm({ source = "scorecard-preview" }: { source?: string } = {}) {
+export function ScorecardForm({
+  source = "scorecard-preview",
+  compact = false,
+  submitLabel,
+}: { source?: string; compact?: boolean; submitLabel?: string } = {}) {
   const [step, setStep] = useState<Step>("form");
   const attribution = useRef<Record<string, string>>({});
   useEffect(() => {
@@ -102,6 +106,8 @@ export function ScorecardForm({ source = "scorecard-preview" }: { source?: strin
 
   return (
     <FormScreen
+      compact={compact}
+      submitLabel={submitLabel}
       titleId={headingId}
       form={form}
       errors={errors}
@@ -114,12 +120,16 @@ export function ScorecardForm({ source = "scorecard-preview" }: { source?: strin
 /* -------------------------------------------------------------------------- */
 
 function FormScreen({
+  compact = false,
+  submitLabel,
   titleId,
   form,
   errors,
   update,
   onSubmit,
 }: {
+  compact?: boolean;
+  submitLabel?: string;
   titleId: string;
   form: FormState;
   errors: FormErrors;
@@ -205,7 +215,7 @@ function FormScreen({
 
       <div className="mt-1">
         <button type="submit" className={`${actionCls} group w-full gap-2 px-8 py-4`}>
-          {f.submitLabel}
+          {submitLabel ?? f.submitLabel}
           <Arrow />
         </button>
       </div>
@@ -213,6 +223,9 @@ function FormScreen({
       <LegalFooter />
     </form>
   );
+
+  // Compact: just the fields; the host page supplies the heading (e.g. /start).
+  if (compact) return fields;
 
   const formPane = (
     <div className="flex flex-col gap-5">
