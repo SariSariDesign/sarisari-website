@@ -104,7 +104,7 @@ export default function StartPage() {
                     <span aria-hidden className="pointer-events-none absolute -left-1 -top-4 select-none font-brand text-display-l leading-none text-primary-200">
                       &ldquo;
                     </span>
-                    <blockquote className="relative font-brand text-heading-m text-neutral-600">{r.quote}</blockquote>
+                    <blockquote className="relative font-brand text-heading-m text-neutral-700">{r.quote}</blockquote>
                   </div>
                   <figcaption className="text-body-s text-neutral-700">{r.who}</figcaption>
                 </div>
