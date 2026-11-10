@@ -42,21 +42,23 @@ export default function StartPage() {
       </header>
 
       <main>
-        {/* 1 · Hero: centered promise, one CTA, then the wall of client work (Superside pattern) */}
+        {/* 1 · Hero: promise left, wall of client work right */}
         <section data-hero className="grain relative overflow-hidden bg-neutral-100">
           <Gridlines />
-          <div className="measure relative z-[1] flex flex-col items-center gap-8 pb-12 pt-16 text-center md:pt-24">
-            <h1 className="text-balance text-display-m text-neutral-1000">
-              <span className="block font-brand italic">{squeeze.hero.lead}</span>
-              <span className="block">{squeeze.hero.rest}</span>
-            </h1>
-            <p className="max-w-[46ch] text-lead text-neutral-700">{squeeze.hero.subhead}</p>
-            <Button href={squeeze.hero.cta.href} external>
-              {squeeze.hero.cta.label}
-            </Button>
-          </div>
-          <div className="measure relative z-[1]">
-            <WorkWall className="h-[560px] md:h-[680px]" />
+          <div className="measure relative z-[1] grid grid-cols-4 items-center gap-x-4 gap-y-12 pt-12 md:grid-cols-8 lg:h-[calc(100svh-76px)] lg:grid-cols-12 lg:py-0">
+            <div className="hero-seq col-span-full flex flex-col gap-8 lg:col-span-6">
+              <h1 className="text-balance text-display-m text-neutral-1000">
+                <span className="block font-brand italic">{squeeze.hero.lead}</span>
+                <span className="block">{squeeze.hero.rest}</span>
+              </h1>
+              <p className="max-w-[44ch] text-lead text-neutral-700">{squeeze.hero.subhead}</p>
+              <div>
+                <Button href={squeeze.hero.cta.href} external>
+                  {squeeze.hero.cta.label}
+                </Button>
+              </div>
+            </div>
+            <WorkWall className="col-span-full h-[520px] md:h-[640px] lg:col-span-6 lg:h-full" />
           </div>
           <div className="measure relative z-[1] flex flex-col items-center gap-6 py-12">
             <p className="text-lead text-neutral-1000">{squeeze.logosLine}</p>
@@ -89,10 +91,16 @@ export default function StartPage() {
             {squeeze.flex.items.map((item) => (
               <div
                 key={item.title}
-                className="col-span-4 flex flex-col gap-4 rounded border border-neutral-300 p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 md:col-span-8 lg:col-span-4"
+                className="col-span-4 flex flex-col justify-between gap-8 rounded border border-neutral-300 p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 md:col-span-8 lg:col-span-4"
               >
-                <h3 className="text-heading-m text-neutral-1000">{item.title}</h3>
-                <p className="text-body text-neutral-700">{item.body}</p>
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-heading-m text-neutral-1000">{item.title}</h3>
+                  <p className="text-body text-neutral-700">{item.body}</p>
+                </div>
+                <figure className="flex flex-col gap-2">
+                  <blockquote className="font-brand text-lead italic text-neutral-1000">&ldquo;{item.quote}&rdquo;</blockquote>
+                  <figcaption className="text-body-s text-neutral-700">{item.who}</figcaption>
+                </figure>
               </div>
             ))}
           </Reveal>

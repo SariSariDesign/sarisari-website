@@ -9,13 +9,13 @@ import { BOOKING_URL, terms } from "./site";
  */
 export const squeeze = {
   meta: {
-    title: "The senior design team your startup can't hire yet",
+    title: "The product design team your startup can't hire yet",
     description:
       "Sari Sari turns the users you worked hard to get into regulars. Senior product design for Seed to Series A founders.",
   },
   hero: {
     // First line renders in the italic serif, second in the sans (Superside pattern).
-    lead: "The senior design team",
+    lead: "The product design team",
     rest: "your startup can't hire yet",
     subhead:
       "We turn the users you worked hard to get into regulars. Find where they drop off, fix it, ship it.",
@@ -29,20 +29,27 @@ export const squeeze = {
     cta: { label: "Book a call", href: BOOKING_URL },
   },
   flex: {
-    eyebrow: "Made for founders",
-    headline: "Senior. Strategic. Hands-on.",
+    // Built from what clients say we did for them (approved testimonials).
+    eyebrow: "What founders hire us for",
+    headline: "Unblocked. Clear. Proven.",
     items: [
       {
-        title: "Senior-led, start to finish",
-        body: "15+ years designing products. Patti directs every project and Zach runs the engagement. No juniors learning on your product.",
+        title: "Unblock your roadmap, fast",
+        body: "We pick up the work that's stuck and ship it quickly, without cutting corners on quality.",
+        quote: "You guys unblocked a huge work stream so quickly and efficiently.",
+        who: "Eris Hanson-Cooper, Founder & CEO, Disco",
       },
       {
-        title: "Strategy before screens",
-        body: "Anyone can generate screens now. We decide what to build and why, and test it with your real users before you build it.",
+        title: "Know exactly what's broken",
+        body: "We research with your real users and turn \"something feels off\" into a clear list of what to fix first.",
+        quote: "The things I knew felt off but couldn't articulate this clearly. Your diagnostic gave me a clear punch list to work from.",
+        who: "Michael Campbell, CEO, Signal Verified",
       },
       {
-        title: "We ship the fix",
-        body: `We design and build, or work hand in hand with your developers. Most teams start within ${terms.startLeadTime}.`,
+        title: "Test it before you build it",
+        body: "We turn feature requests into quick tests, so you only build what earns its keep.",
+        quote: "They reframed it into a validation question and shipped proof in a day.",
+        who: "Jed G., Cofounder, Kocah",
       },
     ],
   },
@@ -57,14 +64,16 @@ export const squeeze = {
   },
   versus: {
     eyebrow: "Sari Sari vs. the alternatives",
-    headline: "A full-time hire? An AI tool? Neither.",
-    columns: ["Sari Sari", "Full-time hire", "Freelancer", "AI tools"],
+    headline: "Freelancer? In-house hire? Self-serve? Neither.",
+    columns: ["Sari Sari", "Freelancer", "In-house hire", "Self-serve tools"],
     rows: [
-      { label: "Senior product judgment", values: ["yes", "yes", "some", "no"] },
-      { label: `Starts within ${terms.startLeadTime}`, values: ["yes", "no", "yes", "yes"] },
-      { label: "Tests with your real users", values: ["yes", "some", "some", "no"] },
-      { label: "Designs and builds", values: ["yes", "no", "some", "some"] },
-      { label: "Prices you can see upfront", values: ["yes", "no", "some", "yes"] },
+      { label: "Finds why users leave, with your real users", values: ["yes", "some", "some", "no"] },
+      { label: "Strategy and design in one team", values: ["yes", "some", "yes", "no"] },
+      { label: "Designs and builds", values: ["yes", "some", "no", "some"] },
+      { label: `Starts within ${terms.startLeadTime}`, values: ["yes", "yes", "no", "yes"] },
+      { label: "Prices you can see upfront", values: ["yes", "some", "no", "yes"] },
+      { label: "Money-back guarantee", values: ["yes", "no", "no", "some"] },
+      { label: "Scale up or down any month", values: ["yes", "some", "no", "yes"] },
     ] as { label: string; values: ("yes" | "some" | "no")[] }[],
   },
   why: {
