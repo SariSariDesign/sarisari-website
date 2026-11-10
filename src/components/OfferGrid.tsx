@@ -26,7 +26,7 @@ export function OfferGrid({ offers }: { offers: OfferCard[] }) {
           >
             <div className="flex flex-col gap-2">
               <h3 className="whitespace-nowrap text-heading-m lg:text-lead">{o.name}</h3>
-              <p className={`text-body ${o.featured ? "text-primary-100" : "text-neutral-700"}`}>{o.summary}</p>
+              <p className={`text-body md:min-h-[3lh] ${o.featured ? "text-primary-100" : "text-neutral-700"}`}>{o.summary}</p>
             </div>
             <p className="flex flex-wrap items-baseline gap-x-1 whitespace-nowrap">
               <span className="font-brand text-heading-l">{o.price}</span>

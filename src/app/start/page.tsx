@@ -87,16 +87,25 @@ export default function StartPage() {
         {/* 3 · Results: one statement per client, backed by their own words */}
         <Section id="results" aria-labelledby="results-h" className="bg-neutral-100" hug>
           <SectionHeader headingId="results-h" eyebrow={squeeze.results.eyebrow} headline={squeeze.results.headline} />
-          <Reveal stagger className="mt-12 grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12">
+          {/* Mobile: one row that scrolls sideways so the section stays short. */}
+          <Reveal
+            stagger
+            className="-mx-4 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-8 md:overflow-visible md:px-0 lg:grid-cols-12 [&::-webkit-scrollbar]:hidden"
+          >
             {squeeze.results.items.map((r, i) => (
               <figure
                 key={r.who}
-                className={`col-span-4 flex flex-col justify-between gap-10 rounded bg-neutral-200 p-8 transition-colors duration-150 ease-out hover:bg-primary-100 md:col-span-8 ${i < 3 ? "lg:col-span-4" : "lg:col-span-6"}`}
+                className={`flex w-[85%] shrink-0 snap-start flex-col justify-between gap-10 rounded bg-neutral-200 p-8 transition-colors duration-150 ease-out hover:bg-primary-100 md:col-span-8 md:w-auto ${i < 3 ? "lg:col-span-4" : "lg:col-span-6"}`}
               >
-                <h3 className="text-heading-m text-neutral-1000">{r.statement}</h3>
+                <h3 className="text-lead text-neutral-1000">{r.statement}</h3>
                 <div className="flex flex-col gap-3">
-                  <span aria-hidden className="font-brand text-display-s leading-none text-primary-400">&ldquo;</span>
-                  <blockquote className="font-brand text-lead italic text-neutral-1000">{r.quote}</blockquote>
+                  <div className="relative pt-6">
+                    {/* Watermark quote mark, tucked behind the first line. */}
+                    <span aria-hidden className="pointer-events-none absolute -left-1 -top-4 select-none font-brand text-display-l leading-none text-primary-200">
+                      &ldquo;
+                    </span>
+                    <blockquote className="relative font-brand text-heading-m italic text-neutral-800">{r.quote}</blockquote>
+                  </div>
                   <figcaption className="text-body-s text-neutral-700">{r.who}</figcaption>
                 </div>
               </figure>
@@ -125,12 +134,12 @@ export default function StartPage() {
         {/* 5 · Benefits */}
         <Section id="why" aria-labelledby="why-h" className="bg-neutral-100" hug>
           <SectionHeader headingId="why-h" eyebrow={squeeze.why.eyebrow} headline={squeeze.why.headline} />
-          <Reveal stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
+          <Reveal stagger className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12">
             {squeeze.why.items.map((item) => (
-              <div key={item.title} className="col-span-4 flex flex-col gap-3 lg:col-span-6">
-                <PhosphorIcon name={item.icon as PhosphorName} className="mb-2 text-primary-400" />
+              <div key={item.title} className="group flex flex-col gap-3">
+                <PhosphorIcon name={item.icon as PhosphorName} className="nudge-x mb-2 text-primary-400" />
                 <span className="ds-label text-label text-primary-400">{item.label}</span>
-                <h3 className="text-heading-l text-neutral-1000">{item.title}</h3>
+                <h3 className="text-heading-m text-neutral-1000 md:text-heading-l">{item.title}</h3>
                 <p className="max-w-[48ch] text-body text-neutral-700">{item.body}</p>
               </div>
             ))}

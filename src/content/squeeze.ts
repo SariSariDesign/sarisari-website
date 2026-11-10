@@ -92,44 +92,45 @@ export const squeeze = {
   why: {
     eyebrow: "Benefits",
     headline: "Why Sari Sari?",
+    // Eyebrows are the brand pillars; each title says what that pillar means for the founder.
     items: [
       {
         icon: "arrows-clockwise",
         label: "Strategic",
-        title: "Built to keep users",
-        body: "We design around the moments that decide whether people stay: signup, the first session, the reason to come back.",
+        title: "Every decision tied to keeping users",
+        body: "We design the moments that decide whether people stay: signup, the first session, the reason to come back.",
       },
       {
-        icon: "hand-heart",
+        icon: "eye",
         label: "Human",
         title: "Taste AI can't fake",
         body: "Tools can generate screens. They can't sit with your users, weigh trade-offs or tell you what to cut.",
       },
       {
-        icon: "trend-up",
+        icon: "magnifying-glass",
         label: "Insightful",
-        title: "Start small or go all in",
-        body: "Start with a $1,500 Audit, run a 90-day project or keep us on as your design partner. Your call.",
+        title: "Built on what your users actually do",
+        body: "We test with the people you're trying to keep, so every fix is backed by evidence instead of guesses.",
       },
       {
         icon: "shield-check",
         label: "Bold",
-        title: "Your first month, guaranteed",
+        title: "We put our fee on the line",
         body: "Not happy after Month 1 of Design+? We refund it in full and you walk away.",
       },
     ],
   },
   versus: {
     eyebrow: "Sari Sari vs. the alternatives",
-    headline: "Freelancer? Agency? In-house hire? Neither.",
-    columns: ["Sari Sari", "Freelancer", "Agency", "In-house hire", "DIY tools"],
+    headline: "Freelancer? In-house hire? DIY tools? Neither.",
+    columns: ["Sari Sari", "Freelancer", "In-house hire", "DIY tools"],
     rows: [
-      { label: "Finds why users drop off", values: ["✓ Tested with your real users", "If you scope it", "Usually a paid discovery phase", "Once they're up to speed", "You read the data yourself"] },
-      { label: "Strategy, design and build", values: ["✓ One team", "Usually design only", "✓", "One person's skill set", "—"] },
-      { label: "Start date", values: ["As fast as 3 days", "Varies", "After scoping and contracts", "Months to hire", "Today"] },
-      { label: "Price", values: ["Public, from $1,500", "Hourly, varies", "Many start at $50K+", "Salary, equity, benefits", "Free to a % of revenue"] },
-      { label: "Smallest first step", values: ["Free 2-min Scorecard, or a 7-day Audit", "A paid project", "Discovery phase", "A full-time hire", "Setup and your own time"] },
-      { label: "Commitment", values: ["From 7 days. Retainers cancel anytime.", "Per project", "Fixed contract", "Full-time", "Monthly"] },
+      { label: "Finds why users drop off", values: ["✓ Tested with your real users", "If you scope it", "Once they're up to speed", "You read the data yourself"] },
+      { label: "Strategy, design and build", values: ["✓ One team", "Usually design only", "One person's skill set", "—"] },
+      { label: "Start date", values: ["As fast as 3 days", "Varies", "Months to hire", "Today"] },
+      { label: "Price", values: ["Public, from $1,500", "Hourly, varies", "Salary, equity, benefits", "Free to a % of revenue"] },
+      { label: "Smallest first step", values: ["Free 2-min Scorecard, or a 7-day Audit", "A paid project", "A full-time hire", "Setup and your own time"] },
+      { label: "Commitment", values: ["From 7 days. Retainers cancel anytime.", "Per project", "Full-time", "Monthly"] },
     ],
   },
   pricing: {
@@ -139,7 +140,7 @@ export const squeeze = {
       {
         id: "offer-audit",
         name: "The Audit",
-        summary: "Find where users leave in any single flow, and why.",
+        summary: "Find where users leave in any single flow, and exactly why.",
         price: "$1,500",
         cta: { label: "Book a call", href: AUDIT_BOOKING_URL },
         features: ["7 days", "UX scorecard", "Screen-by-screen teardown"],
@@ -147,7 +148,7 @@ export const squeeze = {
       {
         id: "offer-diagnostic",
         name: "The Diagnostic",
-        summary: "Redesign the biggest leak in your flow and get a clear 90-day plan for the rest.",
+        summary: "Redesign your biggest leak and get a 90-day plan for the rest.",
         price: "$6,000",
         cta: { label: "Book a call", href: DIAGNOSTIC_BOOKING_URL },
         features: ["28 days", "UX scorecard", "Screen-by-screen teardown", "Redesigned prototype", "Usability testing guide", "90-day roadmap"],
@@ -155,7 +156,7 @@ export const squeeze = {
       {
         id: "offer-design-plus",
         name: "Design+",
-        summary: "Hand us your biggest product project. We take it from plan to shipped in 90 days.",
+        summary: "Hand us your biggest product project. We ship it in 90 days.",
         price: "$8,000+",
         period: "/ month",
         featured: true,
@@ -166,7 +167,7 @@ export const squeeze = {
       {
         id: "offer-design-partner",
         name: "The Design Partner",
-        summary: "Ongoing design and dev on an open roadmap.",
+        summary: "Ongoing design and dev on an open roadmap, month to month.",
         price: "Let's talk",
         cta: { label: "Book a call", href: DESIGN_PARTNER_BOOKING_URL },
         features: ["Design and engineering team", "Open roadmap", `Starts within ${terms.startLeadTime}`, "Cancel anytime"],
