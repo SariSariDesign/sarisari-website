@@ -1,70 +1,95 @@
-import { BOOKING_URL } from "./site";
+import { BOOKING_URL, terms } from "./site";
 
 /**
- * Google Ads landing page (/start). Strategy: SSD Website UX Strategy doc, tab
- * "05 Squeeze page". The founder is the main character: each section names their
- * pain in their words, then says how SSD fixes it. Prices stay visible because the
- * ads test pricing. Main CTA is the general 30-min call; each offer card keeps its
- * own tracked booking link.
+ * Google Ads landing page (/start). Follows Superside's ad-page pattern and voice
+ * (confident, punchy, benefit-first) with SSD's strategy: turn the users founders
+ * worked hard to get into regulars; senior strategic design they can't hire yet.
+ * Prices stay visible because the ads test pricing. Main CTA is the general
+ * 30-min call; each offer card keeps its own tracked booking link.
  */
 export const squeeze = {
   meta: {
-    title: "Product design that keeps your users",
+    title: "The senior design team your startup can't hire yet",
     description:
-      "Users sign up, then disappear? Sari Sari finds where your product loses people, redesigns those moments and helps you ship the fix.",
+      "Sari Sari turns the users you worked hard to get into regulars. Senior product design for Seed to Series A founders.",
   },
   hero: {
-    eyebrow: "Product design for Seed to Series A founders",
-    headline: "Users sign up. Then they disappear. We fix that.",
+    // First line renders in the italic serif, second in the sans (Superside pattern).
+    lead: "The senior design team",
+    rest: "your startup can't hire yet",
     subhead:
-      "You worked hard to get those users. We find exactly where your product loses them, redesign those moments and help you ship the fix.",
+      "We turn the users you worked hard to get into regulars. Find where they drop off, fix it, ship it.",
     cta: { label: "Book a call", href: BOOKING_URL },
-    secondary: { label: "See pricing", href: "#pricing" },
   },
-  pains: {
-    eyebrow: "Sound familiar?",
-    headline: "You've got the users. Your product isn't keeping them.",
+  logosLine: "Trusted by founder-led teams in health, fintech and commerce",
+  intro: {
+    eyebrow: "You built fast. Now make it stick.",
+    headline: "Your users found you. Now give them a reason to stay.",
+    body: "You shipped fast, often with AI. Now people sign up, poke around and drift away, and nobody on the team can say why. We find exactly where your product loses them and redesign those moments so they come back.",
+    cta: { label: "Book a call", href: BOOKING_URL },
+  },
+  flex: {
+    eyebrow: "Made for founders",
+    headline: "Senior. Strategic. Hands-on.",
     items: [
       {
-        quote: "We get signups, but nobody sticks around.",
-        help: "We find the exact steps where people quit and redesign them.",
-        note: "The average app loses 77% of new users within 3 days.*",
+        title: "Senior-led, start to finish",
+        body: "15+ years designing products. Patti directs every project and Zach runs the engagement. No juniors learning on your product.",
       },
       {
-        quote: "We're going off vibes.",
-        help: "We show you what's costing you users and what to fix first, backed by research instead of guesses.",
+        title: "Strategy before screens",
+        body: "Anyone can generate screens now. We decide what to build and why, and test it with your real users before you build it.",
       },
       {
-        quote: "It works, but it looks AI-made.",
-        help: "We give your product the clarity and craft people trust.",
-      },
-      {
-        quote: "There's no senior designer on the team.",
-        help: "You get a senior product design team without the hire.",
+        title: "We ship the fix",
+        body: `We design and build, or work hand in hand with your developers. Most teams start within ${terms.startLeadTime}.`,
       },
     ],
-    source: "*Quettra data via Andrew Chen (2015, Android apps).",
   },
-  stats: [
-    { value: "37%", label: "of Kenchan's digital revenue came from a feature we designed" },
-    { value: "13", label: "teams across health, fintech and commerce" },
-    { value: "15+", label: "years designing products people come back to" },
-  ],
-  how: {
-    eyebrow: "How we fix it",
-    headline: "Find it. Fix it. Ship it.",
-    steps: [
+  numbers: {
+    eyebrow: "Success in numbers",
+    headline: "Results you can count",
+    items: [
+      { value: "37%", label: "of Kenchan's digital revenue came from a feature we designed" },
+      { value: "13", label: "founder-led teams served across health, fintech and commerce" },
+      { value: "15+", label: "years designing products people come back to" },
+    ],
+  },
+  versus: {
+    eyebrow: "Sari Sari vs. the alternatives",
+    headline: "A full-time hire? An AI tool? Neither.",
+    columns: ["Sari Sari", "Full-time hire", "Freelancer", "AI tools"],
+    rows: [
+      { label: "Senior product judgment", values: ["yes", "yes", "some", "no"] },
+      { label: `Starts within ${terms.startLeadTime}`, values: ["yes", "no", "yes", "yes"] },
+      { label: "Tests with your real users", values: ["yes", "some", "some", "no"] },
+      { label: "Designs and builds", values: ["yes", "no", "some", "some"] },
+      { label: "Prices you can see upfront", values: ["yes", "no", "some", "yes"] },
+    ] as { label: string; values: ("yes" | "some" | "no")[] }[],
+  },
+  why: {
+    eyebrow: "No, we're not a pixel factory.",
+    headline: "Why Sari Sari?",
+    items: [
       {
-        title: "Find where you lose them",
-        body: "We walk your product like a new user and score every step. You see exactly where people drop and why.",
+        label: "Strategic",
+        title: "Built to keep users",
+        body: "We design around the moments that decide whether people stay: signup, the first session, the reason to come back.",
       },
       {
-        title: "Fix the moments that matter",
-        body: "We redesign the screens and flows that lose people, then test them with real users before you build.",
+        label: "Human",
+        title: "Taste AI can't fake",
+        body: "Tools can generate screens. They can't sit with your users, weigh trade-offs or tell you what to cut.",
       },
       {
-        title: "Ship it",
-        body: "We build it with you, or hand your developers a roadmap and specs they can run with.",
+        label: "Insightful",
+        title: "Start small or go all in",
+        body: "Start with a $1,500 Audit, run a 90-day project or keep us on as your design partner. Your call.",
+      },
+      {
+        label: "Bold",
+        title: "Your first month, guaranteed",
+        body: "Not happy after Month 1 of Design+? We refund it in full and you walk away.",
       },
     ],
   },
