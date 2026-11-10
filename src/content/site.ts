@@ -459,7 +459,7 @@ export const homePricing = {
     },
     {
       id: "offer-diagnostic",
-      kicker: "21 days",
+      kicker: "28 days",
       name: "The Diagnostic",
       price: "$6,000",
       bestFor: "Finding the biggest problem in a flow and redesigning the solution.",

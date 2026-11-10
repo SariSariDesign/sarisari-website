@@ -22,10 +22,10 @@ export function OfferGrid({ offers }: { offers: OfferCard[] }) {
           <div
             key={o.id}
             id={o.id}
-            className={`col-span-4 flex flex-col gap-6 rounded p-6 lg:col-span-3 ${o.featured ? "bg-primary-400 text-neutral-100" : "bg-neutral-200 text-neutral-1000"}`}
+            className={`col-span-4 flex flex-col gap-6 rounded p-6 lg:col-span-3 lg:p-4 ${o.featured ? "bg-primary-400 text-neutral-100" : "bg-neutral-200 text-neutral-1000"}`}
           >
             <div className="flex flex-col gap-2">
-              <h3 className="text-heading-m">{o.name}</h3>
+              <h3 className="whitespace-nowrap text-heading-m lg:text-lead">{o.name}</h3>
               <p className={`text-body ${o.featured ? "text-primary-100" : "text-neutral-700"}`}>{o.summary}</p>
             </div>
             <p className="flex flex-wrap items-baseline gap-x-1 whitespace-nowrap">
@@ -36,7 +36,7 @@ export function OfferGrid({ offers }: { offers: OfferCard[] }) {
             <a
               href={o.cta.href}
               {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className={`ds-label flex h-12 items-center justify-center rounded text-label transition-colors duration-150 ease-out ${o.featured ? "bg-neutral-100 text-primary-500 hover:bg-neutral-200" : "bg-neutral-1000 text-neutral-100 hover:bg-neutral-900"}`}
+              className={`ds-label flex h-12 items-center justify-center rounded text-label transition-colors duration-150 ease-out ${o.featured ? "bg-neutral-100 text-primary-500 hover:bg-neutral-200" : "bg-primary-400 text-neutral-100 hover:bg-primary-500"}`}
             >
               {o.cta.label}
             </a>

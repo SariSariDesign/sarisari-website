@@ -6,6 +6,7 @@ import { FooterCta } from "@/components/FooterCta";
 import { Gridlines } from "@/components/Gridlines";
 import { Marquee } from "@/components/Marquee";
 import { OfferGrid } from "@/components/OfferGrid";
+import { PhosphorIcon, type PhosphorName } from "@/components/PhosphorIcon";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -21,8 +22,6 @@ export const metadata = {
   ...pageMetadata({ ...squeeze.meta, path: "/start" }),
   robots: { index: false, follow: false },
 };
-
-const mark = { yes: "✓", some: "Sometimes", no: "—" } as const;
 
 export default function StartPage() {
   const faqItems = faq.items
@@ -92,11 +91,12 @@ export default function StartPage() {
             {squeeze.results.items.map((r, i) => (
               <figure
                 key={r.who}
-                className={`col-span-4 flex flex-col justify-between gap-10 rounded border border-neutral-300 p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 md:col-span-8 ${i < 3 ? "lg:col-span-4" : "lg:col-span-6"}`}
+                className={`col-span-4 flex flex-col justify-between gap-10 rounded bg-neutral-200 p-8 transition-colors duration-150 ease-out hover:bg-primary-100 md:col-span-8 ${i < 3 ? "lg:col-span-4" : "lg:col-span-6"}`}
               >
                 <h3 className="text-heading-m text-neutral-1000">{r.statement}</h3>
                 <div className="flex flex-col gap-3">
-                  <blockquote className="font-brand text-lead italic text-neutral-1000">&ldquo;{r.quote}&rdquo;</blockquote>
+                  <span aria-hidden className="font-brand text-display-s leading-none text-primary-400">&ldquo;</span>
+                  <blockquote className="font-brand text-lead italic text-neutral-1000">{r.quote}</blockquote>
                   <figcaption className="text-body-s text-neutral-700">{r.who}</figcaption>
                 </div>
               </figure>
@@ -128,6 +128,7 @@ export default function StartPage() {
           <Reveal stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
             {squeeze.why.items.map((item) => (
               <div key={item.title} className="col-span-4 flex flex-col gap-3 lg:col-span-6">
+                <PhosphorIcon name={item.icon as PhosphorName} className="mb-2 text-primary-400" />
                 <span className="ds-label text-label text-primary-400">{item.label}</span>
                 <h3 className="text-heading-l text-neutral-1000">{item.title}</h3>
                 <p className="max-w-[48ch] text-body text-neutral-700">{item.body}</p>
@@ -139,16 +140,17 @@ export default function StartPage() {
         {/* 6 · Versus the alternatives */}
         <Section id="versus" aria-labelledby="versus-h" className="bg-neutral-100" hug>
           <SectionHeader headingId="versus-h" eyebrow={squeeze.versus.eyebrow} headline={squeeze.versus.headline} />
+          {/* Row labels and the Sari Sari column stay pinned; the other four scroll on small screens. */}
           <div className="mt-12 overflow-x-auto">
-            <table className="w-full min-w-[640px] border-collapse text-left">
+            <table className="w-full min-w-[900px] border-separate border-spacing-0 text-left">
               <thead>
                 <tr>
-                  <th className="w-1/3 py-4" />
+                  <th className="sticky left-0 z-[2] w-[120px] bg-neutral-100 py-4 md:w-auto" />
                   {squeeze.versus.columns.map((c, i) => (
                     <th
                       key={c}
                       scope="col"
-                      className={`ds-label px-4 py-4 text-center text-label ${i === 0 ? "rounded-t bg-primary-400 text-neutral-100" : "text-neutral-700"}`}
+                      className={`px-4 py-4 text-body text-neutral-1000 ${i === 0 ? "sticky left-[120px] z-[2] w-[150px] rounded-t bg-primary-400 text-neutral-100 md:static" : ""}`}
                     >
                       {c}
                     </th>
@@ -157,14 +159,16 @@ export default function StartPage() {
               </thead>
               <tbody>
                 {squeeze.versus.rows.map((r) => (
-                  <tr key={r.label} className="border-t border-neutral-300">
-                    <th scope="row" className="py-5 pr-4 text-body text-neutral-1000">{r.label}</th>
+                  <tr key={r.label}>
+                    <th scope="row" className="sticky left-0 z-[1] border-t border-neutral-300 bg-neutral-100 py-5 pr-4 align-top text-body text-neutral-1000">
+                      {r.label}
+                    </th>
                     {r.values.map((v, i) => (
                       <td
                         key={i}
-                        className={`px-4 py-5 text-center text-body ${i === 0 ? "bg-primary-100 text-primary-500" : v === "yes" ? "text-neutral-1000" : "text-neutral-700"}`}
+                        className={`border-t px-4 py-5 align-top text-body ${i === 0 ? "sticky left-[120px] z-[1] border-primary-200 bg-primary-100 text-primary-500 md:static" : "border-neutral-300 text-neutral-700"}`}
                       >
-                        {mark[v]}
+                        {v}
                       </td>
                     ))}
                   </tr>
@@ -193,7 +197,7 @@ export default function StartPage() {
               <p className="max-w-[40ch] text-lead text-neutral-700">{squeeze.scorecard.body}</p>
             </div>
             <div className="col-span-full lg:col-span-6 lg:col-start-7">
-              <ScorecardForm source="squeeze-start" compact />
+              <ScorecardForm source="squeeze-start" compact submitLabel={squeeze.scorecard.submitLabel} />
             </div>
           </div>
         </Section>
