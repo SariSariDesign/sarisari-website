@@ -11,7 +11,7 @@ import { SectionHeader } from "./SectionHeader";
  * three offer cards 3-up, and the free Scorecard row (dashed). 48px between each block.
  * Every card carries an id so the use-case buttons can scroll to and highlight it.
  */
-export function HomePricing() {
+export function HomePricing({ showScorecard = true }: { showScorecard?: boolean } = {}) {
   const { headline, scale, offers, offersHeading, scorecard } = homePricing;
   return (
     <div className="flex flex-col gap-12">
@@ -119,7 +119,8 @@ export function HomePricing() {
         </Reveal>
       </div>
 
-      {/* Free Scorecard row */}
+      {/* Free Scorecard row (hidden on /start, which has its own tagged form) */}
+      {showScorecard && (
       <Reveal>
         <div
           id="offer-scorecard"
@@ -168,6 +169,7 @@ export function HomePricing() {
           )}
         </div>
       </Reveal>
+      )}
     </div>
   );
 }

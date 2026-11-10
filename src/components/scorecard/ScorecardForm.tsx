@@ -1,6 +1,6 @@
 "use client";
 
-import { cloneElement, isValidElement, useId, useState } from "react";
+import { cloneElement, isValidElement, useEffect, useId, useRef, useState } from "react";
 import { Button } from "@/components/Button";
 import { DIAGNOSTIC_BOOKING_URL, scorecard } from "@/content/site";
 import {
@@ -23,8 +23,27 @@ const actionCls =
  * on the standalone `/scorecard-preview` page: the report cover beside the
  * headline and form, stacked on small screens.
  */
-export function ScorecardForm() {
+// Ad click IDs and UTM tags read from the landing URL so each request traces back to its ad.
+const ATTRIBUTION_KEYS = ["gclid", "gbraid", "wbraid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+
+declare global {
+  interface Window {
+    dataLayer?: Record<string, unknown>[];
+  }
+}
+
+export function ScorecardForm({ source = "scorecard-preview" }: { source?: string } = {}) {
   const [step, setStep] = useState<Step>("form");
+  const attribution = useRef<Record<string, string>>({});
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const found: Record<string, string> = { source, landing_path: window.location.pathname };
+    for (const k of ATTRIBUTION_KEYS) {
+      const v = params.get(k);
+      if (v) found[k] = v.slice(0, 200);
+    }
+    attribution.current = found;
+  }, [source]);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const headingId = useId();
@@ -58,10 +77,13 @@ export function ScorecardForm() {
           stage: form.stage,
           url: form.url.trim(),
           faxNumber: form.faxNumber,
+          attribution: attribution.current,
         }),
       });
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       const data = (await res.json().catch(() => ({}))) as { duplicate?: boolean };
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "scorecard_submit", ...attribution.current });
       setStep(data.duplicate ? "duplicate" : "done");
     } catch {
       setStep("error");

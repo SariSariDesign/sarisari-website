@@ -31,6 +31,7 @@ type Payload = {
   stage?: unknown;
   url?: unknown;
   faxNumber?: unknown; // honeypot
+  attribution?: unknown; // ad click IDs + UTM tags from the landing URL
 };
 
 function str(v: unknown): string {
@@ -76,7 +77,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing or invalid fields" }, { status: 400 });
   }
 
-  const lead = { name, company, email, stage, url: parsed.url, domain: parsed.domain };
+  const attribution = cleanAttribution(body.attribution);
+  const lead = { name, company, email, stage, url: parsed.url, domain: parsed.domain, attribution };
 
   // Dedupe: one scorecard per email. We check Attio for a prior scorecard note on
   // this person BEFORE writing our own (so the first request isn't self-blocked).
@@ -111,7 +113,18 @@ type Lead = {
   stage: string;
   url: string;
   domain: string;
+  attribution?: Record<string, string>;
 };
+
+/** Keep only short string values from known-safe keys. */
+function cleanAttribution(v: unknown): Record<string, string> {
+  if (!v || typeof v !== "object") return {};
+  const out: Record<string, string> = {};
+  for (const [k, val] of Object.entries(v as Record<string, unknown>)) {
+    if (/^[a-z_]{2,20}$/.test(k) && typeof val === "string" && val) out[k] = val.slice(0, 200);
+  }
+  return out;
+}
 
 async function attio(path: string, init: RequestInit) {
   const key = process.env.ATTIO_API_KEY;
@@ -224,6 +237,7 @@ async function captureToAttio(lead: Lead, opts: { addNote: boolean }) {
             `Email: ${lead.email}`,
             `Funding stage: ${lead.stage}`,
             `URL submitted: ${lead.url}`,
+            ...Object.entries(lead.attribution ?? {}).map(([k, v]) => `${k}: ${v}`),
           ].join("\n"),
         },
       }),
