@@ -32,7 +32,10 @@ declare global {
   }
 }
 
-export function ScorecardForm({ source = "scorecard-preview" }: { source?: string } = {}) {
+export function ScorecardForm({
+  source = "scorecard-preview",
+  compact = false,
+}: { source?: string; compact?: boolean } = {}) {
   const [step, setStep] = useState<Step>("form");
   const attribution = useRef<Record<string, string>>({});
   useEffect(() => {
@@ -102,6 +105,7 @@ export function ScorecardForm({ source = "scorecard-preview" }: { source?: strin
 
   return (
     <FormScreen
+      compact={compact}
       titleId={headingId}
       form={form}
       errors={errors}
@@ -114,12 +118,14 @@ export function ScorecardForm({ source = "scorecard-preview" }: { source?: strin
 /* -------------------------------------------------------------------------- */
 
 function FormScreen({
+  compact = false,
   titleId,
   form,
   errors,
   update,
   onSubmit,
 }: {
+  compact?: boolean;
   titleId: string;
   form: FormState;
   errors: FormErrors;
@@ -213,6 +219,9 @@ function FormScreen({
       <LegalFooter />
     </form>
   );
+
+  // Compact: just the fields; the host page supplies the heading (e.g. /start).
+  if (compact) return fields;
 
   const formPane = (
     <div className="flex flex-col gap-5">

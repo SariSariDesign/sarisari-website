@@ -4,16 +4,15 @@ import { Button } from "@/components/Button";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FooterCta } from "@/components/FooterCta";
 import { Gridlines } from "@/components/Gridlines";
-import { HomePricing } from "@/components/HomePricing";
 import { Marquee } from "@/components/Marquee";
+import { OfferGrid } from "@/components/OfferGrid";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { SectionHeader } from "@/components/SectionHeader";
-import { TestimonialCarousel } from "@/components/TestimonialCarousel";
-import { WorkWall } from "@/components/WorkWall";
+import { WorkCarousel } from "@/components/WorkCarousel";
 import { Wordmark } from "@/components/Wordmark";
 import { ScorecardForm } from "@/components/scorecard/ScorecardForm";
-import { faq, hero, testimonials } from "@/content/site";
+import { faq, hero } from "@/content/site";
 import { squeeze } from "@/content/squeeze";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -26,7 +25,9 @@ export const metadata = {
 const mark = { yes: "✓", some: "Sometimes", no: "—" } as const;
 
 export default function StartPage() {
-  const faqItems = [squeeze.faqExtra, ...faq.items].map((f) => ({ label: f.q, body: f.a }));
+  const faqItems = faq.items
+    .filter((f) => !squeeze.faqHide.includes(f.q))
+    .map((f) => ({ label: f.q, body: f.a }));
   return (
     <>
       {/* Logo-only header: the logo goes home; nothing else pulls paid clicks away. */}
@@ -42,23 +43,27 @@ export default function StartPage() {
       </header>
 
       <main>
-        {/* 1 · Hero: promise left, wall of client work right */}
+        {/* 1 · Hero: statement, two actions, then a row of work that runs off the right edge */}
         <section data-hero className="grain relative overflow-hidden bg-neutral-100">
           <Gridlines />
-          <div className="measure relative z-[1] grid grid-cols-4 items-center gap-x-4 gap-y-12 pt-12 md:grid-cols-8 lg:h-[calc(100svh-76px)] lg:grid-cols-12 lg:py-0">
-            <div className="hero-seq col-span-full flex flex-col gap-8 lg:col-span-6">
+          <div className="measure relative z-[1] grid grid-cols-4 gap-x-4 pb-12 pt-16 md:grid-cols-8 md:pt-24 lg:grid-cols-12">
+            <div className="hero-seq col-span-full flex flex-col gap-8 lg:col-span-9">
               <h1 className="text-balance text-display-m text-neutral-1000">
-                <span className="block font-brand italic">{squeeze.hero.lead}</span>
-                <span className="block">{squeeze.hero.rest}</span>
+                <span className="font-brand italic">{squeeze.hero.lead}</span> {squeeze.hero.rest}
               </h1>
-              <p className="max-w-[44ch] text-lead text-neutral-700">{squeeze.hero.subhead}</p>
-              <div>
+              <p className="max-w-[52ch] text-lead text-neutral-700">{squeeze.hero.subhead}</p>
+              <div className="flex flex-wrap items-center gap-4">
                 <Button href={squeeze.hero.cta.href} external>
                   {squeeze.hero.cta.label}
                 </Button>
+                <Button href={squeeze.hero.secondary.href} variant="ghost">
+                  {squeeze.hero.secondary.label}
+                </Button>
               </div>
             </div>
-            <WorkWall className="col-span-full h-[520px] md:h-[640px] lg:col-span-6 lg:h-full" />
+          </div>
+          <div className="relative z-[1]">
+            <WorkCarousel />
           </div>
           <div className="measure relative z-[1] flex flex-col items-center gap-6 py-12">
             <p className="text-lead text-neutral-1000">{squeeze.logosLine}</p>
@@ -66,42 +71,35 @@ export default function StartPage() {
           </div>
         </section>
 
-        {/* 2 · The problem, and that we fix it */}
-        <Section id="intro" aria-labelledby="intro-h" className="bg-neutral-100" hug>
-          <div className="grid grid-cols-4 gap-x-4 gap-y-8 md:grid-cols-8 lg:grid-cols-12">
-            <div className="col-span-full flex flex-col gap-6 lg:col-span-6">
-              <Eyebrow>{squeeze.intro.eyebrow}</Eyebrow>
-              <h2 id="intro-h" className="text-balance font-brand text-display-s text-neutral-1000">
-                {squeeze.intro.headline}
-              </h2>
-            </div>
-            <div className="col-span-full flex flex-col items-start gap-8 lg:col-span-5 lg:col-start-8 lg:self-end">
-              <p className="text-lead text-neutral-700">{squeeze.intro.body}</p>
-              <Button href={squeeze.intro.cta.href} external>
-                {squeeze.intro.cta.label}
-              </Button>
-            </div>
-          </div>
+        {/* 2 · Approach: how we keep their users */}
+        <Section id="approach" aria-labelledby="approach-h" className="bg-neutral-100" hug>
+          <SectionHeader headingId="approach-h" eyebrow={squeeze.approach.eyebrow} headline={squeeze.approach.headline} />
+          <Reveal stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-10 md:grid-cols-8 lg:grid-cols-12">
+            {squeeze.approach.steps.map((step, i) => (
+              <div key={step.title} className="col-span-4 flex flex-col gap-4 md:col-span-8 lg:col-span-4">
+                <span className="font-brand text-display-s text-primary-400">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="text-heading-m text-neutral-1000">{step.title}</h3>
+                <p className="text-body text-neutral-700">{step.body}</p>
+              </div>
+            ))}
+          </Reveal>
         </Section>
 
-        {/* 3 · Made for founders */}
-        <Section id="flex" aria-labelledby="flex-h" className="bg-neutral-100" hug>
-          <SectionHeader headingId="flex-h" eyebrow={squeeze.flex.eyebrow} headline={squeeze.flex.headline} />
+        {/* 3 · Results: one statement per client, backed by their own words */}
+        <Section id="results" aria-labelledby="results-h" className="bg-neutral-100" hug>
+          <SectionHeader headingId="results-h" eyebrow={squeeze.results.eyebrow} headline={squeeze.results.headline} />
           <Reveal stagger className="mt-12 grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12">
-            {squeeze.flex.items.map((item) => (
-              <div
-                key={item.title}
-                className="col-span-4 flex flex-col justify-between gap-8 rounded border border-neutral-300 p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 md:col-span-8 lg:col-span-4"
+            {squeeze.results.items.map((r, i) => (
+              <figure
+                key={r.who}
+                className={`col-span-4 flex flex-col justify-between gap-10 rounded border border-neutral-300 p-8 transition-colors duration-150 ease-out hover:border-neutral-1000 hover:bg-neutral-200 md:col-span-8 ${i < 3 ? "lg:col-span-4" : "lg:col-span-6"}`}
               >
-                <div className="flex flex-col gap-4">
-                  <h3 className="text-heading-m text-neutral-1000">{item.title}</h3>
-                  <p className="text-body text-neutral-700">{item.body}</p>
+                <h3 className="text-heading-m text-neutral-1000">{r.statement}</h3>
+                <div className="flex flex-col gap-3">
+                  <blockquote className="font-brand text-lead italic text-neutral-1000">&ldquo;{r.quote}&rdquo;</blockquote>
+                  <figcaption className="text-body-s text-neutral-700">{r.who}</figcaption>
                 </div>
-                <figure className="flex flex-col gap-2">
-                  <blockquote className="font-brand text-lead italic text-neutral-1000">&ldquo;{item.quote}&rdquo;</blockquote>
-                  <figcaption className="text-body-s text-neutral-700">{item.who}</figcaption>
-                </figure>
-              </div>
+              </figure>
             ))}
           </Reveal>
         </Section>
@@ -124,9 +122,18 @@ export default function StartPage() {
           </div>
         </section>
 
-        {/* 5 · Offers & prices (each card keeps its own tracked booking link) */}
-        <Section id="pricing" aria-labelledby="pricing-h" className="bg-neutral-100" hug>
-          <HomePricing showScorecard={false} />
+        {/* 5 · Benefits */}
+        <Section id="why" aria-labelledby="why-h" className="bg-neutral-100" hug>
+          <SectionHeader headingId="why-h" eyebrow={squeeze.why.eyebrow} headline={squeeze.why.headline} />
+          <Reveal stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
+            {squeeze.why.items.map((item) => (
+              <div key={item.title} className="col-span-4 flex flex-col gap-3 lg:col-span-6">
+                <span className="ds-label text-label text-primary-400">{item.label}</span>
+                <h3 className="text-heading-l text-neutral-1000">{item.title}</h3>
+                <p className="max-w-[48ch] text-body text-neutral-700">{item.body}</p>
+              </div>
+            ))}
+          </Reveal>
         </Section>
 
         {/* 6 · Versus the alternatives */}
@@ -167,37 +174,31 @@ export default function StartPage() {
           </div>
         </Section>
 
-        {/* 7 · Why Sari Sari */}
-        <Section id="why" aria-labelledby="why-h" className="bg-neutral-100" hug>
-          <SectionHeader headingId="why-h" eyebrow={squeeze.why.eyebrow} headline={squeeze.why.headline} />
-          <Reveal stagger className="mt-12 grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
-            {squeeze.why.items.map((item) => (
-              <div key={item.title} className="col-span-4 flex flex-col gap-3 lg:col-span-6">
-                <span className="ds-label text-label text-primary-400">{item.label}</span>
-                <h3 className="text-heading-l text-neutral-1000">{item.title}</h3>
-                <p className="max-w-[48ch] text-body text-neutral-700">{item.body}</p>
-              </div>
-            ))}
-          </Reveal>
+        {/* 7 · Pricing (each card keeps its own tracked booking link) */}
+        <Section id="pricing" aria-labelledby="pricing-h" className="bg-neutral-100" hug>
+          <SectionHeader headingId="pricing-h" eyebrow={squeeze.pricing.eyebrow} headline={squeeze.pricing.headline} />
           <div className="mt-12">
-            <Button href={squeeze.cta.href} external>
-              {squeeze.cta.label}
-            </Button>
+            <OfferGrid offers={squeeze.pricing.offers} />
           </div>
         </Section>
 
-        {/* 8 · Proof */}
-        <TestimonialCarousel headline={testimonials.headline} items={testimonials.items} />
-
-        {/* 9 · Free Scorecard, tagged with ad attribution */}
+        {/* 8 · Free Scorecard, tagged with ad attribution */}
         <Section id="scorecard" aria-labelledby="scorecard-h" className="bg-neutral-100" hug>
-          <SectionHeader headingId="scorecard-h" eyebrow={squeeze.scorecard.eyebrow} headline={squeeze.scorecard.headline} />
-          <div className="mx-auto mt-12 max-w-[1000px]">
-            <ScorecardForm source="squeeze-start" />
+          <div className="grid grid-cols-4 gap-x-4 gap-y-10 rounded bg-neutral-200 p-6 md:grid-cols-8 md:p-10 lg:grid-cols-12">
+            <div className="col-span-full flex flex-col gap-4 lg:col-span-5">
+              <span className="ds-label text-label text-primary-400">{squeeze.scorecard.eyebrow}</span>
+              <h2 id="scorecard-h" className="font-brand text-display-s text-neutral-1000">
+                {squeeze.scorecard.headline}
+              </h2>
+              <p className="max-w-[40ch] text-lead text-neutral-700">{squeeze.scorecard.body}</p>
+            </div>
+            <div className="col-span-full lg:col-span-6 lg:col-start-7">
+              <ScorecardForm source="squeeze-start" compact />
+            </div>
           </div>
         </Section>
 
-        {/* 10 · FAQ */}
+        {/* 9 · FAQ */}
         <Section id="faq" aria-labelledby="faq-h" className="bg-neutral-100" hug>
           <div className="grid grid-cols-4 gap-x-4 gap-y-12 md:grid-cols-8 lg:grid-cols-12">
             <div className="col-span-full flex flex-col gap-8 lg:col-span-4">
