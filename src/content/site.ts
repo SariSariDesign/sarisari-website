@@ -434,8 +434,8 @@ export const homePricing = {
     name: "Design+",
     price: "$8,000+",
     period: "/ month",
-    // ⚠️ footnote text for * pending
     summary: "A senior team that designs and ships one defined project, with a money back guarantee.*",
+    footnote: { text: "*Not happy by the end of Month 1? We refund Month 1 in full.", linkLabel: "See Terms", href: "/terms" },
     // ⚠️ Drafted for the 90-day project; the old list was retainer terms (cancel anytime, open roadmap).
     features: [
       { title: "One defined project.", body: "A launch, a redesign or a new feature set, scoped up front." },
@@ -582,7 +582,7 @@ export const faq = {
     },
     {
       q: "What if it isn't working?",
-      a: `You give ${terms.noticePeriod} notice and stop paying, with no wind-down fees or penalties. We'd rather part cleanly than hold a client who isn't getting value.`,
+      a: `On Design Partner, give ${terms.noticePeriod} notice and stop paying, with no wind-down fees or penalties. Design+ has a 3-month minimum, and if you're not happy by the end of Month 1, we refund Month 1 in full. We'd rather part cleanly than hold a client who isn't getting value.`,
     },
     {
       q: "Can we pause our partnership?",
@@ -618,7 +618,7 @@ export const footer = {
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },
   ],
-  copyright: "© 2026 Sari Sari LLC",
+  copyright: "© 2026 Sari Sari Design LLC",
 };
 
 /**

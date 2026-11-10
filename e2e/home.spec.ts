@@ -61,7 +61,7 @@ test.describe("homepage", () => {
 
   test("FAQ opens one item at a time", async ({ page }) => {
     await page.getByRole("button", { name: /what if it isn't working/i }).click();
-    await expect(page.getByText(/you give 30 days notice/i)).toBeVisible();
+    await expect(page.getByText(/on design partner, give 30 days notice/i)).toBeVisible();
   });
 
   test("has no serious or critical accessibility violations", async ({ page }) => {
