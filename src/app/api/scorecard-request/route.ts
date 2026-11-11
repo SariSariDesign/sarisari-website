@@ -6,8 +6,8 @@ import { companyDomainFor } from "./personal-domains";
  * Free Activation Scorecard lead capture.
  *
  * Flow: validate → capture the lead in Attio (upsert person, create company only
- * if none exists for the email (or fallback URL) domain — never rename an existing
- * one — and a note holding
+ * if none exists for a work-email domain — never rename an existing one — and a
+ * note holding
  * the full submission) → (Phase 2) enqueue the background analysis job. We return
  * 200 quickly and never surface a CRM failure to the visitor in a way that loses
  * the lead — capture is best-effort and logged server-side.
@@ -184,8 +184,8 @@ async function alreadyRequested(email: string): Promise<boolean> {
 
 /**
  * Create the lead's company only if none exists. The company is identified by
- * the visitor's EMAIL domain, falling back to the submitted URL's domain when
- * the email is personal (see companyDomainFor); if both are personal we skip.
+ * the visitor's EMAIL domain only (see companyDomainFor); a personal / free
+ * email skips the company step entirely, with no Attio requests.
  * We never write to an existing company: a visitor-typed name must not
  * overwrite our CRM data (an upsert here once renamed a real company record).
  * Fails safe — any lookup error skips the company write entirely; a create
@@ -193,7 +193,7 @@ async function alreadyRequested(email: string): Promise<boolean> {
  * never retried as an upsert.
  */
 async function ensureCompany(lead: Lead) {
-  const companyDomain = companyDomainFor(lead.email, lead.domain);
+  const companyDomain = companyDomainFor(lead.email);
   if (!companyDomain) return;
 
   let exists: boolean;

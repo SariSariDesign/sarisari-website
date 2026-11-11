@@ -47,9 +47,10 @@ const json = (data: unknown, status = 200) =>
 
 /**
  * Stub global fetch with a tiny Attio router. `companyQuery` controls the
- * response to POST /objects/companies/records/query.
+ * response to POST /objects/companies/records/query. `existingPerson` makes the
+ * dedupe lookup find a person who already has a scorecard note.
  */
-function mockAttio(companyQuery: () => Response) {
+function mockAttio(companyQuery: () => Response, opts: { existingPerson?: boolean } = {}) {
   const calls: Call[] = [];
   const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = new URL(String(input));
@@ -58,7 +59,10 @@ function mockAttio(companyQuery: () => Response) {
     const body = typeof init?.body === "string" ? JSON.parse(init.body) : undefined;
     calls.push({ method, path, body });
 
-    if (method === "POST" && path === "/objects/people/records/query") return json({ data: [] });
+    if (method === "POST" && path === "/objects/people/records/query")
+      return json({ data: opts.existingPerson ? [{ id: { record_id: "person_1" } }] : [] });
+    if (method === "GET" && path.startsWith("/notes?"))
+      return json({ data: [{ title: "Free Activation Scorecard request" }] });
     if (method === "POST" && path === "/objects/companies/records/query") return companyQuery();
     if (method === "POST" && path === "/objects/companies/records")
       return json({ data: { id: { record_id: "co_new" } } });
@@ -154,29 +158,41 @@ describe("POST /api/scorecard-request → Attio company handling", () => {
     );
   });
 
-  it("falls back to the URL domain when the email is personal", async () => {
+  it("makes no companies request for a personal email, even with a company URL", async () => {
     const calls = mockAttio(() => json({ data: [] }));
     const res = await post({ ...good, email: "jane@gmail.com", url: "https://acme.io" });
 
     expect(res.status).toBe(200);
-    const query = calls.find((c) => c.path === "/objects/companies/records/query");
-    expect(query?.body).toEqual({ filter: { domains: "acme.io" }, limit: 1 });
-    const writes = companyWrites(calls);
-    expect(writes).toHaveLength(1);
-    expect(writes[0].body).toEqual({ data: { values: { name: "Engines", domains: ["acme.io"] } } });
+    expect(calls.filter((c) => c.path.startsWith("/objects/companies"))).toEqual([]);
     expectPersonAndNote(calls);
+    // The submitted URL still flows to the note and analysis unchanged.
+    expect(JSON.stringify(notes(calls)[0].body)).toContain("URL submitted: https://acme.io/");
+    (after.mock.calls[0][0] as () => void)();
+    expect(runAnalysisAndEmail).toHaveBeenLastCalledWith(
+      expect.objectContaining({ url: "https://acme.io/", domain: "acme.io" }),
+    );
   });
 
-  it("does not write to an existing company found via the URL fallback", async () => {
-    const calls = mockAttio(() => json({ data: [{ id: { record_id: "co_existing" } }] }));
-    await post({ ...good, email: "jane@gmail.com", url: "https://acme.io" });
+  it("leaves an existing personal-email contact's company link untouched on resubmit", async () => {
+    // Jane (gmail) already exists in Attio, linked to a company, and already has
+    // a scorecard note. Every request the route makes is asserted below.
+    const calls = mockAttio(() => json({ data: [] }), { existingPerson: true });
+    const res = await post({ ...good, email: "jane@gmail.com", url: "https://acme.io" });
 
-    expect(calls.find((c) => c.path === "/objects/companies/records/query")?.body).toEqual({
-      filter: { domains: "acme.io" },
-      limit: 1,
-    });
-    expect(companyWrites(calls)).toEqual([]);
-    expectPersonAndNote(calls);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, duplicate: true });
+    expect(calls.map((c) => `${c.method} ${c.path}`)).toEqual([
+      "POST /objects/people/records/query",
+      "GET /notes?parent_object=people&parent_record_id=person_1&limit=50",
+      "PUT /objects/people/records?matching_attribute=email_addresses",
+    ]);
+    expect(calls.some((c) => c.path.startsWith("/objects/companies"))).toBe(false);
+    expect(calls.some((c) => c.method === "PATCH")).toBe(false);
+    const people = personUpsert(calls);
+    expect(people).toHaveLength(1);
+    const values = (people[0].body as { data: { values: Record<string, unknown> } }).data.values;
+    expect(Object.keys(values).sort()).toEqual(["email_addresses", "name"]);
+    expect(values).not.toHaveProperty("company");
   });
 
   it("skips the company write when the lookup fails, and still captures the lead", async () => {
@@ -191,11 +207,11 @@ describe("POST /api/scorecard-request → Attio company handling", () => {
     expect(after).toHaveBeenCalledOnce();
   });
 
-  it.each(["gmail.com", "https://mail.yahoo.com", "WWW.Outlook.COM"])(
-    "makes no companies request for a personal email + personal url %s",
-    async (url) => {
+  it.each(["jane@gmail.com", "jane@mail.yahoo.com", "Jane@Outlook.COM"])(
+    "makes no companies request for personal email %s",
+    async (email) => {
       const calls = mockAttio(() => json({ data: [] }));
-      const res = await post({ ...good, email: "jane@gmail.com", url });
+      const res = await post({ ...good, email });
 
       expect(res.status).toBe(200);
       expect(calls.filter((c) => c.path.startsWith("/objects/companies"))).toEqual([]);

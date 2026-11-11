@@ -2,25 +2,23 @@ import { describe, expect, it } from "vitest";
 import { PERSONAL_DOMAINS, companyDomainFor, isPersonalDomain } from "./personal-domains";
 
 describe("companyDomainFor", () => {
-  it("uses the work email domain, ignoring the URL", () => {
-    expect(companyDomainFor("jane@acme.io", "client.com")).toBe("acme.io");
-    expect(companyDomainFor("Jane@ACME.IO", "client.com")).toBe("acme.io");
-    expect(companyDomainFor("jane@acme.io", "gmail.com")).toBe("acme.io");
+  it("returns the lowercased work email domain", () => {
+    expect(companyDomainFor("jane@acme.io")).toBe("acme.io");
+    expect(companyDomainFor("Jane@ACME.IO")).toBe("acme.io");
+    expect(companyDomainFor("jane@eu.acme.io")).toBe("eu.acme.io");
   });
 
-  it("falls back to the URL domain when the email is personal", () => {
-    expect(companyDomainFor("jane@gmail.com", "acme.io")).toBe("acme.io");
-    expect(companyDomainFor("jane@mail.yahoo.com", "Acme.IO")).toBe("acme.io");
+  it("returns null for a personal email domain (no URL fallback)", () => {
+    expect(companyDomainFor("jane@gmail.com")).toBeNull();
+    expect(companyDomainFor("jane@GMAIL.COM")).toBeNull();
+    expect(companyDomainFor("jane@mail.yahoo.com")).toBeNull();
+    expect(companyDomainFor("jane@icloud.com")).toBeNull();
   });
 
-  it("returns null when both the email and URL domains are personal", () => {
-    expect(companyDomainFor("jane@gmail.com", "gmail.com")).toBeNull();
-    expect(companyDomainFor("jane@icloud.com", "mail.yahoo.com")).toBeNull();
-  });
-
-  it("falls back to the URL when the email has no usable domain", () => {
-    expect(companyDomainFor("jane", "acme.io")).toBe("acme.io");
-    expect(companyDomainFor("", "")).toBeNull();
+  it("returns null when the email has no domain", () => {
+    expect(companyDomainFor("jane")).toBeNull();
+    expect(companyDomainFor("jane@")).toBeNull();
+    expect(companyDomainFor("")).toBeNull();
   });
 });
 
