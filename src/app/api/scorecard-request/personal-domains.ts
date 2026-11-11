@@ -43,3 +43,20 @@ export function isPersonalDomain(domain: string): boolean {
   }
   return false;
 }
+
+/**
+ * The domain that identifies the lead's company in the CRM: the email's domain,
+ * falling back to the submitted URL's domain when the email is on a personal /
+ * free provider. Returns null when neither is usable (both personal or empty),
+ * meaning the company step should be skipped. Result is lowercased.
+ */
+export function companyDomainFor(email: string, urlDomain: string): string | null {
+  const at = email.lastIndexOf("@");
+  const emailDomain = at === -1 ? "" : email.slice(at + 1).trim().toLowerCase();
+  if (emailDomain && !isPersonalDomain(emailDomain)) return emailDomain;
+
+  const fallback = urlDomain.trim().toLowerCase().replace(/^www\./, "");
+  if (fallback && !isPersonalDomain(fallback)) return fallback;
+
+  return null;
+}
