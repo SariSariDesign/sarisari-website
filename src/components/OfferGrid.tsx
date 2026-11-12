@@ -1,4 +1,5 @@
 import { isExternal } from "@/lib/links";
+import { offerCtaData } from "@/lib/offerClick";
 
 export type OfferCard = {
   id: string;
@@ -36,6 +37,7 @@ export function OfferGrid({ offers }: { offers: OfferCard[] }) {
             <a
               href={o.cta.href}
               {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              {...offerCtaData(o, "offer_grid")}
               className={`ds-label flex h-12 items-center justify-center rounded text-label transition-colors duration-150 ease-out ${o.featured ? "bg-neutral-100 text-primary-500 hover:bg-neutral-200" : "bg-primary-400 text-neutral-100 hover:bg-primary-500"}`}
             >
               {o.cta.label}

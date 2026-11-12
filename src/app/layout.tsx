@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Instrument_Serif, Instrument_Sans, Space_Grotesk } from "next/font/google";
 import { AnnotateGate } from "@/components/dev/AnnotateGate";
+import { TrackOfferClicks } from "@/components/TrackOfferClicks";
 import { openGraphBase } from "@/lib/metadata";
 import "./globals.css";
 
@@ -97,6 +98,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
         />
         {children}
+        {/* Pushes `offer_cta_click` to the dataLayer when an offer CTA is clicked. */}
+        <TrackOfferClicks />
         {/* Local dev: DevTools. Vercel previews: Agentation via AnnotateGate. Production: only with ?annotate (per tab). */}
         {DevTools ? <DevTools /> : <AnnotateGate />}
       </body>

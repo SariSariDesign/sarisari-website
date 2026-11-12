@@ -1,3 +1,4 @@
+import { offerCtaData } from "@/lib/offerClick";
 import { Button } from "./Button";
 
 export type Retainer = {
@@ -26,7 +27,11 @@ export function RetainerPanel({ retainer: r }: { retainer: Retainer }) {
         </div>
         <p className="text-body text-neutral-700">{r.description}</p>
         <div>
-          <Button href={r.cta.href} external>
+          <Button
+            href={r.cta.href}
+            external
+            data={offerCtaData({ id: r.id, name: r.name ?? "Retainer" }, "retainer_panel")}
+          >
             {r.cta.label}
           </Button>
         </div>

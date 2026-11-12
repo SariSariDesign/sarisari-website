@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { homePricing } from "@/content/site";
 import { isExternal } from "@/lib/links";
+import { offerCtaData } from "@/lib/offerClick";
 import { Button } from "./Button";
 import { Reveal } from "./Reveal";
 import { Placeholder } from "./Placeholder";
@@ -40,7 +41,12 @@ export function HomePricing({ showScorecard = true }: { showScorecard?: boolean 
               </Link>
             </p>
             <div className="mt-2 flex flex-col items-start gap-4">
-              <Button href={scale.cta.href} variant="white" external={isExternal(scale.cta.href)}>
+              <Button
+                href={scale.cta.href}
+                variant="white"
+                external={isExternal(scale.cta.href)}
+                data={offerCtaData(scale, "home_pricing")}
+              >
                 {scale.cta.label}
               </Button>
               <Link
@@ -110,6 +116,7 @@ export function HomePricing({ showScorecard = true }: { showScorecard?: boolean 
                   variant="secondary"
                   size="medium"
                   external={isExternal(o.cta.href)}
+                  data={offerCtaData(o, "home_pricing")}
                 >
                   {o.cta.label}
                 </Button>
@@ -149,6 +156,7 @@ export function HomePricing({ showScorecard = true }: { showScorecard?: boolean 
               <Button
                 href={scorecard.cta.href}
                 external={isExternal(scorecard.cta.href)}
+                data={offerCtaData({ id: "offer-scorecard", name: scorecard.name }, "home_pricing")}
               >
                 {scorecard.cta.label}
               </Button>

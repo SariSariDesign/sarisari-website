@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-
-declare global {
-  interface Window {
-    dataLayer?: Record<string, unknown>[];
-  }
-}
+// `window.dataLayer` is declared once, globally, in src/lib/offerClick.ts.
 
 /** Pushes one `booking_confirmed` event to GTM's dataLayer when a thank-you page loads. */
 export function TrackBooking({ offer }: { offer: string }) {

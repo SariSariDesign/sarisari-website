@@ -11,6 +11,8 @@ type Props = {
   /** Opens in a new tab with rel="noopener noreferrer" (used for offsite CTAs like Calendly). */
   external?: boolean;
   className?: string;
+  /** Extra `data-*` attributes for the link (e.g. offer CTA tracking hooks). */
+  data?: Record<`data-${string}`, string>;
 };
 
 /**
@@ -24,6 +26,7 @@ export function Button({
   size = "large",
   external = false,
   className = "",
+  data,
 }: Props) {
   const base =
     "group ds-label inline-flex items-center gap-2 text-label transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300";
@@ -44,7 +47,7 @@ export function Button({
     : {};
 
   return (
-    <Link href={href} className={`${base} ${shape} ${skin} ${className}`} {...externalProps}>
+    <Link href={href} className={`${base} ${shape} ${skin} ${className}`} {...externalProps} {...data}>
       {children}
       <Arrow />
     </Link>

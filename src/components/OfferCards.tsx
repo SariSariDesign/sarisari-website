@@ -1,4 +1,5 @@
 import { isExternal } from "@/lib/links";
+import { offerCtaData } from "@/lib/offerClick";
 import { Button } from "./Button";
 
 export type Offer = { id?: string; name: string; price: string; body: string; cta: { label: string; href: string } };
@@ -13,7 +14,12 @@ export function OfferCards({ offers }: { offers: Offer[] }) {
           <span className="font-brand text-display-s italic text-neutral-1000">{o.price}</span>
           <p className="flex-1 text-body-s text-neutral-700">{o.body}</p>
           <div>
-            <Button href={o.cta.href} variant="ghost" external={isExternal(o.cta.href)}>
+            <Button
+              href={o.cta.href}
+              variant="ghost"
+              external={isExternal(o.cta.href)}
+              data={offerCtaData(o, "offer_cards")}
+            >
               {o.cta.label}
             </Button>
           </div>
