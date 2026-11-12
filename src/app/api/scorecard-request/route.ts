@@ -1,10 +1,13 @@
 import { NextResponse, after } from "next/server";
 import { runAnalysisAndEmail } from "@/lib/scorecard/pipeline";
+import { companyDomainFor } from "./personal-domains";
 
 /**
  * Free Activation Scorecard lead capture.
  *
- * Flow: validate → upsert the lead into Attio (person + company + a note holding
+ * Flow: validate → capture the lead in Attio (upsert person, create company only
+ * if none exists for a work-email domain — never rename an existing one — and a
+ * note holding
  * the full submission) → (Phase 2) enqueue the background analysis job. We return
  * 200 quickly and never surface a CRM failure to the visitor in a way that loses
  * the lead — capture is best-effort and logged server-side.
@@ -179,19 +182,49 @@ async function alreadyRequested(email: string): Promise<boolean> {
   }
 }
 
+/**
+ * Create the lead's company only if none exists. The company is identified by
+ * the visitor's EMAIL domain only (see companyDomainFor); a personal / free
+ * email skips the company step entirely, with no Attio requests.
+ * We never write to an existing company: a visitor-typed name must not
+ * overwrite our CRM data (an upsert here once renamed a real company record).
+ * Fails safe — any lookup error skips the company write entirely; a create
+ * failure (e.g. a uniqueness conflict from a concurrent request) is logged and
+ * never retried as an upsert.
+ */
+async function ensureCompany(lead: Lead) {
+  const companyDomain = companyDomainFor(lead.email);
+  if (!companyDomain) return;
+
+  let exists: boolean;
+  try {
+    const q = (await attio("/objects/companies/records/query", {
+      method: "POST",
+      body: JSON.stringify({ filter: { domains: companyDomain }, limit: 1 }),
+    })) as { data?: unknown[] };
+    exists = (q.data?.length ?? 0) > 0;
+  } catch (e) {
+    console.error("[scorecard-request] company lookup failed (skipping company write):", e);
+    return;
+  }
+  if (exists) return;
+
+  await attio("/objects/companies/records", {
+    method: "POST",
+    body: JSON.stringify({
+      data: { values: { name: lead.company, domains: [companyDomain] } },
+    }),
+  }).catch((e) => console.error("[scorecard-request] company create failed:", e));
+}
+
 async function captureToAttio(lead: Lead, opts: { addNote: boolean }) {
   if (!process.env.ATTIO_API_KEY) {
     console.warn("[scorecard-request] ATTIO_API_KEY unset — skipping CRM capture:", lead.email);
     return;
   }
 
-  // 1) Upsert company by domain (standard "companies" object).
-  await attio("/objects/companies/records?matching_attribute=domains", {
-    method: "PUT",
-    body: JSON.stringify({
-      data: { values: { name: lead.company, domains: [lead.domain] } },
-    }),
-  }).catch((e) => console.error("[scorecard-request] company upsert failed:", e));
+  // 1) Ensure a company exists for this domain — create-only, never update.
+  await ensureCompany(lead);
 
   // 2) Upsert person by email (standard "people" object). Returns the record id.
   //    Attio's personal-name attribute requires first_name + last_name (not just
