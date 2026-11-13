@@ -1,3 +1,4 @@
+import { SCORECARD_URL } from "../site";
 import type { CaseStudy } from "./types";
 
 /**
@@ -33,7 +34,7 @@ export const lendzi: CaseStudy = {
       subhead:
         "AI tools are great for exploring and for moving fast once the direction is clear. We find the problem first, so you know which direction to build and how to tell if it worked.",
       primary: { label: "Book a call", href: "https://calendly.com/sarisari/30min" },
-      secondary: { label: "See our services", href: "/services" },
+      secondary: { label: "Get Free Scorecard", href: SCORECARD_URL },
     },
     blocks: [
       {
