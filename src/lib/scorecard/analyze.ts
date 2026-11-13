@@ -13,8 +13,9 @@ import { fixedCopy, type ReportDraft } from "./report";
  * ratings by report.ts, never by the model.
  *
  * Evidence rule (shared with the operator skill): never pad. When fewer than five
- * candidates are supported by the captured evidence, the result is marked
- * insufficient and the pipeline holds it for operator review instead of sending.
+ * candidates are supported, the preview reports only those, and the pipeline
+ * flags the lead for a human follow-up. With none supported, the result is
+ * marked insufficient and the lead gets the "could not read your page" email.
  */
 
 const FIRECRAWL_SCRAPE = "https://api.firecrawl.dev/v1/scrape";
@@ -179,10 +180,10 @@ export function buildDraftFromGenerator(
   const dims = out.dimensions
     .filter((d, i, a) => a.findIndex((x) => x.code === d.code) === i)
     .map((d) => ({ ...d, rating: Math.max(0, Math.min(10, d.rating)), note: undash(d.note) }));
-  if (supported.length < 5) {
-    return { ok: false, reason: `Only ${supported.length} findings cleared the evidence threshold.`, internal };
+  if (supported.length === 0) {
+    return { ok: false, reason: "No findings cleared the evidence threshold.", internal };
   }
-  // Pick five by business relevance (impact, then severity); keep page order of the picks.
+  // Pick up to five by business relevance (impact, then severity); keep page order of the picks.
   const rank = (c: (typeof supported)[number]) =>
     ({ high: 0, medium: 1, low: 2 })[c.impact] * 3 + ({ critical: 0, major: 1, minor: 2 })[c.severity];
   const picked = new Set([...supported].sort((a, b) => rank(a) - rank(b)).slice(0, 5));

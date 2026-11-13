@@ -50,7 +50,10 @@ const json = (data: unknown, status = 200) =>
  * response to POST /objects/companies/records/query. `existingPerson` makes the
  * dedupe lookup find a person who already has a scorecard note.
  */
-function mockAttio(companyQuery: () => Response, opts: { existingPerson?: boolean } = {}) {
+function mockAttio(
+  companyQuery: () => Response,
+  opts: { existingPerson?: boolean; rejectEmail?: boolean } = {},
+) {
   const calls: Call[] = [];
   const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = new URL(String(input));
@@ -67,7 +70,11 @@ function mockAttio(companyQuery: () => Response, opts: { existingPerson?: boolea
     if (method === "POST" && path === "/objects/companies/records")
       return json({ data: { id: { record_id: "co_new" } } });
     if (method === "PUT" && path.startsWith("/objects/people/records"))
-      return json({ data: { id: { record_id: "person_1" } } });
+      return opts.rejectEmail
+        ? json({ status_code: 400, message: "invalid email" }, 400)
+        : json({ data: { id: { record_id: "person_1" } } });
+    if (method === "POST" && path === "/objects/people/records")
+      return json({ data: { id: { record_id: "person_2" } } });
     if (method === "POST" && path === "/notes") return json({ data: {} });
     return json({ error: "unexpected" }, 404);
   });
@@ -218,4 +225,40 @@ describe("POST /api/scorecard-request → Attio company handling", () => {
       expectPersonAndNote(calls);
     },
   );
+});
+
+describe("POST /api/scorecard-request → keeps the lead when Attio rejects the email", () => {
+  beforeEach(() => {
+    vi.stubEnv("ATTIO_API_KEY", "test-key");
+    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+    after.mockReset();
+  });
+
+  it("saves the person without the email and adds a flagged note", async () => {
+    const calls = mockAttio(() => json({ data: [] }), { rejectEmail: true });
+    const res = await post({ ...good, email: "ada@engines.desin" });
+    expect(res.status).toBe(200);
+
+    const created = calls.find((c) => c.method === "POST" && c.path === "/objects/people/records");
+    const values = (created?.body as { data: { values: Record<string, unknown> } }).data.values;
+    expect(Object.keys(values)).toEqual(["name"]);
+
+    const note = calls.find((c) => c.method === "POST" && c.path === "/notes");
+    const data = (note?.body as { data: { parent_record_id: string; title: string; content: string } }).data;
+    expect(data.parent_record_id).toBe("person_2");
+    expect(data.title).toBe("Free Activation Scorecard request (check email)");
+    expect(data.content).toContain("ada@engines.desin");
+    expect(data.content).toContain("likely a typo");
+
+    // The background job gets the person id so the report-link note lands on this person.
+    after.mock.calls[0][0]();
+    expect(runAnalysisAndEmail).toHaveBeenLastCalledWith(
+      expect.objectContaining({ email: "ada@engines.desin", attioPersonId: "person_2", emailRejected: true }),
+    );
+  });
 });

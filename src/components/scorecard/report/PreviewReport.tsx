@@ -1,13 +1,14 @@
 import { REPORT_CSS } from "./LegacyScorecardReport";
 import { DIMENSIONS, bandFor, computeScore, effectiveRating } from "@/lib/scorecard/rubric";
 import type { PreviewReport as PreviewReportData } from "@/lib/scorecard/types";
+import { countWord } from "@/lib/scorecard/count";
 
 /**
  * Hosted Activation Scorecard Preview, format v1. One renderer for every preview,
  * whichever path kicked it off. Faithful to the vault template
  * (03_Resources/skills/activation-scorecard-preview/assets/report-template.html):
- * profile grid, Preview Score with the weighted dimension breakdown, exactly five
- * finding cards with evidence, optional research, methodology, AI-builder prompt,
+ * profile grid, Preview Score with the weighted dimension breakdown, up to five
+ * finding cards (fewer only when the evidence supports fewer, said plainly) with evidence, optional research, methodology, AI-builder prompt,
  * the fixed CTA, and a source-accurate disclaimer.
  *
  * The score and band are always recomputed from the ratings here, so a stored
@@ -21,6 +22,9 @@ const EXTRA_CSS = `
 .rp-stat { font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 26px; font-weight: 600; color: var(--blue-500); line-height: 1.2; margin-bottom: 10px; }
 .rp-body { font-size: 14px; color: var(--grey-1000); line-height: 1.75; margin-bottom: 14px; }
 .rp-source { font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 11px; color: var(--grey-600); letter-spacing: 0.5px; border-top: 1px solid var(--grey-300); padding-top: 10px; }
+.next-note { border-left: 4px solid var(--blue-500); background: var(--blue-100); border-radius: 0 4px 4px 0; padding: 16px 18px; margin: 0 0 24px; }
+.next-note-label { font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue-500); display: block; margin-bottom: 6px; }
+.next-note p { font-size: 14px; color: var(--grey-1000); line-height: 1.6; margin: 0; }
 @media (max-width: 640px) { .rp { padding: 24px; } }
 `;
 
@@ -54,6 +58,8 @@ export function PreviewReport({ slug, report }: { slug: string; report: PreviewR
   const changes = report.aiBuilderChanges.map((c, i) => `${i + 1}. ${c}`).join("\n");
   const surface = report.source === "recording" ? "app" : "website";
   const p = report.profileFacts;
+  const n = report.findings.length;
+  const full = n >= 5;
 
   return (
     <>
@@ -164,13 +170,31 @@ export function PreviewReport({ slug, report }: { slug: string; report: PreviewR
           <section className="findings-section">
             <div className="findings-header">
               <span className="ovl">Findings</span>
-              <h2>Top 5 Findings</h2>
-              <p>
-                The 5 highest-impact friction points, in the order a user hits them, grouped by page across the flow.
-                Selected from a {report.totalFindings}-finding evaluation across {report.dimensions.length} UX dimensions.
-                Select &ldquo;See more details&rdquo; on any finding for the evidence and fix.
-              </p>
+              <h2>{full ? "Top 5 Findings" : n === 1 ? "1 Finding" : `${n} Findings`}</h2>
+              {full ? (
+                <p>
+                  The 5 highest-impact friction points, in the order a user hits them, grouped by page across the flow.
+                  Selected from a {report.totalFindings}-finding evaluation across {report.dimensions.length} UX dimensions.
+                  Select &ldquo;See more details&rdquo; on any finding for the evidence and fix.
+                </p>
+              ) : (
+                <p>
+                  We only report issues we can back with clear evidence from the page. Our AI review checked{" "}
+                  {report.dimensions.length} UX dimensions and found {countWord(n)} {n === 1 ? "issue" : "issues"}. The
+                  rest of what it checked meets most best practices. Select &ldquo;See more details&rdquo; for the evidence
+                  and fix.
+                </p>
+              )}
             </div>
+            {!full && (
+              <div className="next-note">
+                <span className="next-note-label">What happens next</span>
+                <p>
+                  Automated reviews can miss things, so a designer on our team will look at your page and follow up with
+                  you by email.
+                </p>
+              </div>
+            )}
             {report.findings.map((f, i) => {
               const showHead = i === 0 || report.findings[i - 1].page !== f.page;
               return (
@@ -262,7 +286,7 @@ export function PreviewReport({ slug, report }: { slug: string; report: PreviewR
               <h2>Pass this to your AI builder</h2>
               <p>
                 Editing your {surface} with Lovable, v0, Cursor, Claude, or a similar AI builder? Paste the prompt below to
-                make a first pass at the five fixes above. It works in any of them.
+                make a first pass at {n === 1 ? "the fix" : `the ${countWord(n)} fixes`} above. It works in any of them.
               </p>
             </div>
             <div className="aiprompt-warn">

@@ -26,6 +26,9 @@ const ATTIO_BASE = "https://api.attio.com/v2";
 // The note we attach on every scorecard request doubles as the per-email dedupe
 // marker: if a Person already has one, they've requested before.
 const SCORECARD_NOTE_TITLE = "Free Activation Scorecard request";
+// Used when Attio rejects the email. A different title on purpose: it stands out in
+// the Notes list, and the one-per-email dedupe check (exact title match) ignores it.
+const SCORECARD_NOTE_TITLE_EMAIL_REJECTED = "Free Activation Scorecard request (check email)";
 
 type Payload = {
   name?: unknown;
@@ -90,8 +93,9 @@ export async function POST(req: Request) {
 
   // Best-effort CRM capture — failures are logged, not returned to the user.
   // On a repeat we still refresh the contact but skip adding another note.
+  let captured: Captured = {};
   try {
-    await captureToAttio(lead, { addNote: !duplicate });
+    captured = await captureToAttio(lead, { addNote: !duplicate });
   } catch (err) {
     console.error("[scorecard-request] Attio capture failed:", err);
   }
@@ -101,7 +105,7 @@ export async function POST(req: Request) {
   // lifetime (see maxDuration); it no-ops until the FireCrawl/Anthropic/Resend
   // keys are configured. For higher durability, swap for a queue (Upstash QStash).
   if (!duplicate) {
-    after(() => runAnalysisAndEmail(lead));
+    after(() => runAnalysisAndEmail({ ...lead, attioPersonId: captured.personId, emailRejected: captured.emailRejected }));
   }
 
   return NextResponse.json({ ok: true, duplicate });
@@ -217,10 +221,12 @@ async function ensureCompany(lead: Lead) {
   }).catch((e) => console.error("[scorecard-request] company create failed:", e));
 }
 
-async function captureToAttio(lead: Lead, opts: { addNote: boolean }) {
+type Captured = { personId?: string; emailRejected?: boolean };
+
+async function captureToAttio(lead: Lead, opts: { addNote: boolean }): Promise<Captured> {
   if (!process.env.ATTIO_API_KEY) {
     console.warn("[scorecard-request] ATTIO_API_KEY unset — skipping CRM capture:", lead.email);
-    return;
+    return {};
   }
 
   // 1) Ensure a company exists for this domain — create-only, never update.
@@ -234,24 +240,28 @@ async function captureToAttio(lead: Lead, opts: { addNote: boolean }) {
   const firstName = spaceIdx === -1 ? trimmed : trimmed.slice(0, spaceIdx);
   const lastName = spaceIdx === -1 ? "" : trimmed.slice(spaceIdx + 1).trim();
 
-  const person = (await attio(
-    "/objects/people/records?matching_attribute=email_addresses",
-    {
-      method: "PUT",
-      body: JSON.stringify({
-        data: {
-          values: {
-            name: [
-              { first_name: firstName, last_name: lastName, full_name: trimmed },
-            ],
-            email_addresses: [lead.email],
-          },
-        },
-      }),
-    },
-  )) as { data?: { id?: { record_id?: string } } };
+  const name = [{ first_name: firstName, last_name: lastName, full_name: trimmed }];
 
-  const personId = person?.data?.id?.record_id;
+  let personId: string | undefined;
+  let emailRejected = false;
+  try {
+    const person = (await attio("/objects/people/records?matching_attribute=email_addresses", {
+      method: "PUT",
+      body: JSON.stringify({ data: { values: { name, email_addresses: [lead.email] } } }),
+    })) as { data?: { id?: { record_id?: string } } };
+    personId = person?.data?.id?.record_id;
+  } catch (err) {
+    // Attio rejects emails it can't validate (usually a typo, e.g. ".desin"). Keep
+    // the lead anyway: save the person by name only and flag the note, so someone
+    // can follow up and send the Scorecard by hand.
+    console.error("[scorecard-request] Attio rejected the email, saving lead without it:", err);
+    emailRejected = true;
+    const person = (await attio("/objects/people/records", {
+      method: "POST",
+      body: JSON.stringify({ data: { values: { name } } }),
+    })) as { data?: { id?: { record_id?: string } } };
+    personId = person?.data?.id?.record_id;
+  }
 
   // 3) Attach a note with the complete submission (schema-independent). Skipped on
   //    a repeat request so we don't pile up duplicate notes.
@@ -262,9 +272,12 @@ async function captureToAttio(lead: Lead, opts: { addNote: boolean }) {
         data: {
           parent_object: "people",
           parent_record_id: personId,
-          title: SCORECARD_NOTE_TITLE,
+          title: emailRejected ? SCORECARD_NOTE_TITLE_EMAIL_REJECTED : SCORECARD_NOTE_TITLE,
           format: "plaintext",
           content: [
+            ...(emailRejected
+              ? ["⚠️ Attio rejected this email, likely a typo. Check it and send the Scorecard by hand.", ""]
+              : []),
             `Name: ${lead.name}`,
             `Company: ${lead.company}`,
             `Email: ${lead.email}`,
@@ -276,4 +289,5 @@ async function captureToAttio(lead: Lead, opts: { addNote: boolean }) {
       }),
     }).catch((e) => console.error("[scorecard-request] note create failed:", e));
   }
+  return { personId, emailRejected };
 }
