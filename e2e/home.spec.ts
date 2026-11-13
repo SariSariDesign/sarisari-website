@@ -56,7 +56,7 @@ test.describe("homepage", () => {
 
   test("the case-study template renders a published study", async ({ page }) => {
     await page.goto("/work/kenchan-ramen");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("37% of Digital Revenue");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("37% of digital revenue");
   });
 
   test("FAQ opens one item at a time", async ({ page }) => {
