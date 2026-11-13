@@ -17,6 +17,7 @@ export const FOLLOW_UP_TITLES = {
   fewFindings: "Scorecard follow-up: fewer than 5 findings",
   unreadable: "Scorecard follow-up: page could not be read",
   sendFailed: "Scorecard follow-up: email did not send",
+  badEmail: "Scorecard follow-up: send report to the correct email",
 } as const;
 export type FollowUpKind = keyof typeof FOLLOW_UP_TITLES;
 
@@ -33,14 +34,7 @@ export async function flagScorecardFollowUp(
   }
   const headers = { Authorization: `Bearer ${key}`, "Content-Type": "application/json" };
   try {
-    const q = await fetchImpl(`${API}/objects/people/records/query`, {
-      method: "POST",
-      headers,
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-      body: JSON.stringify({ filter: { email_addresses: lead.email }, limit: 1 }),
-    });
-    if (!q.ok) throw new Error(`person lookup ${q.status}`);
-    const personId = ((await q.json()) as { data?: Array<{ id?: { record_id?: string } }> }).data?.[0]?.id?.record_id;
+    const personId = lead.attioPersonId ?? (await findPerson(lead.email, headers, fetchImpl));
     if (!personId) {
       console.warn(`[scorecard] no Attio person for ${lead.email}, follow-up not flagged (${kind})`);
       return;
@@ -63,4 +57,15 @@ export async function flagScorecardFollowUp(
   } catch (err) {
     console.error(`[scorecard] could not flag follow-up (${kind}) for ${lead.email}:`, err);
   }
+}
+
+async function findPerson(email: string, headers: Record<string, string>, fetchImpl: typeof fetch) {
+  const q = await fetchImpl(`${API}/objects/people/records/query`, {
+      method: "POST",
+      headers,
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      body: JSON.stringify({ filter: { email_addresses: email }, limit: 1 }),
+    });
+  if (!q.ok) throw new Error(`person lookup ${q.status}`);
+  return ((await q.json()) as { data?: Array<{ id?: { record_id?: string } }> }).data?.[0]?.id?.record_id;
 }

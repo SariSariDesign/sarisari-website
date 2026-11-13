@@ -254,5 +254,11 @@ describe("POST /api/scorecard-request → keeps the lead when Attio rejects the 
     expect(data.title).toBe("Free Activation Scorecard request (check email)");
     expect(data.content).toContain("ada@engines.desin");
     expect(data.content).toContain("likely a typo");
+
+    // The background job gets the person id so the report-link note lands on this person.
+    after.mock.calls[0][0]();
+    expect(runAnalysisAndEmail).toHaveBeenLastCalledWith(
+      expect.objectContaining({ email: "ada@engines.desin", attioPersonId: "person_2", emailRejected: true }),
+    );
   });
 });

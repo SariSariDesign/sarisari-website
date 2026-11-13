@@ -93,8 +93,9 @@ export async function POST(req: Request) {
 
   // Best-effort CRM capture — failures are logged, not returned to the user.
   // On a repeat we still refresh the contact but skip adding another note.
+  let captured: Captured = {};
   try {
-    await captureToAttio(lead, { addNote: !duplicate });
+    captured = await captureToAttio(lead, { addNote: !duplicate });
   } catch (err) {
     console.error("[scorecard-request] Attio capture failed:", err);
   }
@@ -104,7 +105,7 @@ export async function POST(req: Request) {
   // lifetime (see maxDuration); it no-ops until the FireCrawl/Anthropic/Resend
   // keys are configured. For higher durability, swap for a queue (Upstash QStash).
   if (!duplicate) {
-    after(() => runAnalysisAndEmail(lead));
+    after(() => runAnalysisAndEmail({ ...lead, attioPersonId: captured.personId, emailRejected: captured.emailRejected }));
   }
 
   return NextResponse.json({ ok: true, duplicate });
@@ -220,10 +221,12 @@ async function ensureCompany(lead: Lead) {
   }).catch((e) => console.error("[scorecard-request] company create failed:", e));
 }
 
-async function captureToAttio(lead: Lead, opts: { addNote: boolean }) {
+type Captured = { personId?: string; emailRejected?: boolean };
+
+async function captureToAttio(lead: Lead, opts: { addNote: boolean }): Promise<Captured> {
   if (!process.env.ATTIO_API_KEY) {
     console.warn("[scorecard-request] ATTIO_API_KEY unset — skipping CRM capture:", lead.email);
-    return;
+    return {};
   }
 
   // 1) Ensure a company exists for this domain — create-only, never update.
@@ -286,4 +289,5 @@ async function captureToAttio(lead: Lead, opts: { addNote: boolean }) {
       }),
     }).catch((e) => console.error("[scorecard-request] note create failed:", e));
   }
+  return { personId, emailRejected };
 }

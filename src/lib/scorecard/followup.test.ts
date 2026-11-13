@@ -20,6 +20,14 @@ describe("flagScorecardFollowUp", () => {
     expect(note.title).not.toBe("Free Activation Scorecard request");
   });
 
+  it("uses the person id from the submit route when given (no lookup)", async () => {
+    vi.stubEnv("ATTIO_API_KEY", "k");
+    const f = vi.fn().mockResolvedValue(ok({ data: {} }));
+    await flagScorecardFollowUp({ ...lead, attioPersonId: "p9" }, "badEmail", ["x"], f as unknown as typeof fetch);
+    expect(f).toHaveBeenCalledOnce();
+    expect(JSON.parse(f.mock.calls[0][1].body).data.parent_record_id).toBe("p9");
+  });
+
   it("never throws when Attio fails", async () => {
     vi.stubEnv("ATTIO_API_KEY", "k");
     const f = vi.fn().mockRejectedValue(new Error("down"));

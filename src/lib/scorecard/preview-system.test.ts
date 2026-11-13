@@ -162,6 +162,15 @@ describe("self-serve generator: never pad", () => {
     expect(flag).toHaveBeenCalledWith(lead, "fewFindings", expect.any(Array));
   });
 
+  it("flags the report link for a lead whose email Attio rejected", async () => {
+    const store = createInMemoryStore();
+    const flag = vi.fn().mockResolvedValue(undefined);
+    const analyze = vi.fn().mockResolvedValue(buildDraftFromGenerator(gen(6), lead));
+    await runAnalysisAndEmail({ ...lead, emailRejected: true, attioPersonId: "p2" }, { store, analyze, send: sendOk(), sendUnreadable: sendOk(), flag });
+    expect(flag.mock.calls[0][1]).toBe("badEmail");
+    expect(flag.mock.calls[0][2].join("\n")).toMatch(/\/s\//);
+  });
+
   it("flags a follow-up when the report exists but the email fails", async () => {
     const store = createInMemoryStore();
     const flag = vi.fn().mockResolvedValue(undefined);

@@ -27,6 +27,10 @@ export type ScorecardLead = {
   stage: string;
   url: string;
   domain: string;
+  /** Attio person written by the submit route; follow-up notes attach here. */
+  attioPersonId?: string;
+  /** Attio rejected the email (likely a typo), so the email we send may bounce. */
+  emailRejected?: boolean;
 };
 
 /** Where operator runs go for review before release. */
@@ -158,6 +162,13 @@ export async function runAnalysisAndEmail(
         sentAt: new Date().toISOString(),
         reviewEvents: [...row.reviewEvents, event("system", "sent", { reason: `resend:${id ?? "unknown"} to requester` })],
       });
+    }
+    if (lead.emailRejected) {
+      await flag(lead, "badEmail", [
+        `Attio rejected ${lead.email}, so this Scorecard was likely sent to a bad address.`,
+        `Report: ${reportUrlFor(row.slug)}`,
+        "Find the correct email and send them the report link.",
+      ]);
     }
     const shown = findingTitles(row.result).length;
     if (shown < 5) {
