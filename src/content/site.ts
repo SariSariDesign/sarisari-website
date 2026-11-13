@@ -223,7 +223,7 @@ export const caseStudiesSection = {
   tiles: [
     {
       slug: "kenchan-ramen",
-      title: "Building a bundle feature that drove 37% of digital revenue",
+      title: "A bundle feature that drove 37% of digital revenue",
       tags: ["E-commerce", "Conversion", "Shopify"],
       color: "radial-gradient(120% 90% at 0% 100%, #216eb9 0%, rgba(33,110,185,0) 60%), #20307a",
       layout: "square" as const,
@@ -239,7 +239,7 @@ export const caseStudiesSection = {
     },
     {
       slug: "nutrisnap",
-      title: "Turning nutrition science into a first session people trust",
+      title: "Translating nutrition science into a first session people trust",
       tags: ["Health", "Activation", "AI-built app"],
       color: "linear-gradient(160deg, #d2c4b4 0%, #c9b9a8 45%, #98877a 100%)",
       layout: "wide" as const,
@@ -247,7 +247,7 @@ export const caseStudiesSection = {
     },
     {
       slug: "disco",
-      title: "Turning strong signup intent into a first-session win",
+      title: "Why 94% signup completion didn't matter",
       tags: ["Health", "Activation", "AI product UX"],
       color: "#d9c7b0",
       layout: "square" as const,
@@ -256,7 +256,7 @@ export const caseStudiesSection = {
     },
     {
       slug: "lendzi",
-      title: "Diagnosing why a logo wasn't getting the click",
+      title: "Why AI couldn't fix a logo that was blending in",
       tags: ["Fintech", "Brand identity", "A/B test"],
       color: "#0b4652",
       // Square, side by side with Disco (cols 7–12, no drop).

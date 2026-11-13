@@ -1,3 +1,4 @@
+import { SCORECARD_URL } from "../site";
 import type { CaseStudy } from "./types";
 
 /**
@@ -19,7 +20,7 @@ export const disco: CaseStudy = {
     image: "/work/disco-square.webp",
   },
   page: {
-    title: "Why 94% of Signups Didn't Matter",
+    title: "Why 94% signup completion didn't matter",
     byline: "Client: Eris Hanson-Cooper, Founder & CEO, Disco",
     tags: ["Activation Diagnostic", "UX audit", "Product strategy", "Product design"],
     heroImage: "/work/disco-cover.webp",
@@ -35,7 +36,7 @@ export const disco: CaseStudy = {
       subhead:
         "The Diagnostic pinpoints where users lose momentum and gives you a clear plan to drive session-one value. Know what to fix next and where to focus your team's limited runway.",
       primary: { label: "Explore The Diagnostic", href: "https://activation-diagnostic.sarisari.design/" },
-      secondary: { label: "Try The Scorecard Free", href: "/scorecard-preview" },
+      secondary: { label: "Get Free Scorecard", href: SCORECARD_URL },
     },
     blocks: [
       {
