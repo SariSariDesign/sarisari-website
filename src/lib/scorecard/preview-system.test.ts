@@ -37,8 +37,12 @@ describe("rubric scoring", () => {
 });
 
 describe("finalizeReport (shared by both kickoff paths)", () => {
-  it("requires exactly five findings: the output is always a preview", () => {
+  it("allows one to five findings, with one AI-builder change each", () => {
+    expect(() =>
+      finalizeReport({ ...SAMPLE_DRAFT, findings: SAMPLE_DRAFT.findings.slice(0, 2), aiBuilderChanges: SAMPLE_DRAFT.aiBuilderChanges.slice(0, 2) }),
+    ).not.toThrow();
     expect(() => finalizeReport({ ...SAMPLE_DRAFT, findings: SAMPLE_DRAFT.findings.slice(0, 4) })).toThrow();
+    expect(() => finalizeReport({ ...SAMPLE_DRAFT, findings: [], aiBuilderChanges: [] })).toThrow();
     expect(() =>
       finalizeReport({ ...SAMPLE_DRAFT, findings: [...SAMPLE_DRAFT.findings, SAMPLE_DRAFT.findings[0]] }),
     ).toThrow();
@@ -98,9 +102,18 @@ function gen(n: number): GeneratorOutput {
 }
 
 describe("self-serve generator: never pad", () => {
-  it("holds the run when fewer than five findings are supported", () => {
-    const r = buildDraftFromGenerator(gen(4), lead);
-    expect(r.ok).toBe(false);
+  it("returns no report when nothing is supported", () => {
+    expect(buildDraftFromGenerator(gen(0), lead).ok).toBe(false);
+  });
+
+  it("reports only the supported findings when fewer than five, never padding", () => {
+    const r = buildDraftFromGenerator(gen(3), lead);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const { report } = finalizeReport(r.draft);
+    expect(report.findings).toHaveLength(3);
+    expect(report.aiBuilderChanges).toHaveLength(3);
+    expect(report.totalFindings).toBe(3);
   });
 
   it("builds a valid five-finding preview from supported candidates only", () => {
@@ -114,20 +127,58 @@ describe("self-serve generator: never pad", () => {
     expect(report.findings[0].criteria).toEqual(["CRO-02"]);
   });
 
-  it("stores an insufficient run as failed and sends nothing", async () => {
+  it("with no findings: stores failed, sends the unreadable email, flags a follow-up", async () => {
     const store = createInMemoryStore();
     const send = sendOk();
-    const analyze = vi.fn().mockResolvedValue(buildDraftFromGenerator(gen(3), lead));
-    expect(await runAnalysisAndEmail(lead, { store, analyze, send })).toBeNull();
+    const sendUnreadable = sendOk();
+    const flag = vi.fn().mockResolvedValue(undefined);
+    const analyze = vi.fn().mockResolvedValue(buildDraftFromGenerator(gen(0), lead));
+    expect(await runAnalysisAndEmail(lead, { store, analyze, send, sendUnreadable, flag })).toBeNull();
     expect(send).not.toHaveBeenCalled();
+    expect(sendUnreadable).toHaveBeenCalledOnce();
+    expect(flag).toHaveBeenCalledWith(lead, "unreadable", expect.any(Array));
     expect(store.rows[0]).toMatchObject({ status: "failed", kickoff: "self_serve" });
   });
 
-  it("sends a supported run to the requester and records it", async () => {
+  it("when the page can't be read: sends the unreadable email and flags a follow-up", async () => {
+    const store = createInMemoryStore();
+    const sendUnreadable = sendOk();
+    const flag = vi.fn().mockResolvedValue(undefined);
+    const analyze = vi.fn().mockRejectedValue(new Error("FireCrawl scrape failed: 403"));
+    expect(await runAnalysisAndEmail(lead, { store, analyze, send: sendOk(), sendUnreadable, flag })).toBeNull();
+    expect(sendUnreadable).toHaveBeenCalledOnce();
+    expect(flag.mock.calls[0][1]).toBe("unreadable");
+    expect(flag.mock.calls[0][2].join("\n")).toContain("403");
+  });
+
+  it("with 1 to 4 findings: sends that scorecard and flags a follow-up", async () => {
     const store = createInMemoryStore();
     const send = sendOk();
+    const flag = vi.fn().mockResolvedValue(undefined);
+    const analyze = vi.fn().mockResolvedValue(buildDraftFromGenerator(gen(2), lead));
+    const row = await runAnalysisAndEmail(lead, { store, analyze, send, sendUnreadable: sendOk(), flag });
+    expect(send).toHaveBeenCalledOnce();
+    expect(row).toMatchObject({ status: "sent" });
+    expect(flag).toHaveBeenCalledWith(lead, "fewFindings", expect.any(Array));
+  });
+
+  it("flags a follow-up when the report exists but the email fails", async () => {
+    const store = createInMemoryStore();
+    const flag = vi.fn().mockResolvedValue(undefined);
+    const send = vi.fn().mockRejectedValue(new Error("Resend send failed: 500"));
     const analyze = vi.fn().mockResolvedValue(buildDraftFromGenerator(gen(6), lead));
-    const row = await runAnalysisAndEmail(lead, { store, analyze, send });
+    expect(await runAnalysisAndEmail(lead, { store, analyze, send, sendUnreadable: sendOk(), flag })).toBeNull();
+    expect(flag.mock.calls[0][1]).toBe("sendFailed");
+    expect(store.rows[0].status).toBe("failed");
+  });
+
+  it("sends a supported run to the requester and records it, no follow-up", async () => {
+    const store = createInMemoryStore();
+    const send = sendOk();
+    const flag = vi.fn().mockResolvedValue(undefined);
+    const analyze = vi.fn().mockResolvedValue(buildDraftFromGenerator(gen(6), lead));
+    const row = await runAnalysisAndEmail(lead, { store, analyze, send, flag });
+    expect(flag).not.toHaveBeenCalled();
     expect(send).toHaveBeenCalledOnce();
     expect(send.mock.calls[0][2].to).toBeUndefined(); // requester's own address
     expect(row).toMatchObject({ status: "sent", kickoff: "self_serve", rubricVersion: RUBRIC_VERSION });

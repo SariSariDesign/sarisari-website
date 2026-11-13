@@ -5,8 +5,8 @@ import { DIMENSION_CODES, PROFILES } from "./rubric";
  * Activation Scorecard Preview, format v1: the ONE report shape every preview
  * uses, whether the prospect kicked it off through the public form or Zach
  * kicked it off as an operator run. It is scored on the Activation Scoring
- * Rubric (see ./rubric.ts) and is always a preview: exactly five findings and
- * a Preview Score. The paid Activation Score is a different deliverable and is
+ * Rubric (see ./rubric.ts) and is always a preview: up to five findings (fewer
+ * only when the evidence supports fewer; never padded) and a Preview Score. The paid Activation Score is a different deliverable and is
  * never produced by this system.
  */
 
@@ -68,11 +68,11 @@ export const previewReportSchema = z
     evaluationLens: text,
     disclaimer: text,
     dimensions: z.array(dimensionRatingSchema).min(3),
-    /** Total findings evaluated before the top five were selected. */
-    totalFindings: z.number().int().min(5),
-    findings: z.array(findingSchema).length(5),
+    /** Total supported findings evaluated before the top (up to) five were selected. */
+    totalFindings: z.number().int().min(1),
+    findings: z.array(findingSchema).min(1).max(5),
     research: z.array(researchSchema).max(3),
-    aiBuilderChanges: z.array(text).length(5),
+    aiBuilderChanges: z.array(text).min(1).max(5),
   })
   .superRefine((r, ctx) => {
     const allowed = new Set<string>(PROFILES[r.profile]);
@@ -83,6 +83,10 @@ export const previewReportSchema = z
       if (seen.has(d.code)) ctx.addIssue({ code: "custom", message: `${d.code} rated twice` });
       seen.add(d.code);
     }
+    if (r.aiBuilderChanges.length !== r.findings.length)
+      ctx.addIssue({ code: "custom", message: "one AI-builder change per finding" });
+    if (r.totalFindings < r.findings.length)
+      ctx.addIssue({ code: "custom", message: "totalFindings cannot be less than the findings shown" });
     if (r.profile === "video" && r.source !== "recording")
       ctx.addIssue({ code: "custom", message: "video profile requires a recording source" });
     for (const f of r.findings) {

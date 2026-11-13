@@ -1,6 +1,7 @@
 import { analyzeUrl } from "./analyze";
-import { sendScorecardEmail } from "./email";
-import { finalizeReport, scoreOf, type ReportDraft } from "./report";
+import { sendScorecardEmail, sendUnreadableEmail } from "./email";
+import { flagScorecardFollowUp } from "./followup";
+import { finalizeReport, findingTitles, scoreOf, type ReportDraft } from "./report";
 import { RUBRIC_VERSION } from "./rubric";
 import type { ReviewEvent, ScorecardStore, StoredScorecard } from "./store";
 import { getStore, storeConfigured } from "./store.supabase";
@@ -57,16 +58,22 @@ const event = (by: string, action: ReviewEvent["action"], extra: Partial<ReviewE
 });
 
 type Send = typeof sendScorecardEmail;
+type SendUnreadable = typeof sendUnreadableEmail;
+type Flag = typeof flagScorecardFollowUp;
 
 /**
  * Self-serve background job: score the submitted URL, persist it, and email the
- * requester. Throws are logged, not surfaced: the lead was already captured to
- * the CRM. When the evidence supports fewer than five findings, the run is
- * recorded as failed for operator follow-up instead of being padded.
+ * requester. Every requester gets an email:
+ *   - 5 supported findings  → the scorecard.
+ *   - 1 to 4                → the scorecard with only those findings (never
+ *                             padded), saying so, plus an Attio follow-up note.
+ *   - 0, or the page/analysis fails → a "we couldn't read your page" email, plus
+ *                             an Attio follow-up note.
+ * Throws are logged, not surfaced: the lead was already captured to the CRM.
  */
 export async function runAnalysisAndEmail(
   lead: ScorecardLead,
-  deps: { store?: ScorecardStore; analyze?: typeof analyzeUrl; send?: Send } = {},
+  deps: { store?: ScorecardStore; analyze?: typeof analyzeUrl; send?: Send; sendUnreadable?: SendUnreadable; flag?: Flag } = {},
 ): Promise<StoredScorecard | null> {
   if (!deps.store && !analysisConfigured()) {
     console.warn("[scorecard] analysis skipped: missing FIRECRAWL/ANTHROPIC/RESEND/SUPABASE config:", lead.email);
@@ -75,6 +82,26 @@ export async function runAnalysisAndEmail(
   const store = deps.store ?? getStore();
   const analyze = deps.analyze ?? analyzeUrl;
   const send = deps.send ?? sendScorecardEmail;
+  const sendUnreadable = deps.sendUnreadable ?? sendUnreadableEmail;
+  const flag = deps.flag ?? flagScorecardFollowUp;
+
+  /** No report possible: tell the lead honestly and flag it for a person. */
+  const unreadable = async (why: string) => {
+    let emailed = "not emailed";
+    try {
+      const { id } = await sendUnreadable(lead, reviewInbox());
+      emailed = `emailed "couldn't read your page" (resend:${id ?? "unknown"})`;
+    } catch (e) {
+      console.error(`[scorecard] could not send unreadable email to ${lead.email}:`, e);
+    }
+    await flag(lead, "unreadable", [
+      "The automated review could not produce a Scorecard for this page.",
+      `Reason: ${why}`,
+      `Lead was ${emailed} and told a designer will follow up.`,
+      "Look at the page and follow up by email.",
+    ]);
+  };
+
   let row: StoredScorecard | null = null;
   try {
     // Cache: reuse the latest delivered self-serve preview for this URL. Never
@@ -99,7 +126,7 @@ export async function runAnalysisAndEmail(
         sentAt: null,
       };
       if (!gen.ok) {
-        console.warn(`[scorecard] insufficient evidence, not sent (${gen.reason}): ${lead.email}`);
+        console.warn(`[scorecard] no report (${gen.reason}): ${lead.email}`);
         await store.insert({
           ...base,
           overallScore: 0,
@@ -109,6 +136,7 @@ export async function runAnalysisAndEmail(
           reviewEvents: [event("generator", "failed", { reason: gen.reason })],
           lastError: `insufficient_evidence: ${gen.reason}`,
         });
+        await unreadable(gen.reason);
         return null;
       }
       const { report, score } = finalizeReport(gen.draft);
@@ -131,14 +159,33 @@ export async function runAnalysisAndEmail(
         reviewEvents: [...row.reviewEvents, event("system", "sent", { reason: `resend:${id ?? "unknown"} to requester` })],
       });
     }
+    const shown = findingTitles(row.result).length;
+    if (shown < 5) {
+      await flag(lead, "fewFindings", [
+        `The automated review found only ${shown} finding${shown === 1 ? "" : "s"} it could back with evidence.`,
+        "The lead was sent that Scorecard and told a designer will take a look and follow up.",
+        `Report: ${reportUrlFor(row.slug)}`,
+        "Review the page and follow up by email.",
+      ]);
+    }
     console.log(`[scorecard] delivered to ${lead.email} (${scoreOf(row.result).score}/100) → ${reportUrlFor(row.slug)}`);
     return row;
   } catch (err) {
     console.error(`[scorecard] analysis/email failed for ${lead.email}:`, err);
     if (row && row.status !== "sent") {
+      // A report exists but the email failed: flag it so someone sends it by hand.
       await store
         .update(row.slug, { status: "failed", lastError: String(err).slice(0, 500) })
         .catch((e) => console.error("[scorecard] could not record failure:", e));
+      await flag(lead, "sendFailed", [
+        "A Scorecard was generated but the email did not send.",
+        `Error: ${String(err).slice(0, 300)}`,
+        `Report: ${reportUrlFor(row.slug)}`,
+        "Send the report link to the lead by hand.",
+      ]);
+    } else if (!row) {
+      // Scrape or analysis failed: no report to send.
+      await unreadable(String(err).slice(0, 300));
     }
     return null;
   }
