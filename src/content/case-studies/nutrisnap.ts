@@ -12,7 +12,7 @@ export const nutrisnap: CaseStudy = {
     image: "/work/nutrisnap.webp",
   },
   page: {
-    title: "⚠️ Headline that names the result",
+    title: "Translating nutrition science into a first session people trust",
     byline: "⚠️ Client: Name · Partner: Name",
     tags: ["⚠️ Strategy", "⚠️ Product Design"],
     heroImage: null, // "/work/<slug>-hero.webp"

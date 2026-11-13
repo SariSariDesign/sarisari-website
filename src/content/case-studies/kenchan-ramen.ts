@@ -16,7 +16,7 @@ export const kenchanRamen: CaseStudy = {
     wideImage: "/work/kenchan-cover.webp",
   },
   page: {
-    title: "How a Single Feature Drove 37% of Digital Revenue",
+    title: "A bundle feature that drove 37% of digital revenue",
     byline: "Client: Kenchan Ramen · Partner: Kocah",
     tags: ["Strategy", "Brand design", "UX/UI Design", "Product Design"],
     heroImage: "/work/kenchan-add-to-bundle.webp",

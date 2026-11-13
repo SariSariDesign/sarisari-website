@@ -17,7 +17,7 @@ export const lendzi: CaseStudy = {
     image: "/work/lendzi-cover.webp",
   },
   page: {
-    title: "Good design starts with the right diagnosis",
+    title: "Why AI couldn't fix a logo that was blending in",
     byline: "Client: Lendzi",
     tags: ["Brand strategy", "Logo design", "A/B testing"],
     heroImage: "/work/lendzi-cover.webp",

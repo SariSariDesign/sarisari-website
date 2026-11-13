@@ -19,7 +19,7 @@ export const disco: CaseStudy = {
     image: "/work/disco-square.webp",
   },
   page: {
-    title: "Why 94% of Signups Didn't Matter",
+    title: "Why 94% signup completion didn't matter",
     byline: "Client: Eris Hanson-Cooper, Founder & CEO, Disco",
     tags: ["Activation Diagnostic", "UX audit", "Product strategy", "Product design"],
     heroImage: "/work/disco-cover.webp",
