@@ -5,7 +5,6 @@ import { FooterCta } from "@/components/FooterCta";
 import { Nav } from "@/components/Nav";
 import { PageHeader } from "@/components/PageHeader";
 import { Section } from "@/components/Section";
-import { TrackBooking } from "@/components/TrackBooking";
 import { thankYou } from "@/content/site";
 import { isExternal } from "@/lib/links";
 
@@ -33,8 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 /**
  * Calendly redirects here after a booking (set per event type: Booking page options →
- * Confirmation page → Redirect to an external site). GTM counts the conversion two ways:
- * a page view on /thank-you/<offer>, and a `booking_confirmed` dataLayer event with the offer.
+ * Confirmation page → Redirect to an external site). GTM counts the booking as a page view
+ * on /thank-you/<offer> (trigger "Page View - Thank You" → GA4 `call_booked`).
  */
 export default async function ThankYouPage({ params }: Props) {
   const { offer } = await params;
@@ -43,7 +42,6 @@ export default async function ThankYouPage({ params }: Props) {
   return (
     <>
       <Nav />
-      <TrackBooking offer={offer} />
       <main>
         <Section className="bg-neutral-100">
           <PageHeader eyebrow={o.name} title={thankYou.title} intro={thankYou.intro} />
