@@ -623,7 +623,7 @@ export const footer = {
 
 /**
  * Thank-you pages, one per Calendly event (/thank-you/<slug>). Calendly redirects each
- * event type to its page; GTM tracks the page view + a `booking_confirmed` event.
+ * event type to its page; GTM tracks the page view as `call_booked`.
  */
 export const thankYou = {
   title: "You're booked.",
