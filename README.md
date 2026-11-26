@@ -43,6 +43,7 @@ npm run dev        # http://localhost:3000
 | Shared helpers | `src/lib/` (`metadata.ts` per-page SEO/OG, `links.ts`, `contact.ts`, `attio.ts`) |
 | Reusable components | `src/components/` (`Section`, `PageHeader`, `Nav`, `Button`, `Accordion`, `ContactForm`, `FooterCta`, `Wordmark`, `Placeholder`) |
 | Legacy Webflow URL redirects | `next.config.mjs` |
+| Daily Supabase keep-alive (Vercel Cron, 10:17 UTC; one tiny read so the free-tier project doesn't pause) | `vercel.json` (`crons`) + `src/app/api/cron/supabase-keepalive/route.ts`. Stop it by removing the cron entry or disabling it in Vercel → Settings → Cron Jobs |
 | Launch docs | `docs/` (asset inventory, DNS cutover, Figma punch list) |
 
 ## Design source

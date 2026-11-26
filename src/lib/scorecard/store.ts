@@ -81,6 +81,11 @@ export interface ScorecardStore {
   update(slug: string, patch: ScorecardPatch): Promise<StoredScorecard>;
   /** Runs created at or after `since`, newest first (calibration exports). */
   listSince(since: string): Promise<StoredScorecard[]>;
+  /**
+   * One tiny fixed read that proves the table answers. Returns nothing and
+   * throws on failure. Used by the daily keep-alive cron.
+   */
+  ping(): Promise<void>;
 }
 
 /** Private evidence images, served only through /s/<slug>/evidence/<key>. */
