@@ -52,6 +52,7 @@ it("fails open to analyze when the store throws", async () => {
     async getBySlug() { throw new Error("db down"); },
     async update() { throw new Error("db down"); },
     async listSince() { throw new Error("db down"); },
+    async ping() { throw new Error("db down"); },
   };
   const a = await decideScorecardAction({ store: broken, url: "https://acme.com/", email: "a@acme.com", now });
   expect(a).toEqual({ kind: "analyze", previous: null });

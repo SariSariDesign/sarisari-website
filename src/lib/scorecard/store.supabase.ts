@@ -203,6 +203,12 @@ export function createSupabaseStore(): ScorecardStore {
       if (error) throw new Error(`[scorecard-store] listSince: ${error.message}`);
       return (data as Row[]).map(toStored);
     },
+
+    async ping() {
+      // Fixed query, no caller input; the result is discarded. Gives up after 10 s.
+      const { error } = await db().from(TABLE).select("id").limit(1).abortSignal(AbortSignal.timeout(10_000));
+      if (error) throw new Error(`[scorecard-store] ping: ${error.message}`);
+    },
   };
 }
 

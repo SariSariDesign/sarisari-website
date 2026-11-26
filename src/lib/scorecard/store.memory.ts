@@ -42,6 +42,9 @@ export function createInMemoryStore(
     async listSince(since) {
       return rows.filter((r) => r.createdAt >= since).reverse();
     },
+    async ping() {
+      // Nothing to reach in memory; always succeeds.
+    },
   };
 }
 
